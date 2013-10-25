@@ -1,0 +1,16 @@
+<html>
+<title>Submit Code</title>
+
+<body>
+<h1>Submit code</h1>
+
+<form id="submitcode" method="post" action="/emacshaqiba/"
+      enctype="multipart/form-data">
+  {% csrf_token %}
+  {{codetemplate_form.as_p}}
+  <input type="submit" name="submit" value="Submit Code" />
+</form>
+</body>
+
+
+</html>

@@ -1,0 +1,22 @@
+{% load static %}
+
+<html>
+<title>haqiba</title>
+
+<body>
+<h1>emacshaqiba</h1>
+
+{% if codetemplate %}
+{% for e in codetemplate %}
+<ul>{{e.name}}</ul>
+<ul>{{e.code}}</ul>
+<img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200">
+{% endfor %}
+{% else %}
+<p>No code to show</p>
+{% endif %}
+
+</body>
+
+
+</html>
