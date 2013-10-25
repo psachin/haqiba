@@ -14,6 +14,9 @@ def index(request):
     context_dict = {'codetemplate':codetemplate}
     return render_to_response('emacshaqiba/index.html', context_dict ,context)
 
+def get_code_list(request):
+    codetemplate = CodeTemplate.objects.all()
+    return codetemplate
 
 def submitcode(request):
     context = RequestContext(request)

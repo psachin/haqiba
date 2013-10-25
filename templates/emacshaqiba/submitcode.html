@@ -1,7 +1,7 @@
-<html>
-<title>Submit Code</title>
+{% extends 'emacshaqiba/base.html' %}
+{% load static %}
 
-<body>
+{% block body_block %}
 <h1>Submit code</h1>
 
 <form id="submitcode" method="post" action="/emacshaqiba/"
@@ -10,7 +10,6 @@
   {{codetemplate_form.as_p}}
   <input type="submit" name="submit" value="Submit Code" />
 </form>
-</body>
 
+{% endblock body_block %}
 
-</html>

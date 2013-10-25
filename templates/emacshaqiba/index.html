@@ -1,22 +1,16 @@
+{% extends 'emacshaqiba/base.html' %}
 {% load static %}
 
-<html>
-<title>haqiba</title>
-
-<body>
-<h1>emacshaqiba</h1>
+{% block body_block %}
 
 {% if codetemplate %}
 {% for e in codetemplate %}
-<ul>{{e.name}}</ul>
-<ul>{{e.code}}</ul>
-<img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200">
+<ul><h2>{{e.name}}</h2></ul>
+<img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200" class="img-thumbnail">
+<ul><pre class="lead">{{e.code}}</pre></ul>
 {% endfor %}
 {% else %}
 <p>No code to show</p>
 {% endif %}
 
-</body>
-
-
-</html>
+{% endblock body_block %}
