@@ -2,13 +2,48 @@
 {% load static %}
 
 {% block body_block %}
-<h1>Submit code</h1>
-
-<form id="submitcode" method="post" action="/emacshaqiba/"
+<form role="form" id="submit-code" method="post" action="/emacshaqiba/submit_code/"
       enctype="multipart/form-data">
   {% csrf_token %}
-  {{codetemplate_form.as_p}}
-  <input type="submit" name="submit" value="Submit Code" />
+  <h2>Submit your code here!</h2>
+  {% if submitcode_success == "success" %}
+  <div class="alert alert-success">
+  <h3>Code Successfully submitted</h3>
+  </div>
+  {% else %}
+  {% if submitcode_success == "error" %}
+  <div class="alert alert-warning">
+  <h3><b>Error</b>: submitting code!</h3>
+  </div>
+  {% endif %}
+  {% endif %}
+  <hr>
+  <div class="form-group" style="width:40%;">
+  <!-- {{codetemplate_form.as_p}} -->
+  {% for field in codetemplate_form.visible_fields %}
+  {% if field.errors %}
+  <div class="alert alert-warning">
+    {{ field.errors }}
+    <br>
+  </div>
+  {% endif %}
+  <label>{{ field.name.capitalize}}</label>
+  {% if field.name == "code" %}
+  <textarea id="id_code" name="code" class="form-control" rows="3" placeholder="{{field.help_text}}"></textarea>
+  <br>
+  {% else %}
+  {% if field.name == "name" %}
+  <input type="text" class="form-control" id="id_name" name="name" placeholder="{{field.help_text}}"> 
+  <br>
+  {% else%}
+    <span class="help-block">{{field.help_text}}</span>
+  {{ field }}
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+  </div>
+    <br>
+  <input class="btn btn-success" type="submit" name="submit" value="Submit Code" />
 </form>
 
 {% endblock body_block %}

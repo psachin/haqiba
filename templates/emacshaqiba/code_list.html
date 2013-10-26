@@ -1,9 +1,11 @@
 <ul class="nav nav-list">
-    {% if codetemplate %}
-        {% for code in codetemplate %}
-            <ul><a href="/emacshaqiba/{{code.name}}">{{ code.name }}</a></ul>
-        {% endfor %}
+    <h2>Top codes</h2>
+    {% if code_list %}
+    {% for code in code_list %}
+    <ul><a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a></ul>
+    {% endfor %}
     {% else %}
-        <p>No Code submitted at present.</p>
+    <p>No Code submitted at present.</p>
    {% endif %}
 </ul>
+

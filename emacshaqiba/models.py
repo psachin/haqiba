@@ -11,3 +11,14 @@ class CodeTemplate(models.Model):
         return self.name
 
 
+class UserProfile(models.Model):
+    # this line is req. links userprofile to a user model instance
+    user = models.OneToOneField(User)
+    
+    # additional attributes
+    website = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='profile_image', blank=True)
+    
+    # unicode stuf
+    def __unicode__(self):
+        return self.user.username

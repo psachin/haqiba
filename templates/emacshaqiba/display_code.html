@@ -2,17 +2,14 @@
 {% load static %}
 
 {% block body_block %}
-
 {% if codetemplate %}
 {% for e in codetemplate %}
 <ul><h2>{{e.name}}</h2></ul>
 <img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200" class="img-thumbnail">
-<ul><pre class="lead">{{e.code}}</pre></ul>
+<ul><pre class="prettyprint">{{e.code}}</pre></ul>
 {% endfor %}
 {% else %}
-<p>Nothing to display</p>
-<input class="btn btn-primary" type="button" name="submit" value="Submit Code" 
-       onClick="window.location.href='/emacshaqiba/submit_code/'"/>
+<h4>No such code!!</h4>
 {% endif %}
 
 {% endblock body_block %}

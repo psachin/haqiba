@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^emacshaqiba/', include('emacshaqiba.urls')),
-                       url(r'^$', views.index),
+                       url(r'^$', include('emacshaqiba.urls')),
 )
 
 if settings.DEBUG:

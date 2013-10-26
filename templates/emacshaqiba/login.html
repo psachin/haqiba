@@ -1,0 +1,34 @@
+{% extends 'emacshaqiba/base.html' %}
+
+{% block body_block %}
+<div class="hero-unit">
+<h1>Login to Haqiba</h1>
+
+<div class="container">
+<form class="form-signin span4" id="login_form" method="post" action="/emacshaqiba/login/">
+  <h2 class="form-signin-heading">Please sign in</h2>
+  {% csrf_token %}
+  
+  {% if bad_details %}
+  <div class="alert alert-error">
+    <p>Your username and/or password were incorrect!</p>
+  </div>
+  {% elif disabled_account %}
+  <div class="alert alert-error">
+    <p><strong>Your account is currently disabled; we can't log you in!</strong></p>
+  </div>
+  {% endif %}
+  
+  Username: <input type="text" class="input-block-level" 
+		   name="username" value="" size="50" 
+		   placeholder="Username" />
+  <br />
+  Password: <input type="password" class="input-block-level" 
+		   name="password" value="" size="50" 
+		   placeholder="Password" />
+  <br />
+  <button class="btn btn-success" type="submit"/>Sign in</button>
+</form>
+</div>
+</div>
+{% endblock body_block %}
