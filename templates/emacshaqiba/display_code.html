@@ -2,14 +2,66 @@
 {% load static %}
 
 {% block body_block %}
+
+<!-- codemirror settings -->
+<link rel="stylesheet" href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
+
+<script src="{% static 'codemirror-3.19/lib/codemirror.js' %}"></script>
+<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}"></script>
+<script src="{% static 'codemirror-3.19/keymap/extra.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}"></script>
+
+<style type="text/css">
+  .CodeMirror {
+  border: 1px solid black; 
+  font-size:13px; 
+  height: auto;
+  width: 95%;}
+
+  .CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+  }
+</style>
+<!-- code mirror settings -->
+
 {% if codetemplate %}
 {% for e in codetemplate %}
-<ul><h2>{{e.name}}</h2></ul>
-<img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200" class="img-thumbnail">
-<ul><pre class="prettyprint">{{e.code}}</pre></ul>
+<ul><h3>{{e.name}}</h3></ul>
+{% if e.screenshot %}
+<ul><img src="media/{{e.screenshot}}" 
+	 alt="{{e.screenshot}}"  
+	 height="170" 
+	 width="200" 
+	 class="img-thumbnail">
+</ul>
+{% else %}
+<ul><p>No screenshot available.</p></ul>
+{% endif %}
+
+<ul>
+  <textarea id="id_code" name="code">{{e.code}}
+  </textarea>
+</ul>
 {% endfor %}
 {% else %}
 <h4>No such code!!</h4>
 {% endif %}
+<!-- codemirror settings -->
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("id_code"), {
+  lineNumbers: true,
+  styleActiveLine: true,
+  matchBrackets: true,
+  readOnly: false,
+  theme: "paraiso-dark",
+  mode: "commonlisp",
+  lineWrapping: true,
+  readOnly: true,
+  });
+</script>
+<!-- codemirror settings -->
 
 {% endblock body_block %}

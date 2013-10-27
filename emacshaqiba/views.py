@@ -4,12 +4,14 @@ from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.servers.basehttp import FileWrapper
 
 # import models
-from emacshaqiba.models import CodeTemplate, UserProfile
+from emacshaqiba.models import CodeTemplate, UserProfile, DownloadCodes
 
 # import forms
 from emacshaqiba.forms import CodeTemplateForm, UserForm, UserProfileForm
+from emacshaqiba.forms import DownloadCodesForm
 
 def encode_url(str):
     if ' ' in str:
@@ -31,9 +33,42 @@ def index(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.all()
     code_list = get_code_list()
+    
+    if request.method == 'POST':
+        selected_code_list = request.POST.getlist('selected_code_list')
+        if selected_code_list:
+            response = HttpResponse(content_type='text/plain')
+            response['Content-Disposition'] = 'attachment; filename=emacs_init.el'
+            for e in selected_code_list:
+                CODE = CodeTemplate.objects.filter(name=e)
+                for i in CODE:
+                    response.write(";; " + i.name + "\n" + i.code + "\n\n")
+            pass
+            return response
+        else:
+            print "No code selected for download."
+    else:
+        print "No POST request"
+
+
     context_dict = {'codetemplate':codetemplate,
-                    'code_list': code_list}
+                    'code_list': code_list,}
+
     return render_to_response('emacshaqiba/index.html', context_dict ,context)
+
+def Download_codes(request):
+    context = RequestContext(request)
+
+    if request.method == 'POST':
+        form = DownloadCodesForm(request.POST)
+
+        if form.is_valid():
+            print form
+        else:
+            download_codes_form = DownloadCodesForm()
+    else:
+        download_codes_form = DownloadCodesForm()
+    return render_to_response('emacshaqiba/index.html')
 
 def about(request):
     context = RequestContext(request)
@@ -78,16 +113,13 @@ def submitcode(request):
             
 def display_code(request, code_name):
     context = RequestContext(request)
-    code_name = decode_url(code_name)#code_name.replace('SPACE',' ')
-    print code_name
-
+    code_name = decode_url(code_name)
     codetemplate = CodeTemplate.objects.filter(name=code_name)
 
     code_list = get_code_list()
         
     context_dict = {'codetemplate': codetemplate,
                     'code_list': code_list,}
-    
     return render_to_response('emacshaqiba/display_code.html', context_dict ,context)
 
 def register(request):
@@ -186,7 +218,6 @@ def user_login(request):
         else:
             # Bad login details were provided. So we can't log the user in.
             context_dict['bad_details'] = True
-            print 'bad'
             return render_to_response('emacshaqiba/login.html', context_dict, context)
 
     # The request is not a HTTP POST, so display the login form.
@@ -221,3 +252,8 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/')
+
+
+def create_emacs_config_file():
+    pass
+    

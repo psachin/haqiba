@@ -1,12 +1,15 @@
 {% extends 'emacshaqiba/base.html' %}
 
 {% block body_block %}
-<div class="hero-unit">
-<h1>Login to Haqiba</h1>
 
-<div class="container">
-<form class="form-signin span4" id="login_form" method="post" action="/emacshaqiba/login/">
-  <h2 class="form-signin-heading">Please sign in</h2>
+
+
+<div class="container" align="center">
+<form class="form-horizontal" role="form" id="login_form" method="post" 
+      style="width:40%;" action="/emacshaqiba/login/">
+<div class="well">
+  <img src="media/images/avatar_sign_in.png" alt="avatar" class="img-circle">
+  <h2>Please sign in</h2>
   {% csrf_token %}
   
   {% if bad_details %}
@@ -18,17 +21,38 @@
     <p><strong>Your account is currently disabled; we can't log you in!</strong></p>
   </div>
   {% endif %}
-  
-  Username: <input type="text" class="input-block-level" 
-		   name="username" value="" size="50" 
-		   placeholder="Username" />
-  <br />
-  Password: <input type="password" class="input-block-level" 
-		   name="password" value="" size="50" 
-		   placeholder="Password" />
-  <br />
-  <button class="btn btn-success" type="submit"/>Sign in</button>
-</form>
+
+  <input name="username" type="text" class="form-control" id="id_username" placeholder="Your username">
+  <input name="password" type="password" class="form-control" id="id_password" placeholder="Your password">
+
+
+  <!-- <div class="form-group"> -->
+  <!--   <div class="col-lg-offset-2 col-lg-10"> -->
+  <!--     <div class="checkbox"> -->
+  <!--       <label> -->
+  <!--         <input type="checkbox"> Remember me -->
+  <!--       </label> -->
+  <!--     </div> -->
+  <!--   </div> -->
+  <!-- </div> -->
+<br>
+  <div class="form-group">
+    <!-- <div class="col-lg-offset-2 col-lg"> -->
+      <button type="submit" class="btn btn-success">Sign in</button>
+    <!-- </div> -->
+  </div>
+
+  <!-- Username: <input type="text" class="input-block-level"  -->
+  <!-- 		   name="username" value="" size="50"  -->
+  <!-- 		   placeholder="Username" /> -->
+  <!-- <br /> -->
+  <!-- Password: <input type="password" class="input-block-level"  -->
+  <!-- 		   name="password" value="" size="50"  -->
+  <!-- 		   placeholder="Password" /> -->
+  <!-- <br /> -->
+  <!-- <button class="btn btn-success" type="submit"/>Sign in</button> -->
 </div>
+</div>
+</form>
 </div>
 {% endblock body_block %}

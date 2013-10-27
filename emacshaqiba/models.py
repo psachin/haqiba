@@ -10,7 +10,12 @@ class CodeTemplate(models.Model):
     def __unicode__(self):
         return self.name
 
+class DownloadCodes(models.Model):
+    name = models.ForeignKey(CodeTemplate)
 
+    def __unicode__(self):
+        return self.name
+    
 class UserProfile(models.Model):
     # this line is req. links userprofile to a user model instance
     user = models.OneToOneField(User)

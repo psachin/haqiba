@@ -4,15 +4,51 @@
 {% block body_block %}
 
 {% if codetemplate %}
+<div class="container" align="left">
+<form class="form-horizontal" role="form" id="login_form" method="post" 
+      style="width:40%;" action="/">
+<div class="well">
+  {% csrf_token %}
 {% for e in codetemplate %}
-<ul><h2>{{e.name}}</h2></ul>
-<img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200" class="img-thumbnail">
-<ul><pre class="lead">{{e.code}}</pre></ul>
+<label class="checkbox">
+  <input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>{{e.name}}
+</label>
 {% endfor %}
+<br />
+  <div class="form-group" align="center">
+    <!-- <div class="col-lg-offset-2 col-lg"> -->
+      <button type="submit" class="btn btn-info">Download</button>
+    <!-- </div> -->
+  </div>
+</div>
+</div>
+
+</form>
+
+
 {% else %}
 <p>Nothing to display</p>
 <input class="btn btn-primary" type="button" name="submit" value="Submit Code" 
        onClick="window.location.href='/emacshaqiba/submit_code/'"/>
 {% endif %}
 
+<!-- <p class="field switch"> -->
+<!--     <label class="cb-enable"><span>On</span></label> -->
+<!--     <label class="cb-disable selected"><span>Off</span></label> -->
+<!--     <input type="checkbox" id="checkbox" class="checkbox" name="field2" /> -->
+<!-- </p> -->
+
 {% endblock body_block %}
+
+<!-- {% if codetemplate %} -->
+<!-- {% for e in codetemplate %} -->
+<!-- <ul><h2>{{e.name}}</h2></ul> -->
+<!-- <img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200" class="img-thumbnail"> -->
+<!-- <ul><pre class="lead">{{e.code}}</pre></ul> -->
+<!-- {% endfor %} -->
+<!-- {% endif %} -->
+
+
+<!-- <label class="checkbox"> -->
+<!--   <input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>{{e.name}} -->
+<!-- </label> -->

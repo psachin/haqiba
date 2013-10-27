@@ -2,6 +2,23 @@
 {% load static %}
 
 {% block body_block %}
+
+<!-- codemirror settings -->
+<link rel="stylesheet" href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
+
+<script src="{% static 'codemirror-3.19/lib/codemirror.js' %}"></script>
+<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}"></script>
+<script src="{% static 'codemirror-3.19/keymap/extra.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}"></script>
+
+<style type="text/css">
+  .CodeMirror {border: 1px solid black; font-size:20px}
+</style>
+<!-- code mirror settings -->
+
+<div class="container" align="">
 <form role="form" id="submit-code" method="post" action="/emacshaqiba/submit_code/"
       enctype="multipart/form-data">
   {% csrf_token %}
@@ -18,7 +35,7 @@
   {% endif %}
   {% endif %}
   <hr>
-  <div class="form-group" style="width:40%;">
+  <div class="form-group" style="width:80%;">
   <!-- {{codetemplate_form.as_p}} -->
   {% for field in codetemplate_form.visible_fields %}
   {% if field.errors %}
@@ -29,7 +46,9 @@
   {% endif %}
   <label>{{ field.name.capitalize}}</label>
   {% if field.name == "code" %}
-  <textarea id="id_code" name="code" class="form-control" rows="3" placeholder="{{field.help_text}}"></textarea>
+  <textarea id="id_code" name="code" class="form-control" rows="3" 
+	    placeholder="{{field.help_text}}">
+  </textarea>
   <br>
   {% else %}
   {% if field.name == "name" %}
@@ -42,9 +61,26 @@
   {% endif %}
   {% endfor %}
   </div>
-    <br>
+  <br>
   <input class="btn btn-success" type="submit" name="submit" value="Submit Code" />
 </form>
 
+</div>
+
+<!-- codemirror settings -->
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("id_code"), {
+  lineNumbers: true,
+  styleActiveLine: true,
+  matchBrackets: true,
+  readOnly: false,
+  theme: "paraiso-dark",
+  mode: "commonlisp",
+  lineWrapping: true,
+  });
+</script>
+<!-- codemirror settings -->
+
 {% endblock body_block %}
+
 

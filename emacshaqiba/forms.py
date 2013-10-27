@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 # import emacshaqiba
-from emacshaqiba.models import CodeTemplate, UserProfile
+from emacshaqiba.models import CodeTemplate, UserProfile, DownloadCodes
 
 class CodeTemplateForm(forms.ModelForm):
     name = forms.CharField(help_text="Name of code snippet.", required=True)
@@ -31,3 +31,13 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['website', 'picture']
+
+class DownloadCodesForm(forms.ModelForm):
+    name = forms.BooleanField()
+    #(widget=forms.CheckboxSelectMultiple)
+    code = forms.Textarea()
+    
+    class Meta:
+        model = DownloadCodes
+        fields = ['name']
+
