@@ -1,6 +1,7 @@
 {% extends 'emacshaqiba/base.html' %}
 {% load static %}
 
+
 {% block body_block %}
 
 <!-- codemirror settings -->
@@ -27,28 +28,52 @@
 </style>
 <!-- code mirror settings -->
 
-{% if codetemplate %}
-{% for e in codetemplate %}
-<ul><h3>{{e.name}}</h3></ul>
-{% if e.screenshot %}
-<ul><img src="media/{{e.screenshot}}" 
-	 alt="{{e.screenshot}}"  
-	 height="170" 
-	 width="200" 
-	 class="img-thumbnail">
-</ul>
-{% else %}
-<ul><p>No screenshot available.</p></ul>
-{% endif %}
 
+<!-- style ends here -->
+<div class="row">
 <ul>
+<div class="row">
+  <div class="col-md-8">
+    {% if codetemplate %}
+    {% for e in codetemplate %}
+	<h1>{{e.name}} </h1>
+	{% if e.description %}
+	<p class="text-info">{{e.description}}</p>
+	{% else %}
+	<p class="text-info">No description available.</p>
+	{% endif %}
+	<p class="text-muted"><small>by {{e.user}}</small></p>
+  </div>
+  <div class="col-md-4">
+    {% if e.screenshot %}
+    <div class="zoomed">
+    <img src="media/{{e.screenshot}}" 
+	     alt="{{e.screenshot}}"  
+	     height="140" 
+	     width="240" 
+	     class="img-thumbnail" class="img-responsive">
+    </div>
+    {% else %}
+    <p>No screenshot available.</p>
+    {% endif %}
+  </div>
+</div>
+</ul>
+<ul>
+  <small>Code</small>
   <textarea id="id_code" name="code">{{e.code}}
   </textarea>
 </ul>
+
+</div>
+
+
 {% endfor %}
 {% else %}
 <h4>No such code!!</h4>
 {% endif %}
+
+
 <!-- codemirror settings -->
 <script>
   var editor = CodeMirror.fromTextArea(document.getElementById("id_code"), {

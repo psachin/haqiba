@@ -2,18 +2,21 @@ from django import forms
 from django.contrib.auth.models import User
 
 # import emacshaqiba
-from emacshaqiba.models import CodeTemplate, UserProfile, DownloadCodes
+from emacshaqiba.models import CodeTemplate, UserProfile
 
 class CodeTemplateForm(forms.ModelForm):
     name = forms.CharField(help_text="Name of code snippet.", required=True)
     code = forms.CharField(widget=forms.TextInput, 
                           help_text="Type your code snippet here.", 
                           required=True)
-    screenshot = forms.ImageField(help_text="Upload screenshot of your code.", required=False)
+    description = forms.CharField(widget=forms.TextInput, 
+                                  help_text="Type description of your code snippet here(Optional).", 
+                                  required=False)
+    screenshot = forms.ImageField(help_text="Upload screenshot of your code(Optional).", required=False)
     
     class Meta:
         model = CodeTemplate
-        fields = ['name', 'code', 'screenshot']
+        fields = ['name', 'code', 'description', 'screenshot']
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")
@@ -32,12 +35,4 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['website', 'picture']
 
-class DownloadCodesForm(forms.ModelForm):
-    name = forms.BooleanField()
-    #(widget=forms.CheckboxSelectMultiple)
-    code = forms.Textarea()
-    
-    class Meta:
-        model = DownloadCodes
-        fields = ['name']
 

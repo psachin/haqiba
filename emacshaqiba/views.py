@@ -7,11 +7,10 @@ from django.contrib.auth.models import User
 from django.core.servers.basehttp import FileWrapper
 
 # import models
-from emacshaqiba.models import CodeTemplate, UserProfile, DownloadCodes
+from emacshaqiba.models import CodeTemplate, UserProfile
 
 # import forms
 from emacshaqiba.forms import CodeTemplateForm, UserForm, UserProfileForm
-from emacshaqiba.forms import DownloadCodesForm
 
 def encode_url(str):
     if ' ' in str:
@@ -43,7 +42,11 @@ def index(request):
                 CODE = CodeTemplate.objects.filter(name=e)
                 for i in CODE:
                     response.write(";; " + i.name + "\n" + i.code + "\n\n")
-            pass
+                    print i.name, i.download_count
+                    temp_codetemplate = CodeTemplate.objects.get(name=i.name)
+                    count = temp_codetemplate.download_count + 1
+                    temp_codetemplate.download_count = count
+                    temp_codetemplate.save()
             return response
         else:
             print "No code selected for download."
@@ -56,20 +59,6 @@ def index(request):
 
     return render_to_response('emacshaqiba/index.html', context_dict ,context)
 
-def Download_codes(request):
-    context = RequestContext(request)
-
-    if request.method == 'POST':
-        form = DownloadCodesForm(request.POST)
-
-        if form.is_valid():
-            print form
-        else:
-            download_codes_form = DownloadCodesForm()
-    else:
-        download_codes_form = DownloadCodesForm()
-    return render_to_response('emacshaqiba/index.html')
-
 def about(request):
     context = RequestContext(request)
     code_list = get_code_list()
@@ -77,9 +66,11 @@ def about(request):
     return render_to_response('emacshaqiba/about.html', context_dict , context)
 
 def get_code_list():
-    codetemplate = CodeTemplate.objects.all()
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
     for e in codetemplate:
-        e.url = encode_url(e.name)#e.name.replace(' ','SPACE')
+        e.url = encode_url(e.name)
+        if e.download_count == None:
+            e.download_count = 0
     return codetemplate
 
 def submitcode(request):
@@ -95,11 +86,14 @@ def submitcode(request):
             codetemplate = codetemplate_form.save(commit=False)
             if 'screenshot' in request.FILES:
                 codetemplate.screenshot = request.FILES['screenshot']
+            
+            print request.user
+            codetemplate.user = request.user
             codetemplate.save()
             submitcode_success="success"
         else:
             submitcode_success="error"
-            # print codetemplate_form.errors
+            print codetemplate_form.errors
     else:
         codetemplate_form = CodeTemplateForm()
     
@@ -133,7 +127,8 @@ def register(request):
     # registration was successful.  Set to False initially. Code
     # changes value to True when registration succeeds.
     registered = False
-    
+    form_error = False
+
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
@@ -169,6 +164,8 @@ def register(request):
         # problems to the terminal.  They'll also be shown to the
         # user.
         else:
+            if user_form.errors or profile_form.errors:
+                form_error = True
             print user_form.errors, profile_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm
@@ -183,6 +180,7 @@ def register(request):
         {'user_form': user_form, 
          'profile_form': profile_form, 
          'registered': registered,
+         'form_error': form_error,
          'code_list':code_list}, 
         context)
 

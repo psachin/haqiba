@@ -2,8 +2,18 @@
     <h2>Top codes</h2>
     {% if code_list %}
     {% for code in code_list %}
-    <ul><a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a></ul>
+    <ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
+      <span class="badge">{{code.download_count}}</span>
+    </ul>
     {% endfor %}
+    <h2>All codes</h2>
+    {% if code_list %}
+    {% for code in code_list %}
+    <ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
+      <span class="badge">{{code.download_count}}</span>
+    </ul>
+    {% endfor %}
+    {% endif %}
     {% else %}
     <p>No Code submitted at present.</p>
    {% endif %}

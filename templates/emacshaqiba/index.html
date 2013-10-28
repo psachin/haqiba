@@ -3,10 +3,20 @@
 
 {% block body_block %}
 
+<script>
+function toggle(source) {
+  checkboxes = document.getElementsByName('selected_code_list');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+
 {% if codetemplate %}
 <div class="container" align="left">
 <form class="form-horizontal" role="form" id="login_form" method="post" 
       style="width:40%;" action="/">
+
 <div class="well">
   {% csrf_token %}
 {% for e in codetemplate %}
@@ -17,7 +27,8 @@
 <br />
   <div class="form-group" align="center">
     <!-- <div class="col-lg-offset-2 col-lg"> -->
-      <button type="submit" class="btn btn-info">Download</button>
+    <input type="checkbox" onClick="toggle(this)"/> Toggle All<br>
+    <button type="submit" class="btn btn-info">Download</button>
     <!-- </div> -->
   </div>
 </div>
@@ -28,6 +39,7 @@
 
 {% else %}
 <p>Nothing to display</p>
+
 <input class="btn btn-primary" type="button" name="submit" value="Submit Code" 
        onClick="window.location.href='/emacshaqiba/submit_code/'"/>
 {% endif %}

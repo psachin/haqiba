@@ -1,44 +1,71 @@
 {% extends 'emacshaqiba/base.html' %}
 {% block body_block %}
-<div class="hero-unit">
-  <h1>Register with Rango</h1>
-  <br />
-  <div class="container">
+
+  <h1 align="center">Register with Haqiba</h1>
+  <hr>
+  <div class="container" align="">
         {% if registered %}
         <strong>Thank you for registering!</strong>
-	<p><a href="/emacshaqiba/login/">Login</a> when you are ready to rango.</p>
+	<p><a href="/emacshaqiba/login/">Login here.</a></p>
         {% else %}
-        <form  class="form-signin span8" id="user_form" method="post" action="/emacshaqiba/register/"
+	<div class="well" align="center">
+        <form class="form-horizontal" role="form" id="user_form" method="post" action="/emacshaqiba/register/"
                 enctype="multipart/form-data">
           {% csrf_token %}
 	  <h2 class="form-signin-heading">Sign up Here</h2>
           <!-- Display each form. The as.p method wraps each element in a paragraph
                (<p>) element. This ensures each element appears on a new line,
                making everything look neater. -->
-            <!-- {{ user_form.as_p }} -->
-            <!-- {{ profile_form.as_p }} -->
+          
+	  <!-- basic -->
+	  <!-- {{ user_form.as_p }} -->
+          <!-- {{ profile_form.as_p }} -->
 
-	    {% for field in user_form.visible_fields %}
-	    {% if field.errors %}
-	    <div class="alert alert-error">
-            {{ field.errors }}
-	    </div>
-	    {% endif %}
-            {{ field.help_text}}<br/>
-            {{ field }}<br/>
-            {% endfor %}
+          {% if form_error %}
+	  <div class="alert alert-dismissable">
+	    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	    <strong>Warning!</strong> One or more field required!.
+	  </div>
+          {% endif %}
 
+	  <!-- {% for field in user_form.visible_fields %} -->
+	  <!-- {% if field.errors %} -->
+	  <!-- <div class="alert alert-warning">One or more field is required</div> -->
+	  <!-- {% endif %} -->
+	  <!-- {% endfor %} -->
 
-            {% for field in profile_form.visible_fields %}
-            {{ field.errors }}
-            {{ field.help_text}}<br/>
-            {{ field }}<br/>
-            {% endfor %}
+	  
+	    <div class="form-group" style="width:50%;">
+	      <!-- <label for="username">Username</label> -->
+	      <input type="text" name="username" class="form-control" id="id_username" placeholder="Your Username.">
+	    </div> <!-- form-group username-->
+	    
+	    <div class="form-group" style="width:50%;">
+	      <!-- <label for="email">Email</label> -->
+	      <input type="text" name="email" class="form-control" id="id_email" placeholder="Your Email ID.">
+	    </div> <!-- form-group email-->
 
+	    <div class="form-group" style="width:50%;">
+	      <!-- <label for="password">Password</label> -->
+	      <input type="password" name="password" class="form-control" id="id_password" placeholder="Your password.">
+	    </div> <!-- form-group password1-->
+
+	    <div class="form-group" style="width:50%;">
+	      <!-- <label for="website">Website</label> -->
+	      <input type="text" name="website" class="form-control" id="id_website" placeholder="Your website address(Optional).">
+	    </div> <!-- form-group email-->
+
+	    <div class="form-group">
+	      <label for="picture">Profile photo</label>
+	      <input type="file" name="picture" id="id_picture">
+	      <p class="help-block">Upload your Profile photo(Optional).</p>
+	    </div>	    
+
+	    <br>
             <!-- Provide a button to click to submit the form. -->
             <input class="btn btn-success" type="submit" name="submit" value="Register" />
         </form>
         {% endif %}
-</div>
+	</div> <!-- well -->
 </div>
 {% endblock body_block %}

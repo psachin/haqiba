@@ -4,14 +4,19 @@
 {% block body_block %}
 
 <!-- codemirror settings -->
-<link rel="stylesheet" href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
-<link rel="stylesheet" href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
 
 <script src="{% static 'codemirror-3.19/lib/codemirror.js' %}"></script>
-<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}"></script>
+<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}">
+</script>
 <script src="{% static 'codemirror-3.19/keymap/extra.js' %}"></script>
-<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}"></script>
-<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}">
+</script>
+<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}">
+</script>
 
 <style type="text/css">
   .CodeMirror {border: 1px solid black; font-size:20px}
@@ -23,6 +28,7 @@
       enctype="multipart/form-data">
   {% csrf_token %}
   <h2>Submit your code here!</h2>
+
   {% if submitcode_success == "success" %}
   <div class="alert alert-success">
   <h3>Code Successfully submitted</h3>
@@ -35,37 +41,37 @@
   {% endif %}
   {% endif %}
   <hr>
+
+  <div class="form-group" style="width:50%;">
+    <label for="name">Name</label>
+    <input type="text" name="name" class="form-control" id="id_name" placeholder="Name of code snippet.">
+  </div> <!-- form-group name-->
+
+  <div class="form-group" style="width:50%;">
+    <label for="description">Description</label>
+    <input type="text" name="description" class="form-control" 
+	   id="id_description" 
+	   placeholder="Type description of your code snippet here(Optional).">
+  </div> <!-- form-group desc-->
+
   <div class="form-group" style="width:80%;">
-  <!-- {{codetemplate_form.as_p}} -->
-  {% for field in codetemplate_form.visible_fields %}
-  {% if field.errors %}
-  <div class="alert alert-warning">
-    {{ field.errors }}
-    <br>
+    <label for="code">Code</label>
+    <textarea type="text" name="code" class="form-control" id="id_code" 
+	      placeholder="Type your code snippet here.">
+      </textarea>
+  </div> <!-- form-group code-->
+
+  <div class="form-group">
+    <label for="screenshot">Screenshot</label>
+    <input type="file" name="screenshot" id="id_screenshot">
+    <p class="help-block">Upload screenshot of your code(Optional).</p>
   </div>
-  {% endif %}
-  <label>{{ field.name.capitalize}}</label>
-  {% if field.name == "code" %}
-  <textarea id="id_code" name="code" class="form-control" rows="3" 
-	    placeholder="{{field.help_text}}">
-  </textarea>
-  <br>
-  {% else %}
-  {% if field.name == "name" %}
-  <input type="text" class="form-control" id="id_name" name="name" placeholder="{{field.help_text}}"> 
-  <br>
-  {% else%}
-    <span class="help-block">{{field.help_text}}</span>
-  {{ field }}
-  {% endif %}
-  {% endif %}
-  {% endfor %}
-  </div>
-  <br>
-  <input class="btn btn-success" type="submit" name="submit" value="Submit Code" />
+  
+  <input class="btn btn-success" type="submit" name="submit" 
+	 value="Submit Code" />
 </form>
 
-</div>
+</div> <!-- container -->
 
 <!-- codemirror settings -->
 <script>
