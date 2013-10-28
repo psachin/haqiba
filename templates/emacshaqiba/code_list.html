@@ -1,21 +1,24 @@
 <ul class="nav nav-list">
-    <h2>Top codes</h2>
-    {% if code_list %}
-    {% for code in code_list %}
-    <ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
-      <span class="badge">{{code.download_count}}</span>
-    </ul>
-    {% endfor %}
-    <h2>All codes</h2>
-    {% if code_list %}
-    {% for code in code_list %}
-    <ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
-      <span class="badge">{{code.download_count}}</span>
-    </ul>
-    {% endfor %}
-    {% endif %}
-    {% else %}
-    <p>No Code submitted at present.</p>
-   {% endif %}
+<h2>Top codes</span></h2>
+{% if code_list %}
+{% for code in code_list|slice:":5" %}
+<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
+  <span class="badge">{{code.download_count}}</span>
+</ul>
+{% endfor %}
+<h2>All codes</h2>
+{% if code_list %}
+{% for code in code_list %}
+<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
+  <span class="badge">{{code.download_count}}</span>
+</ul>
+{% endfor %}
+{% endif %}
+{% else %}
+<p>No Code submitted at present.</p>
+{% endif %}
 </ul>
 
+{% comment %} to show first five codes I hv used |slice...  This can
+be done in views but I don't want to alter views.  
+{% endcomment %}

@@ -1,5 +1,5 @@
 {% extends 'emacshaqiba/base.html' %}
-
+{% load static %}
 {% block body_block %}
 
 
@@ -8,7 +8,7 @@
 <form class="form-horizontal" role="form" id="login_form" method="post" 
       style="width:40%;" action="/emacshaqiba/login/">
 <div class="well">
-  <img src="media/images/avatar_sign_in.png" alt="avatar" class="img-circle">
+  <img src="{% static 'images/avatar_sign_in.png'%}" alt="avatar" class="img-circle">
   <h2>Please sign in</h2>
   {% csrf_token %}
   
@@ -51,6 +51,10 @@
   <!-- 		   placeholder="Password" /> -->
   <!-- <br /> -->
   <!-- <button class="btn btn-success" type="submit"/>Sign in</button> -->
+
+<div class="container" align="right">
+<a href="/emacshaqiba/register">Sign up</a>
+</div>
 </div>
 </div>
 </form>

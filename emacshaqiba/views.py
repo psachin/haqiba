@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.servers.basehttp import FileWrapper
-
 # import models
 from emacshaqiba.models import CodeTemplate, UserProfile
 
@@ -29,6 +28,14 @@ def decode_url(str):
         return str
 
 def index(request):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.all()
+    code_list = get_code_list()
+    context_dict = {'codetemplate':codetemplate,
+                    'code_list': code_list,}
+    return render_to_response('emacshaqiba/index.html', context_dict ,context)
+
+def emacs_config(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.all()
     code_list = get_code_list()
@@ -57,7 +64,7 @@ def index(request):
     context_dict = {'codetemplate':codetemplate,
                     'code_list': code_list,}
 
-    return render_to_response('emacshaqiba/index.html', context_dict ,context)
+    return render_to_response('emacshaqiba/emacs_config.html', context_dict ,context)
 
 def about(request):
     context = RequestContext(request)
@@ -73,6 +80,7 @@ def get_code_list():
             e.download_count = 0
     return codetemplate
 
+@login_required
 def submitcode(request):
     context = RequestContext(request)
     code_list = get_code_list()
@@ -251,7 +259,3 @@ def user_logout(request):
     # Take the user back to the homepage.
     return HttpResponseRedirect('/')
 
-
-def create_emacs_config_file():
-    pass
-    

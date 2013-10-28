@@ -2,65 +2,33 @@
 {% load static %}
 
 {% block body_block %}
-
-<script>
-function toggle(source) {
-  checkboxes = document.getElementsByName('selected_code_list');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
-}
-</script>
-
-{% if codetemplate %}
-<div class="container" align="left">
-<form class="form-horizontal" role="form" id="login_form" method="post" 
-      style="width:40%;" action="/">
-
-<div class="well">
-  {% csrf_token %}
-{% for e in codetemplate %}
-<label class="checkbox">
-  <input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>{{e.name}}
-</label>
-{% endfor %}
-<br />
-  <div class="form-group" align="center">
-    <!-- <div class="col-lg-offset-2 col-lg"> -->
-    <input type="checkbox" onClick="toggle(this)"/> Toggle All<br>
-    <button type="submit" class="btn btn-info">Download</button>
-    <!-- </div> -->
+<div class="container" align="center">
+<a href="/"><img src="{% static "images/backpack.png" %}" alt="Haqiba"/>
+      </a>
+</div>
+<hr>
+  <div class="container" align="center">
+    <p><a href="/" class="btn btn-primary btn-lg">Haqiba</a></p>
+    <hr>
   </div>
-</div>
-</div>
 
-</form>
+<div class="container" align="justify">
+<p><strong>Haqiba</strong> is a <i>arabic</i> word for 'bag'.</p> 
 
+<p>Here you can download Emacs custom configuraton file with codes and
+  extensions contributed by Emacs user around the world. Some code
+  snippets may be copied from another sources, in such case a
+  reference will be given in code description.</p>
 
-{% else %}
-<p>Nothing to display</p>
+<p>If you are new to GNU Emacs and don't know where to start, I
+  suggest you please
+  visit <a href="http://www.gnu.org/software/emacs/">Emacs</a> page
+  and download/install latest version of GNU Emacs. Once GNU Emacs is
+  installed return to this site and click the navigation bar where it
+  says
+  <a href="/emacshaqiba/emacs_config">Generate Emacs config.</a></p>
 
-<input class="btn btn-primary" type="button" name="submit" value="Submit Code" 
-       onClick="window.location.href='/emacshaqiba/submit_code/'"/>
-{% endif %}
-
-<!-- <p class="field switch"> -->
-<!--     <label class="cb-enable"><span>On</span></label> -->
-<!--     <label class="cb-disable selected"><span>Off</span></label> -->
-<!--     <input type="checkbox" id="checkbox" class="checkbox" name="field2" /> -->
-<!-- </p> -->
+<p>Visit <a href="/emacshaqiba/about">About</a> for more detail.</p>
+</div>  
 
 {% endblock body_block %}
-
-<!-- {% if codetemplate %} -->
-<!-- {% for e in codetemplate %} -->
-<!-- <ul><h2>{{e.name}}</h2></ul> -->
-<!-- <img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200" class="img-thumbnail"> -->
-<!-- <ul><pre class="lead">{{e.code}}</pre></ul> -->
-<!-- {% endfor %} -->
-<!-- {% endif %} -->
-
-
-<!-- <label class="checkbox"> -->
-<!--   <input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>{{e.name}} -->
-<!-- </label> -->
