@@ -1,6 +1,14 @@
 {% extends 'emacshaqiba/base.html' %}
 {% load static %}
 
+<style>
+.btn {
+-webkit-border-radius: 20px;
+-moz-border-radius: 20px;
+border-radius: 20px;
+}
+</style>
+
 {% block body_block %}
 <div class="container" align="center">
 <a href="/"><img src="{% static "images/backpack.png" %}" alt="Haqiba"/>
@@ -8,14 +16,16 @@
 </div>
 <hr>
   <div class="container" align="center">
-    <p><a href="/" class="btn btn-primary btn-lg">Haqiba</a></p>
-    <hr>
+    <p class="text-muted"><h2><a href="/">Haqiba</a></h2></p>
+    <p><a href="/emacshaqiba/emacs_config" class="btn btn-warning btn-lg">Generate Emacs config file</a></p>  
+  <hr>
   </div>
-
+  
 <div class="container" align="justify">
-<p><strong>Haqiba</strong> is a <i>arabic</i> word for 'bag'.</p> 
+<div class="well">
+<p align="center"><strong>Haqiba</strong> is an <i>Arabic</i> word for 'bag'.</p> 
 
-<p>Here you can download Emacs custom configuraton file with codes and
+<p>Here you can download Emacs custom configuration file with codes and
   extensions contributed by Emacs user around the world. Some code
   snippets may be copied from another sources, in such case a
   reference will be given in code description.</p>
@@ -29,6 +39,7 @@
   <a href="/emacshaqiba/emacs_config">Generate Emacs config.</a></p>
 
 <p>Visit <a href="/emacshaqiba/about">About</a> for more detail.</p>
+</div>
 </div>  
 
 {% endblock body_block %}

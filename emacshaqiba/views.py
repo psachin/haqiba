@@ -48,7 +48,7 @@ def emacs_config(request):
             for e in selected_code_list:
                 CODE = CodeTemplate.objects.filter(name=e)
                 for i in CODE:
-                    response.write(";; " + i.name + "\n" + i.code + "\n\n")
+                    response.write(";;; " + i.name + "\n" + i.code + "\n\n")
                     print i.name, i.download_count
                     temp_codetemplate = CodeTemplate.objects.get(name=i.name)
                     count = temp_codetemplate.download_count + 1

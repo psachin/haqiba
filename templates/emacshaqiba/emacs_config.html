@@ -12,30 +12,67 @@ function toggle(source) {
 }
 </script>
 
+<!-- http://jsfiddle.net/userdude/KFFgf/1/ -->
+<style>
+#jsfiddle {
+    width: 1000%;
+    max-width: 870px;
+    margin: 10px auto;
+    border: 0px solid black;
+    padding: 10px;
+}
+#jsfiddle .row {
+    border: 0px solid green;
+    border-left: 0;
+    border-top: none;
+    margin: 0;
+    padding: 0;
+}
+#jsfiddle .block {
+    border: 0px solid blue;
+    border-bottom: 0;
+    border-right: 0;
+    float: left;
+    width: 200px;
+}
+</style>
+
+<div class="row" align="">
+<div class="container" align="">
+<div class="well" align="">
 {% if codetemplate %}
-<!-- <div class="container" align="left"> -->
 <form class="form-horizontal" role="form" id="download_form" method="post" 
       style="width:40%;" action="/emacshaqiba/emacs_config/">
 
-<div class="well">
-  {% csrf_token %}
-{% for e in codetemplate %}
-<label class="checkbox">
-  <input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>{{e.name}}
-</label>
-{% endfor %}
-<br />
-  <div class="form-group" align="center">
-    <!-- <div class="col-lg-offset-2 col-lg"> -->
-    <input type="checkbox" onClick="toggle(this)"/> Toggle All<br>
-    <button type="submit" class="btn btn-info">Download</button>
-    <!-- </div> -->
-  </div>
+{% csrf_token %}
+<div id="jsfiddle">
+    <div class="row">
+    {% for e in code_list %}
+    <div class="block"> 
+    <label class="checkbox">
+	<input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
+	<a class="text-success" href="/emacshaqiba/code/{{e.url}}">{{e.name}}</a>
+      </label>
+    </div>
+    {% endfor %}
 </div>
-<!-- </div> -->
+
+</div>
+</div>
+</div>
+<br />
+
+
+
+<div class="container" align="">
+  <div class="form-group" align="center">
+    <input type="checkbox" onClick="toggle(this)"/> Toggle All <br>
+    <button type="submit" class="btn btn-success">Generate & Download config</button>
+  </div> 
+</div>
 
 </form>
-
+</div> <!-- row main -->
 
 {% else %}
 <strong>Nothing to display.</strong>
@@ -48,7 +85,7 @@ You must
 <input class="btn btn-info" type="button" name="submit" value="Log in" 
        onClick="window.location.href='/emacshaqiba/login'"/> to
 <input class="btn btn-danger" type="button" name="submit" value="Submit Code" 
-       onClick="window.location.href='#'"/>.
+       onClick="window.location.href='#'"/>
 {% endif %}
 {% endif %}
 

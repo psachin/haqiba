@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html>
+<html class="font-size-base ">
   <head>
     <title>haqiba - {% block title %} emacshaqiba {% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,10 +32,12 @@
       <div class="collapse navbar-collapse navbar-ex1-collapse">
 	<ul class="nav navbar-nav">
 	  <li><a href="https://github.com/psachin/haqiba/">GitHub</a></li>
-	  <li><a href="/emacshaqiba/emacs_config">Generate Emacs config</a></li>
 	  <li><a href="/emacshaqiba/about">About</a></li>
+	  <li><a href="/emacshaqiba/emacs_config">Emacs config</a></li>
 	  {% if user.is_authenticated %}
 	  <li><a href="/emacshaqiba/submit_code">Submit Code</a></li>
+	  {% else %}
+	  <li class="disabled"><a href="#">Submit Code</a></li>
 	  {% endif %}
 	  <!-- <li class="dropdown"> -->
 	  <!--   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a> -->
@@ -59,7 +61,7 @@
 
 	<ul class="nav navbar-nav navbar-right">
 	  {% if user.is_authenticated %}
-	  <li class="navbar-text">Welcome, {{ user.username }}!</li>
+	  <li class="navbar-text">Welcome, {{ user.username|capfirst }}!</li>
 	  <li><a href="/emacshaqiba/profile/">Profile</a></li>
 	  <li><a href="/emacshaqiba/logout/">Logout</a></li>
 	  {% else %}

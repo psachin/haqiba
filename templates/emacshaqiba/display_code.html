@@ -44,7 +44,7 @@
 	<p class="text-success">No description available.</p>
 	{% endif %}
 	<p class="text-muted"><small>by {{e.user}}</small></p>
-	<span class="badge">{{e.download_count}} downloads</span>
+	<span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span>
 	</div>
   </div>
   <div class="col-md-4">
