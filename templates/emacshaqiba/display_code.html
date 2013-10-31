@@ -28,7 +28,6 @@
 </style>
 <!-- code mirror settings -->
 
-
 <!-- style ends here -->
 <div class="row">
 <ul>
@@ -50,12 +49,14 @@
   <div class="col-md-4">
 
     {% if e.screenshot %}
-    <div class="zoomed">
+    <div class="">
+      <a href="media/{{e.screenshot}}">      
     <img src="media/{{e.screenshot}}" 
 	     alt="{{e.screenshot}}"  
 	     height="140" 
 	     width="240" 
 	     class="img-thumbnail" class="img-responsive">
+    </a>
     </div>
     {% else %}
     <p>No screenshot available.</p>
@@ -97,5 +98,4 @@
   });
 </script>
 <!-- codemirror settings -->
-
 {% endblock body_block %}
