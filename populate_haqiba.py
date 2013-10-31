@@ -21,6 +21,34 @@ def populate():
 
     add_code_template(
         user_id=store.USERNAME.id,
+        name="Battery",
+        code="(display-battery-mode t)",
+        description="Show battery status in mode line.",
+        screenshot='screenshot/banner.png'
+    )
+
+    add_code_template(
+        user_id=store.USERNAME.id,
+        name="Sudo-edit",
+        code="""
+(defun sudo-edit (&optional arg)
+  "Edit currently visited file as root.
+
+With a prefix ARG prompt for a file to visit.
+Will also prompt for a file to visit if current
+buffer is not visiting a file."
+  (interactive "P")
+  (if (or arg (not buffer-file-name))
+      (find-file (concat "/sudo:root@localhost:"
+                         (ido-read-file-name "Find file(as root): ")))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+(global-set-key (kbd "C-x C-r") 'sudo-edit)""",
+        description="Edit currently visited file as root. Keybinding: C-x C-r",
+        screenshot='screenshot/banner.png'
+    )
+
+    add_code_template(
+        user_id=store.USERNAME.id,
         name="Google",
         code="""
 (defun google ()

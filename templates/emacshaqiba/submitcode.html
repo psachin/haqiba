@@ -43,26 +43,30 @@
   <hr>
 
   <div class="form-group" style="width:55%;">
-    <label for="name">Name</label>
+    {{ codetemplate_form.name.errors }}
+    <label for="id_name">Name</label>
     <input type="text" name="name" class="form-control" id="id_name" placeholder="Name of code snippet(words separated by hyphen or underscore).">
   </div> <!-- form-group name-->
 
   <div class="form-group" style="width:55%;">
-    <label for="description">Description</label>
+    {{ codetemplate_form.description.errors }}
+    <label for="id_description">Description</label>
     <input type="text" name="description" class="form-control" 
 	   id="id_description" 
 	   placeholder="Type description of your code snippet here(Optional).">
   </div> <!-- form-group desc-->
 
   <div class="form-group" style="width:80%;">
-    <label for="code">Code</label>
+    {{ codetemplate_form.code.errors }}
+    <label for="id_code">Code</label>
     <textarea type="text" name="code" class="form-control" id="id_code" 
 	      placeholder="Type your code snippet here.">
       </textarea>
   </div> <!-- form-group code-->
 
   <div class="form-group">
-    <label for="screenshot">Screenshot</label>
+    {{ codetemplate_form.screenshot.errors }}
+    <label for="id_screenshot">Screenshot</label>
     <input type="file" name="screenshot" id="id_screenshot">
     <p class="help-block">Upload screenshot of your code(Optional).</p>
   </div>

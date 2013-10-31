@@ -1,31 +1,30 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.servers.basehttp import FileWrapper
+from django.core.urlresolvers import reverse
+
 # import models
 from emacshaqiba.models import CodeTemplate, UserProfile
 
 # import forms
 from emacshaqiba.forms import CodeTemplateForm, UserForm, UserProfileForm
 
-def encode_url(str):
-    if ' ' in str:
-        return str.replace(' ', 'SPACE')
-    elif '-' in str:
-         return str.replace('-', 'HYPHEN')
+def encode_url(string):
+    if ' ' or '-' in string:
+        return string.replace(' ', 'SPACE').replace('-', 'HYPHEN')
     else:
-        return str
+        return string
 
-def decode_url(str):
-    if 'SPACE' in str:
-        return str.replace('SPACE', ' ')
-    elif 'HYPHEN' in str:
-        return str.replace('HYPHEN', '-')
+def decode_url(string):
+    if 'SPACE' or 'HYPHEN' in string:
+        return string.replace('SPACE', ' ').replace('HYPHEN','-')
     else:
-        return str
+        return string
 
 def index(request):
     context = RequestContext(request)
@@ -112,7 +111,67 @@ def submitcode(request):
                                'code_list': code_list,
                                'submitcode_success':submitcode_success},
                               context)
+
+@login_required
+def editcode(request):
+    context = RequestContext(request)
+    code_list = get_code_list()
+    codetemplate = CodeTemplate.objects.filter(user=request.user)
+
+    for i in codetemplate:
+        i.url = encode_url(i.name)
+        
+    return render_to_response('emacshaqiba/editcode.html', 
+                              {'codetemplate':codetemplate,
+                               'code_list': code_list,
+                               },
+                              context)
+    
+@login_required
+def editcode_p(request, id=None):
+    context = RequestContext(request)
+    code_list = get_code_list()
+    codetemplate = CodeTemplate.objects.all()
+    submitcode_success="get"
+
+    if id:
+        print "Edit %s" % id 
+        code_template = get_object_or_404(CodeTemplate, pk=id)
+        print code_template.user, code_template.name
+        if code_template.user != request.user:
+            return HttpResponseForbidden()
             
+        if request.method == 'POST':
+            print "POST"
+            codetemplate_form = CodeTemplateForm(data=request.POST, instance=code_template)
+            
+            if codetemplate_form.is_valid():
+                codetemplate = codetemplate_form.save(commit=False)
+                if 'screenshot' in request.FILES:
+                    codetemplate.screenshot = request.FILES['screenshot']
+
+                codetemplate.save()
+                submitcode_success="success"
+                print "Code edited successfully."
+                return HttpResponseRedirect("/emacshaqiba/edit_code/")
+                # return HttpResponseRedirect("/emacshaqiba/edit_code/%s" % id)
+            else:
+                submitcode_success="error"
+                print codetemplate_form.errors
+        else:
+            print "GET"
+            codetemplate_form = CodeTemplateForm(instance=code_template)
+
+    else:
+         return HttpResponse("Code does not exist!!")
+    codetemplate = CodeTemplate.objects.all()
+    return render_to_response('emacshaqiba/editcode_page.html', 
+                              {'codetemplate_form': codetemplate_form,
+                               'codetemplate':codetemplate,
+                               'code_list': code_list,
+                               'submitcode_success':submitcode_success},
+                              context)
+
 def display_code(request, code_name):
     context = RequestContext(request)
     code_name = decode_url(code_name)

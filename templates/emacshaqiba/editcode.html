@@ -1,0 +1,31 @@
+{% extends 'emacshaqiba/base.html' %}
+{% load static %}
+
+{% block body_block %}
+<div class="container">
+  <div class="well">
+  {% if codetemplate %}
+  {% for i in codetemplate %}
+  <table class="table table-bordered table-hover table-condensed">
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{i.name}}</td>
+    <td>
+      <a href="/emacshaqiba/code/{{i.url}}">View
+      </a>
+      </td>
+    <td>
+      <a href="/emacshaqiba/edit_code_p/{{i.id}}">Edit
+    </a>
+      </td>
+  </tr>
+  </table>
+  {% endfor %}
+  {% else %}
+  No codes submitted by you.
+  {% endif %}
+</div>
+</div>
+{% endblock body_block %}
+
+

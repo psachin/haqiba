@@ -1,0 +1,36 @@
+{% extends 'emacshaqiba/base.html' %}
+{% load static %}
+
+{% block body_block %}
+<div class="container">
+<form role="form" id="edit-code" method="post" action=""
+      enctype="multipart/form-data">
+  {% csrf_token %}
+  <h2>Edit code</h2>
+  <div class="form-group">
+        {{ codetemplate_form.name.errors }}
+	<label for="id_name">Name</label><br>
+	{{ codetemplate_form.name }}
+  </div>
+  <div class="form-group">
+        {{ codetemplate_form.description.errors }}
+	<label for="id_description">Description</label><br>
+	{{ codetemplate_form.description }}
+  </div>
+  <div class="form-group">
+        {{ codetemplate_form.code.errors }}
+	<label for="id_code">Code</label><br>
+	{{ codetemplate_form.code }}
+  </div>
+  <div class="form-group">
+        {{ codetemplate_form.screenshot.errors }}
+	<label for="id_screenshot">Screenshot</label><br>
+	{{ codetemplate_form.screenshot }}
+  </div>
+  <!-- {{codetemplate_form.as_p}} -->
+  <input class="btn btn-success" type="submit" name="submit" value="Save changes" />
+</form>
+</div>
+{% endblock body_block %}
+
+

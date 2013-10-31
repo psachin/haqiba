@@ -12,6 +12,8 @@ urlpatterns = patterns(
 #    url(r'^restricted/', views.restricted, name='restricted'),
     url(r'^profile/', views.profile, name='profile'),
     url(r'^submit_code/$', views.submitcode, name='submitcode'),
+    url(r'^edit_code/$', views.editcode, name='editcode'),
+    url(r'^edit_code_p/(?P<id>\d+)/$', views.editcode_p, name='editcode_p'),
     url(r'^code/(?P<code_name>\w+)/$', views.display_code, 
         name='display_code'),
 )

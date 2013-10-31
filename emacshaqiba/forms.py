@@ -6,7 +6,7 @@ from emacshaqiba.models import CodeTemplate, UserProfile
 
 class CodeTemplateForm(forms.ModelForm):
     name = forms.CharField(help_text="Name of code snippet.", required=True)
-    code = forms.CharField(widget=forms.TextInput, 
+    code = forms.CharField(widget=forms.Textarea, 
                           help_text="Type your code snippet here.", 
                           required=True)
     description = forms.CharField(widget=forms.TextInput, 
@@ -16,7 +16,8 @@ class CodeTemplateForm(forms.ModelForm):
     
     class Meta:
         model = CodeTemplate
-        fields = ['name', 'code', 'description', 'screenshot']
+        exclude = ('user')
+        fields = ['name', 'description', 'code','screenshot']
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")

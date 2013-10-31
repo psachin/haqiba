@@ -65,6 +65,9 @@
 </ul>
 <ul>
   <small>Code</small>
+  {% if e.user == user %}
+  <a href="/emacshaqiba/edit_code_p/{{e.id}}">(edit)</a>
+  {% endif %}
   <textarea id="id_code" name="code">{{e.code}}
   </textarea>
 </ul>
