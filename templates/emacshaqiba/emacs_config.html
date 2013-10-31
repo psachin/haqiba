@@ -6,7 +6,7 @@
 <script>
 function toggle(source) {
   checkboxes = document.getElementsByName('selected_code_list');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
+  for (var i=0, n=checkboxes.length; i<n; i++) {
     checkboxes[i].checked = source.checked;
   }
 }
@@ -47,11 +47,11 @@ function toggle(source) {
 {% csrf_token %}
 <div id="jsfiddle">
     <div class="row">
-    {% for e in code_list %}
+    {% for e in codetemplate %}
     <div class="block"> 
     <label class="checkbox">
 	<input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
-	<a class="text-success" href="/emacshaqiba/code/{{e.url}}">{{e.name}}</a>
+	<a class="text-success" href="/emacshaqiba/code/{{e.id}}">{{e.name}}</a>
       </label>
     </div>
     {% endfor %}

@@ -10,8 +10,8 @@
     <p><strong>Joined on</strong> : {{user.date_joined}}</p>
     <p><strong>Last login</strong> : {{user.last_login}}</p>
     <p><strong>Number of Code submitted</strong> : 
-      {% if codetemplate|length %}
-      {{codetemplate|length}}
+      {% if codetemplate_user|length %}
+      {{codetemplate_user|length}}
       {% else %}
       None
       {% endif %}
@@ -25,7 +25,7 @@
       {% if userprofile %}
       {% if userprofile.picture %}
     <div class="container" align="center">
-      <img src="{{ userprofile.picture.url }}" alt={{user.username}} class="img-circle"/>
+      <img src="{{ userprofile.picture.url }}" alt={{user.username}} class="img-responsive img-circle"/>
       {% else %}
       No profile picture.
       {% endif %}

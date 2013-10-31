@@ -28,16 +28,15 @@ def decode_url(string):
 
 def index(request):
     context = RequestContext(request)
-    codetemplate = CodeTemplate.objects.all()
-    code_list = get_code_list()
-    context_dict = {'codetemplate':codetemplate,
-                    'code_list': code_list,}
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    #code_list = get_code_list()
+    context_dict = {'codetemplate':codetemplate,}
     return render_to_response('emacshaqiba/index.html', context_dict ,context)
 
 def emacs_config(request):
     context = RequestContext(request)
-    codetemplate = CodeTemplate.objects.all()
-    code_list = get_code_list()
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    # code_list = get_code_list()
     
     if request.method == 'POST':
         selected_code_list = request.POST.getlist('selected_code_list')
@@ -59,16 +58,14 @@ def emacs_config(request):
     else:
         print "No POST request"
 
-
-    context_dict = {'codetemplate':codetemplate,
-                    'code_list': code_list,}
-
-    return render_to_response('emacshaqiba/emacs_config.html', context_dict ,context)
+    context_dict = {'codetemplate': codetemplate,}
+    return render_to_response('emacshaqiba/emacs_config.html', context_dict, context)
 
 def about(request):
     context = RequestContext(request)
-    code_list = get_code_list()
-    context_dict = {'code_list': code_list}
+    # code_list = get_code_list()
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    context_dict = {'codetemplate': codetemplate,}
     return render_to_response('emacshaqiba/about.html', context_dict , context)
 
 def get_code_list():
@@ -82,8 +79,8 @@ def get_code_list():
 @login_required
 def submitcode(request):
     context = RequestContext(request)
-    code_list = get_code_list()
-    codetemplate = CodeTemplate.objects.all()
+    # code_list = get_code_list()
+    
     submitcode_success="get"
     
     if request.method == 'POST':
@@ -104,34 +101,29 @@ def submitcode(request):
     else:
         codetemplate_form = CodeTemplateForm()
     
-    codetemplate = CodeTemplate.objects.all()
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
     return render_to_response('emacshaqiba/submitcode.html', 
                               {'codetemplate_form': codetemplate_form,
-                               'codetemplate':codetemplate,
-                               'code_list': code_list,
-                               'submitcode_success':submitcode_success},
+                               'codetemplate': codetemplate,
+                               'submitcode_success': submitcode_success,},
                               context)
 
 @login_required
 def editcode(request, delete_success=False):
     context = RequestContext(request)
-    code_list = get_code_list()
-    codetemplate = CodeTemplate.objects.filter(user=request.user)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    codetemplate_user = CodeTemplate.objects.filter(user=request.user)
 
-    for i in codetemplate:
-        i.url = encode_url(i.name)
-        
     return render_to_response('emacshaqiba/editcode.html', 
                               {'codetemplate':codetemplate,
-                               'code_list': code_list,
-                               },
+                               'codetemplate_user': codetemplate_user},
                               context)
     
 @login_required
 def editcode_p(request, id=None):
     context = RequestContext(request)
-    code_list = get_code_list()
-    codetemplate = CodeTemplate.objects.all()
+    # code_list = get_code_list()
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
     submitcode_success="get"
 
     if id:
@@ -165,11 +157,9 @@ def editcode_p(request, id=None):
     else:
          return HttpResponse("Code does not exist!!")
 
-    codetemplate = CodeTemplate.objects.all()
     return render_to_response('emacshaqiba/editcode_page.html', 
                               {'codetemplate_form': codetemplate_form,
                                'codetemplate':codetemplate,
-                               'code_list': code_list,
                                'submitcode_success':submitcode_success},
                               context)
 
@@ -184,24 +174,28 @@ def delete_code(request, id):
         print "code with id: %s not found!!" % id
         return HttpResponseRedirect('/emacshaqiba/edit_code/')
 
-def display_code(request, code_name):
+def display_code(request, id):
     context = RequestContext(request)
-    code_name = decode_url(code_name)
-    codetemplate = CodeTemplate.objects.filter(name=code_name)
-
-    code_list = get_code_list()
+    #code_name = decode_url(code_name)
+    codetemplate_id = CodeTemplate.objects.filter(pk=id)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    #code_list = get_code_list()
         
     context_dict = {'codetemplate': codetemplate,
-                    'code_list': code_list,}
-    return render_to_response('emacshaqiba/display_code.html', context_dict ,context)
+                    'codetemplate_id':codetemplate_id,}
+
+    return render_to_response('emacshaqiba/display_code.html', 
+                              context_dict,
+                              context)
 
 def register(request):
     if request.session.test_cookie_worked():
         print ">>>> TEST COOKIE WORKED"
         request.session.delete_test_cookie()
         
-    code_list = get_code_list()
+    #code_list = get_code_list()
     context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
     # A boolean value for telling the template whether the
     # registration was successful.  Set to False initially. Code
     # changes value to True when registration succeeds.
@@ -260,14 +254,15 @@ def register(request):
          'profile_form': profile_form, 
          'registered': registered,
          'form_error': form_error,
-         'code_list':code_list}, 
+         'codetemplate': codetemplate,}, 
         context)
 
 def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
-    code_list = get_code_list()
-    context_dict = {'code_list': code_list}
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    # code_list = get_code_list()
+    context_dict = {'codetemplate': codetemplate,}
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -307,9 +302,11 @@ def user_login(request):
 @login_required
 def profile(request):
     context = RequestContext(request)
-    codetemplate = CodeTemplate.objects.filter(user=request.user)
-    code_list = get_code_list()
-    context_dict = {'code_list': code_list}
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    codetemplate_user = CodeTemplate.objects.filter(user=request.user)
+    # code_list = get_code_list()
+    context_dict = {'codetemplate': codetemplate,
+                    'codetemplate_user': codetemplate_user,}
     u = User.objects.get(username=request.user)
 
     try:
@@ -319,7 +316,6 @@ def profile(request):
 
     context_dict['user'] = u
     context_dict['userprofile'] = up
-    context_dict['codetemplate'] = codetemplate
     return render_to_response('emacshaqiba/profile.html', context_dict, context)
 
 @login_required

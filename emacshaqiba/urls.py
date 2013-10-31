@@ -15,6 +15,6 @@ urlpatterns = patterns(
     url(r'^edit_code/$', views.editcode, name='editcode'),
     url(r'^edit_code_p/(?P<id>\d+)/$', views.editcode_p, name='editcode_p'),
     url(r'^delete_code/(?P<id>\d+)/$', views.delete_code, name='delete_code'),
-    url(r'^code/(?P<code_name>\w+)/$', views.display_code, 
+    url(r'^code/(?P<id>\d+)/$', views.display_code, 
         name='display_code'),
 )

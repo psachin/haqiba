@@ -1,17 +1,17 @@
 <ul class="nav nav-list">
 <h2>Top codes</span></h2>
-{% if code_list %}
-{% for code in code_list|slice:":5" %}
-<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
+{% if codetemplate %}
+{% for code in codetemplate|slice:":5" %}
+<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
   {% if code.download_count %}
   <span class="badge">{{code.download_count}}</span>
   {% endif %}
 </ul>
 {% endfor %}
 <h2>All codes</h2>
-{% if code_list %}
-{% for code in code_list %}
-<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.url}}">{{ code.name }}</a>
+{% if codetemplate %}
+{% for code in codetemplate %}
+<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
   {% if code.download_count %}
   <span class="badge">{{code.download_count}}</span>
   {% endif %}
