@@ -5,22 +5,24 @@
 <div class="container">
   <div class="well">
   {% if codetemplate %}
+  <table class="table table-striped table-bordered table-hover table-condensed table-responsive">
+    <tr>
+      <td colspan="3" align="center"><strong>List of code</strong></td>
+    </tr>
   {% for i in codetemplate %}
-  <table class="table table-bordered table-hover table-condensed">
   <tr>
     <td>{{forloop.counter}}</td>
-    <td>{{i.name}}</td>
     <td>
-      <a href="/emacshaqiba/code/{{i.url}}">View
+      <a href="/emacshaqiba/code/{{i.url}}">{{i.name}}
       </a>
-      </td>
+    </td>
     <td>
       <a href="/emacshaqiba/edit_code_p/{{i.id}}">Edit
-    </a>
-      </td>
+      </a>
+    </td>
   </tr>
-  </table>
   {% endfor %}
+  </table>
   {% else %}
   No codes submitted by you.
   {% endif %}
