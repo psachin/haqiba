@@ -1,18 +1,45 @@
 {% extends "emacshaqiba/base.html" %}
-
 {% block title %}Profile{% endblock %}
 
 {% block body_block %}
-<div class="hero-unit">
-  <h1> Profile <h1>
-      <h2>{{ user.username }}</h2>
-      <p><a href="mailto:#">{{ user.email }}</a></p>
-      
+<div class="container">
+<div class="row">
+  <div class="col-md-6">
+  <div class="well">
+    <p><strong>User ID</strong> : {{userprofile.user_id}}</p>
+    <p><strong>Joined on</strong> : {{user.date_joined}}</p>
+    <p><strong>Last login</strong> : {{user.last_login}}</p>
+    <p><strong>Number of Code submitted</strong> : 
+      {% if codetemplate|length %}
+      {{codetemplate|length}}
+      {% else %}
+      None
+      {% endif %}
+</div>
+  </div>
+
+  <div class="col-md-6">
+  <div class="well">
+    <h2 align="center">{{ user.username|capfirst }}</h2>
+    <hr>
       {% if userprofile %}
       {% if userprofile.picture %}
-      <img src="{{ userprofile.picture.url }}"  />
+    <div class="container" align="center">
+      <img src="{{ userprofile.picture.url }}" alt={{user.username}} class="img-circle"/>
+      {% else %}
+      No profile picture.
       {% endif %}
-      <p>Website: <a href="{{ userprofile.website }}">{{userprofile.website}}</a></p>
+    </div>
+    <br>
+      <p><span class="glyphicon glyphicon-envelope"></span><a href="mailto:#"> {{ user.email }}</a></p>
+      <p><span class="glyphicon glyphicon-globe"></span><a href="{{ userprofile.website }}"> {{userprofile.website}}</a></p>
+      {% else %}
+      No profile.
       {% endif %}
+</div>
+  </div>
+</div>
+
+
 </div>
 {% endblock %}

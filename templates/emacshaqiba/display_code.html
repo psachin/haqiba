@@ -64,9 +64,11 @@
 </div>
 </ul>
 <ul>
-  <small>Code</small>
+  <small>Code</small> 
   {% if e.user == user %}
-  <a href="/emacshaqiba/edit_code_p/{{e.id}}">(edit)</a>
+  |
+  <a href="/emacshaqiba/edit_code_p/{{e.id}}" class="text-warning">Edit</a> |
+  <a href="/emacshaqiba/delete_code/{{e.id}}" class="text-danger">Delete</a>
   {% endif %}
   <textarea id="id_code" name="code">{{e.code}}
   </textarea>

@@ -113,7 +113,7 @@ def submitcode(request):
                               context)
 
 @login_required
-def editcode(request):
+def editcode(request, delete_success=False):
     context = RequestContext(request)
     code_list = get_code_list()
     codetemplate = CodeTemplate.objects.filter(user=request.user)
@@ -164,6 +164,7 @@ def editcode_p(request, id=None):
 
     else:
          return HttpResponse("Code does not exist!!")
+
     codetemplate = CodeTemplate.objects.all()
     return render_to_response('emacshaqiba/editcode_page.html', 
                               {'codetemplate_form': codetemplate_form,
@@ -171,6 +172,17 @@ def editcode_p(request, id=None):
                                'code_list': code_list,
                                'submitcode_success':submitcode_success},
                               context)
+
+@login_required
+def delete_code(request, id):
+    try:
+        codetemplate = CodeTemplate.objects.get(pk=id)
+        codetemplate.delete()
+        print "code with id: %s Delete." % id
+        return HttpResponseRedirect('/emacshaqiba/edit_code/')
+    except:
+        print "code with id: %s not found!!" % id
+        return HttpResponseRedirect('/emacshaqiba/edit_code/')
 
 def display_code(request, code_name):
     context = RequestContext(request)
@@ -295,9 +307,11 @@ def user_login(request):
 @login_required
 def profile(request):
     context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.filter(user=request.user)
     code_list = get_code_list()
     context_dict = {'code_list': code_list}
     u = User.objects.get(username=request.user)
+
     try:
         up = UserProfile.objects.get(user=u)
     except:
@@ -305,6 +319,7 @@ def profile(request):
 
     context_dict['user'] = u
     context_dict['userprofile'] = up
+    context_dict['codetemplate'] = codetemplate
     return render_to_response('emacshaqiba/profile.html', context_dict, context)
 
 @login_required
