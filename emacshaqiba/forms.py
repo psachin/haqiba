@@ -5,24 +5,23 @@ from django.contrib.auth.models import User
 from emacshaqiba.models import CodeTemplate, UserProfile
 
 class CodeTemplateForm(forms.ModelForm):
-    name = forms.CharField(help_text="Name of code snippet.", required=True)
-    code = forms.CharField(widget=forms.Textarea, 
-                          help_text="Type your code snippet here.", 
-                          required=True)
-    description = forms.CharField(widget=forms.TextInput, 
-                                  help_text="Type description of your code snippet here(Optional).", 
-                                  required=False)
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={'class':'form-control'}),
+        help_text="Name of code snippet.", required=True)
+    code = forms.CharField(
+        widget=forms.Textarea(attrs={'class':'form-control'}), 
+        help_text="Type your code snippet here.", 
+        required=True)
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class':'form-control'}), 
+        help_text="Type description of your code snippet here(Optional).", 
+        required=False)
     screenshot = forms.ImageField(help_text="Upload screenshot of your code(Optional).", required=False)
     
     class Meta:
         model = CodeTemplate
         exclude = ('user')      # to use instance.
         fields = ['name', 'description', 'code','screenshot']
-        # widgets = {
-        #     'code' : forms.TextInput(attrs={'id':'id_code'}),
-        #     'name' : forms.TextInput(attrs={'class':'form-control'}),
-        #     'description' : forms.Textarea(attrs={'class':'form-control'}),
-        # }
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")

@@ -19,16 +19,18 @@
 </script>
 
 <style type="text/css">
-  .CodeMirror {border: 1px solid black; font-size:13px;}
+  .CodeMirror {border: 1px solid black; font-size:14px;}
 </style>
 <!-- END code mirror settings -->
 
 <div class="container">
+
+  <div align="center"><h2>Edit code</h2></div>
 <div class="well">
 <form role="form" id="edit-code" method="post" action=""
       enctype="multipart/form-data">
   {% csrf_token %}
-  <h2>Edit code</h2>
+
   <div class="form-group">
         {{ codetemplate_form.name.errors }}
 	<label for="id_name">Name</label><br>
@@ -50,9 +52,12 @@
 	{{ codetemplate_form.screenshot }}
   </div>
   <!-- {{codetemplate_form.as_p}} -->
-  <input class="btn btn-success" type="submit" name="submit" value="Save changes" />
-</form>
+
 </div>
+<div align="center">
+  <input class="btn btn-success" type="submit" name="submit" value="Save changes" />
+  </div>
+</form>
 </div>
 <!-- codemirror settings -->
 <script>
