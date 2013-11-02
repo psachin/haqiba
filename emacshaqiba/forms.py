@@ -16,8 +16,13 @@ class CodeTemplateForm(forms.ModelForm):
     
     class Meta:
         model = CodeTemplate
-        exclude = ('user')
+        exclude = ('user')      # to use instance.
         fields = ['name', 'description', 'code','screenshot']
+        # widgets = {
+        #     'code' : forms.TextInput(attrs={'id':'id_code'}),
+        #     'name' : forms.TextInput(attrs={'class':'form-control'}),
+        #     'description' : forms.Textarea(attrs={'class':'form-control'}),
+        # }
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")

@@ -27,8 +27,9 @@
 <form role="form" id="submit-code" method="post" action="/emacshaqiba/submit_code/"
       enctype="multipart/form-data">
   {% csrf_token %}
+  <div class="container" align="center">
   <h2>Submit your code here!</h2>
-
+  </div>
   {% if submitcode_success == "success" %}
   <div class="alert alert-success">
   <h3>Code Successfully submitted</h3>
@@ -45,7 +46,7 @@
   <div class="form-group" style="width:55%;">
     {{ codetemplate_form.name.errors }}
     <label for="id_name">Name</label>
-    <input type="text" name="name" class="form-control" id="id_name" placeholder="Name of code snippet(words separated by hyphen or underscore).">
+    <input type="text" name="name" class="form-control" id="id_name" placeholder="Name for your code snippet.">
   </div> <!-- form-group name-->
 
   <div class="form-group" style="width:55%;">

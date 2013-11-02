@@ -10,9 +10,10 @@ from django.core.urlresolvers import reverse
 
 # import models
 from emacshaqiba.models import CodeTemplate, UserProfile
-
 # import forms
 from emacshaqiba.forms import CodeTemplateForm, UserForm, UserProfileForm
+# import init file template
+from template import instruction
 
 def encode_url(string):
     if ' ' or '-' in string:
@@ -43,6 +44,7 @@ def emacs_config(request):
         if selected_code_list:
             response = HttpResponse(content_type='text/plain')
             response['Content-Disposition'] = 'attachment; filename=emacs_init.el'
+            response.write(instruction + "\n")
             for e in selected_code_list:
                 CODE = CodeTemplate.objects.filter(name=e)
                 for i in CODE:

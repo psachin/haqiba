@@ -2,7 +2,29 @@
 {% load static %}
 
 {% block body_block %}
+
+<!-- codemirror settings -->
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
+
+<script src="{% static 'codemirror-3.19/lib/codemirror.js' %}"></script>
+<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}">
+</script>
+<script src="{% static 'codemirror-3.19/keymap/extra.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}">
+</script>
+<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}">
+</script>
+
+<style type="text/css">
+  .CodeMirror {border: 1px solid black; font-size:13px;}
+</style>
+<!-- END code mirror settings -->
+
 <div class="container">
+<div class="well">
 <form role="form" id="edit-code" method="post" action=""
       enctype="multipart/form-data">
   {% csrf_token %}
@@ -31,6 +53,20 @@
   <input class="btn btn-success" type="submit" name="submit" value="Save changes" />
 </form>
 </div>
+</div>
+<!-- codemirror settings -->
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("id_code"), {
+  lineNumbers: true,
+  styleActiveLine: true,
+  matchBrackets: true,
+  readOnly: false,
+  theme: "paraiso-dark",
+  mode: "commonlisp",
+  lineWrapping: true,
+  });
+</script>
+<!-- END codemirror settings -->
 {% endblock body_block %}
 
 

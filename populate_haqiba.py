@@ -294,6 +294,22 @@ buffer is not visiting a file."
         screenshot="/screenshot/banner.png"
     )
 
+    add_code_template(
+        user_id=store.USERNAME.id,
+        name="Highlight-annotations",
+        code="""
+(defun font-lock-comment-annotations ()
+  "Highlight a bunch of well known comment annotations.
+This functions should be added to the hooks of major modes for
+programming."
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
+          1 font-lock-warning-face t))))
+(add-hook 'prog-mode-hook 'font-lock-comment-annotations)""",
+        description="Highlight comment annotations.",
+        screenshot="/screenshot/banner.png"
+    )
+
     for c in CodeTemplate.objects.all():
         print c.name
 
