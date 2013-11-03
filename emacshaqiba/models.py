@@ -13,6 +13,28 @@ class CodeTemplate(models.Model):
     def __unicode__(self):
         return self.name
 
+class Dependency(models.Model):
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=128, unique=True)
+    tarFile = models.FileField(upload_to='deps')
+    config = models.TextField(blank=True)
+    download_count = models.IntegerField(default=0)
+    
+    def __unicode__(self):
+        return self.name
+    
+class BundleTemplate(models.Model):
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=128, unique=True)
+    description = models.TextField()
+    dep = models.ManyToManyField(Dependency)
+    config = models.TextField(blank=True)
+    screenshot = models.ImageField(upload_to='screenshot', blank=True)
+    download_count = models.IntegerField(default=0)
+    
+    def __unicode__(self):
+        return self.name
+
 class UserProfile(models.Model):
     # this line is req. links userprofile to a user model instance
     user = models.OneToOneField(User)

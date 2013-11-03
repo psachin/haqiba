@@ -30,7 +30,6 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
 	<ul class="nav navbar-nav">
-	  <li><a href="https://github.com/psachin/haqiba/">GitHub</a></li>
 	  <li><a href="/emacshaqiba/about">About</a></li>
 	  <li><a href="/emacshaqiba/emacs_config">Emacs config</a></li>
 	  {% if user.is_authenticated %}
@@ -113,8 +112,29 @@
 
     <hr>    
     <footer>
+	<!-- Place this tag where you want the +1 button to render. -->
+      <div class="centainer" align="center">
+      <div class="g-plusone" data-size="medium" 
+	   data-annotation="inline" data-width="300"
+	   data-href="http://sachin.pythonanywhere.com/">
+      </div>
+      </div>
       <div class="container" align="center">
-        <p><span class="label label-default">Copyright (C) 2013 Haqiba</span></p>
+	<span class="label label-default">Copyright (C) 2013 Sachin Patil.</span>
+	<!-- Place this tag after the last +1 button tag. -->
+	<script type="text/javascript">
+	  (function() {
+	  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+	  po.src = 'https://apis.google.com/js/plusone.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
+	<!-- GitHub -->
+	<a href="https://github.com/psachin">
+	  <img style="position: absolute; top:51px; 
+		      right:0; border:0;" 
+	       src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+	       alt="Fork me on GitHub"></a>
       </div>
     </footer>
 

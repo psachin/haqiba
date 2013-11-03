@@ -16,4 +16,5 @@ urlpatterns = patterns(
     url(r'^delete_code/(?P<id>\d+)/$', views.delete_code, name='delete_code'),
     url(r'^code/(?P<id>\d+)/$', views.display_code, 
         name='display_code'),
+    url(r'^display_bundle/$', views.display_bundle, name='display_bundle'),
 )
