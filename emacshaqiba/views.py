@@ -178,38 +178,64 @@ def display_code(request, id):
                               context)
 
 def display_bundle(request):
+    """Dirty code, may not work(or misbehave) with multisessions.
+
+    """
     context = RequestContext(request)
     bundle = BundleTemplate.objects.all()
     
-    for b in bundle:
-        # print b.name, b.user, b.description, b.config, b.screenshot, b.download_count
-        # print b.id
-        dependency = Dependency.objects.filter(bundletemplate=b.id)
-        if os.path.exists('./temp/.emacs.d/'):
-            shutil.rmtree('./temp/.emacs.d/')
-        else:
-            print "No such dir."
+    if os.path.exists('./temp/.emacs.d/'):
+        shutil.rmtree('./temp/.emacs.d/')
+        os.makedirs('./temp/.emacs.d/')
+    else:
+        print "No such dir."
+        os.makedirs('./temp/.emacs.d/')
 
-        for d in dependency:
-            # print d.name
-            dep_path = "media/%s" % d.tarFile
-            tar = tarfile.open(dep_path)
-            tar.extractall(path="./temp/.emacs.d/")
-            tar.close()
-
-        tar = tarfile.open("emacs.d.tar","w")
-        dep_path = "./temp/.emacs.d/"
-        tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
-        tar.close()
-        
     selected_code_list = CodeTemplate.objects.filter(pk=1)
     if selected_code_list:
-        os.chdir("./temp/.emacs.d/")
         init_file = open("init.el","w")
         for code in selected_code_list:
             init_file.write(code.code)
         init_file.close()
-        
+
+    init_file = open("init.el","a")
+    for b in bundle:
+        # print b.name, b.user, b.description, b.config, b.screenshot, b.download_count
+        # print b.id
+            
+        dependency = Dependency.objects.filter(bundletemplate=b.id)
+        for d in dependency:
+            # print d.name
+            dep_path = "media/%s" % d.tarFile
+            # print d.tarFile
+            if os.path.exists(dep_path):
+                tar = tarfile.open(dep_path)
+                tar.extractall(path="./temp/.emacs.d/")
+                tar.close()
+                # (add-to-list 'load-path "emacs-epc/")
+                temp_str = str(d.tarFile)
+                temp_str2 = temp_str.split('/')[1].split(".")[0]
+                load_path_string="\n" + "(add-to-list 'load-path \"" 
+                end_str = "/\")"
+                init_file.write(load_path_string)
+                init_file.write(temp_str2)
+                init_file.write(end_str)
+
+        init_file.write("\n\n")        
+        init_file.write(b.config)
+
+    init_file.close()
+    shutil.move('./init.el','./temp/.emacs.d/')    
+    tar = tarfile.open("emacs.d.tar","w")
+    dep_path = "./temp/.emacs.d/"
+    tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
+    tar.close()
+
+    # server tarball
+    tar_data = open("emacs.d.tar", "rb")
+    return HttpResponse(tar_data, mimetype="application/x-gzip")
+
+    
     context_dict = {'bundle':bundle,}
     return render_to_response('emacshaqiba/display_bundle.html', context_dict, 
                               context)
