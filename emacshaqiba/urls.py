@@ -17,4 +17,6 @@ urlpatterns = patterns(
     url(r'^code/(?P<id>\d+)/$', views.display_code, 
         name='display_code'),
     url(r'^display_bundle/$', views.display_bundle, name='display_bundle'),
+    url(r'^submit_bundle/$', views.submit_bundle, name='submit_bundle'),
+    url(r'^submit_package/$', views.submit_package, name='submit_package'),
 )

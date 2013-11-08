@@ -16,7 +16,8 @@ class CodeTemplate(models.Model):
 class Dependency(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=128, unique=True)
-    tarFile = models.FileField(upload_to='deps')
+    description = models.TextField(blank=True)
+    tarFile = models.FileField(upload_to='deps', blank=True)
     config = models.TextField(blank=True)
     download_count = models.IntegerField(default=0)
     

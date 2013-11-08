@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # import emacshaqiba
 from emacshaqiba.models import CodeTemplate, UserProfile
+from emacshaqiba.models import BundleTemplate, Dependency
 
 class CodeTemplateForm(forms.ModelForm):
     name = forms.CharField(
@@ -16,7 +17,9 @@ class CodeTemplateForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'class':'form-control'}), 
         help_text="Type description of your code snippet here(Optional).", 
         required=False)
-    screenshot = forms.ImageField(help_text="Upload screenshot of your code(Optional).", required=False)
+    screenshot = forms.ImageField(
+        help_text="Upload screenshot of your code(Optional).", 
+        required=False)
     
     class Meta:
         model = CodeTemplate
@@ -26,18 +29,58 @@ class CodeTemplateForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")
     email = forms.CharField(help_text="Please enter your email.")
-    password = forms.CharField(widget=forms.PasswordInput(), help_text="Please enter a password.")
+    password = forms.CharField(
+        widget=forms.PasswordInput(), 
+        help_text="Please enter a password.")
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
 
 class UserProfileForm(forms.ModelForm):
-    website = forms.URLField(help_text="Please enter your website.", required=False)
-    picture = forms.ImageField(help_text="Select a profile image to upload.", required=False)
+    website = forms.URLField(help_text="Please enter your website.", 
+                             required=False)
+    picture = forms.ImageField(
+        help_text="Select a profile image to upload.", 
+        required=False)
 
     class Meta:
         model = UserProfile
         fields = ['website', 'picture']
 
+class BundleTemplateForm(forms.ModelForm):
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={'class':'form-control'}),
+        help_text="Name of bundle.", required=True)
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class':'form-control'}),         
+        help_text="Description of bundle.", required=False)
+    dep = forms.ModelMultipleChoiceField(queryset = Dependency.objects.all())
+    config = forms.CharField(
+        widget=forms.Textarea(attrs={'class':'form-control'}),
+        required=False)
+    screenshot = forms.ImageField(
+        help_text="Upload screenshot of your code(Optional).", 
+        required=False)
+
+    class Meta:
+        model = BundleTemplate
+        fields = ['name', 'description', 'dep', 'config', 'screenshot']
+
+
+class PackageTemplateForm(forms.ModelForm):
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={'class':'form-control'}),
+        help_text="Name of bundle.", required=True)
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class':'form-control'}),         
+        help_text="Description of a Package.", required=False)
+    tarFile = forms.FileField(required=False)
+    config = forms.CharField(
+        widget=forms.Textarea(attrs={'class':'form-control'}),
+        required=False)
+
+    class Meta:
+        model = Dependency
+        fields = ['name', 'description', 'config', 'tarFile']
 

@@ -16,6 +16,7 @@ from emacshaqiba.models import CodeTemplate, UserProfile
 from emacshaqiba.models import BundleTemplate, Dependency
 # import forms
 from emacshaqiba.forms import CodeTemplateForm, UserForm, UserProfileForm
+from emacshaqiba.forms import BundleTemplateForm, PackageTemplateForm
 # import init file template
 from template import instruction
 
@@ -70,7 +71,6 @@ def get_code_list():
 @login_required
 def submitcode(request):
     context = RequestContext(request)
-    
     submitcode_success="get"
     
     if request.method == 'POST':
@@ -157,7 +157,7 @@ def delete_code(request, id):
     try:
         codetemplate = CodeTemplate.objects.get(pk=id)
         codetemplate.delete()
-        print "code with id: %s Delete." % id
+        print "code with id: %s deleted." % id
         return HttpResponseRedirect('/emacshaqiba/edit_code/')
     except:
         print "code with id: %s not found!!" % id
@@ -183,6 +183,7 @@ def display_bundle(request):
     """
     context = RequestContext(request)
     bundle = BundleTemplate.objects.all()
+    
     
     if os.path.exists('./temp/.emacs.d/'):
         shutil.rmtree('./temp/.emacs.d/')
@@ -238,6 +239,63 @@ def display_bundle(request):
     
     context_dict = {'bundle':bundle,}
     return render_to_response('emacshaqiba/display_bundle.html', context_dict, 
+                              context)
+
+@login_required
+def submit_bundle(request):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    success=True
+
+    if request.method == 'POST':
+        bundletemplate_form = BundleTemplateForm(data=request.POST)
+
+        if bundletemplate_form.is_valid():
+            bundletemplate = bundletemplate_form.save(commit=False)
+            if 'screenshot' in request.FILES:
+                bundletemplate.screenshot = request.FILES['screenshot']
+                
+            bundletemplate.user = request.user
+            bundletemplate.save()
+            success = 'success'
+        else:
+            success = 'error'
+            print bundletemplate_form.errors
+    else:
+        bundletemplate_form = BundleTemplateForm()
+
+    context_dict = {'codetemplate': codetemplate,
+                    'bundletemplate_form': bundletemplate_form,}
+    return render_to_response('emacshaqiba/submit_bundle.html', context_dict, 
+                              context)
+
+@login_required
+def submit_package(request):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    success = False
+
+    if request.method == 'POST':
+        packagetemplate_form = PackageTemplateForm(data=request.POST)
+        # FIXME: tarFile is required
+        if packagetemplate_form.is_valid():
+            packagetemplate = packagetemplate_form.save(commit=False)
+            if 'tarFile' in request.FILES:
+                packagetemplate.tarFile = request.FILES['tarFile']
+            
+            packagetemplate.user = request.user
+            packagetemplate.save()
+            success = "success"
+        else:
+            success = "error"
+            packagetemplate_form.errors
+    else:
+        packagetemplate_form = PackageTemplateForm()
+        
+    context_dict = {'packagetemplate_form': packagetemplate_form,
+                    'codetemplate': codetemplate,
+                    'success': success,}
+    return render_to_response('emacshaqiba/submit_package.html', context_dict, 
                               context)
 
 def register(request):
