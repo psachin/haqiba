@@ -105,7 +105,6 @@ function initImageZoom(_options) {
 				img.style.position = "absolute";
 				img.style.top = "-9999999999px";
 				img.setAttribute("id", "imagezoom-" + options.image);
-				$$('body')[0].appendChild(img);
 			}	
 		}
 		

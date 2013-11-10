@@ -6,10 +6,21 @@ import store
 def populate():
 
     store.USERNAME = add_user(store.USERNAME, store.EMAIL, store.PASSWORD)
+
     
     add_user_profile(user=store.USERNAME, 
                      website=store.WEBSITE,
                      picture=store.PHOTO)
+
+    if store.USERNAME_2:
+        store.USERNAME_2 = add_user(store.USERNAME_2, store.EMAIL_2,
+                                    store.PASSWORD_2)
+
+        add_user_profile(user=store.USERNAME_2,
+                         website=store.WEBSITE_2,
+                         picture=store.PHOTO_2)
+    else:
+        print "No USERNAME_2."
     
     add_code_template(
         user_id=store.USERNAME.id,
@@ -308,6 +319,57 @@ programming."
 (add-hook 'prog-mode-hook 'font-lock-comment-annotations)""",
         description="Highlight comment annotations.",
         screenshot="/screenshot/banner.png"
+    )
+
+    add_code_template(
+        user_id=store.USERNAME.id,
+        name="Global-indentation",
+        code="""
+(define-key global-map (kbd "RET") 'newline-and-indent)
+(setq-default indent-tabs-mode t)""",
+        description="http://doxdrum.wordpress.com/",
+        screenshot="/screenshot/global-indentation.png"
+    )
+
+    add_code_template(
+        user_id=store.USERNAME.id,
+        name="Viooz",
+        code="""
+(defun viooz ()
+  "Search movie on Viooz.co with selected region if any, display a query prompt otherwise."
+  (interactive)
+  (browse-url
+   (concat
+    "http://viooz.co/search?q="
+    (url-hexify-string (if mark-active
+			   (buffer-substring (region-beginning) (region-end))
+			 (read-string "Search Viooz.co: "))) "&s=t")))
+(global-set-key (kbd "C-c v") 'viooz)""",
+        description="Search movie on Viooz.co from Emacs. Based on Bozhidar Batsov's \
+        'Google'. Key binding 'C-c v' ",
+        screenshot="/screenshot/viooz.png"
+    )
+
+    add_code_template(
+        user_id=store.USERNAME_2.id,
+        name="Delete-current-buffer-file",
+        code="""
+(defun delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+	(buffer (current-buffer))
+	(name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+	(ido-kill-buffer)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+	(delete-file filename)
+	(kill-buffer buffer)
+	(message "File '%s' successfully removed" filename)))))
+(global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)""",
+        description="http://whattheemacsd.com/",
+        screenshot="/screenshot/delete_buffer-file.png",
+        download_count=6,
     )
 
     for c in CodeTemplate.objects.all():
