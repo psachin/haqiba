@@ -2,29 +2,6 @@
    This is a js module for image zoom effect
 **/
 
-// For thumbnail image movements on mouseover and mouseout
-window.addEvent('domready',function(e){
-
-$$('div.thumbnail-div').each(function(div){
-	div.set('tween', {duration: '450'});
-	div.addEvents({
-		'mouseover': function(){
-			$$(this).tween('marginTop', '-10px');
-			$$(this).getElements('div.sections-overlay').each(function(d){
-				d.morph({opacity: 1, backgroundPosition: "-40px 0px"});
-			});
-		},
-		'mouseout': function(){
-			$$(this).tween('marginTop', '0px');
-			$$(this).getElements('div.sections-overlay').each(function(d){
-				d.morph({opacity: 0, backgroundPosition: "0px -167px"});
-			});
-		}
-	});
-
-});
-});
-
 // Counter for 'mouseenter'  
 var count = 0;
 var instance;
@@ -85,14 +62,6 @@ function initImageZoom(_options) {
 			return false;
 		});
 			
-		var im = document.getElementById(ids);
-		im.addEvent("mouseleave", function() {
-			if(count == 0){
-				count++;
-				instance.close();
-				return false;
-			}
-		});
 	}
 	
 	/*
