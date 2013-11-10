@@ -1,0 +1,73 @@
+.thumbnail-div {
+	background-color:#ffffff;
+	float:left;
+	height:140px;
+	padding:3px 3px 3px 3px;
+	width:240px;
+}
+.thumbnail-div div{
+	height:130px;
+	width:230px;
+}
+.thumbnail-div .sections-overlay{
+	/* margin:60px 0 0 61px; */
+    margin: auto;
+}
+
+#imagezoom_overlay {
+	position: relative;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;OB
+	right: 0px;
+	z-index: 9999996;
+}
+
+.imagezoom {
+	background-color: #fff;
+	border: 0px solid #585858;
+	margin: 0px;
+	padding: 5px;
+	z-index: 9999997;
+}
+
+.imagezoom .loading {
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -16px;
+	margin-left: -16px;
+}
+
+.imagezoom .image {
+	position: relative;
+	z-index: 25;
+	display: block;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	width:auto;
+	height:auto;
+}
+
+.imagezoom .close {
+	width: 30px;
+	height: 30px;
+	background-image: url('../images/closebox.png');
+	background-image: url('../images/closebox.gif');
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	cursor: pointer;
+	position: absolute;
+	top: -15px;
+	right: -15px;
+	z-index: 30;
+}
+
+.imagezoom .close span {
+	display: none;
+}
