@@ -134,7 +134,7 @@ def editcode_p(request, id=None):
                 codetemplate.save()
                 submitcode_success="success"
                 print "Code edited successfully."
-                return HttpResponseRedirect("/emacshaqiba/edit_code/")
+                return HttpResponseRedirect("/emacshaqiba/code/edit/")
                 # return HttpResponseRedirect("/emacshaqiba/edit_code/%s" % id)
             else:
                 submitcode_success="error"
@@ -158,17 +158,15 @@ def delete_code(request, id):
         codetemplate = CodeTemplate.objects.get(pk=id)
         codetemplate.delete()
         print "code with id: %s deleted." % id
-        return HttpResponseRedirect('/emacshaqiba/edit_code/')
+        return HttpResponseRedirect('/emacshaqiba/code/edit/')
     except:
         print "code with id: %s not found!!" % id
-        return HttpResponseRedirect('/emacshaqiba/edit_code/')
+        return HttpResponseRedirect('/emacshaqiba/code/edit/')
 
 def display_code(request, id):
     context = RequestContext(request)
-    #code_name = decode_url(code_name)
     codetemplate_id = CodeTemplate.objects.filter(pk=id)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    #code_list = get_code_list()
         
     context_dict = {'codetemplate': codetemplate,
                     'codetemplate_id':codetemplate_id,}
