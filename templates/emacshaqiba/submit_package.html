@@ -1,0 +1,96 @@
+{% extends 'emacshaqiba/base.html' %}
+{% load static %}
+
+
+{% block body_block %}
+<!-- codemirror settings -->
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
+
+<script src="{% static 'codemirror-3.19/lib/codemirror.js' %}"></script>
+<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}">
+</script>
+<script src="{% static 'codemirror-3.19/keymap/extra.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}">
+</script>
+<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}">
+</script>
+
+<style type="text/css">
+  .CodeMirror {border: 1px solid black; font-size:14px}
+</style>
+<!-- codemirror settings ends here -->
+<div class="container">
+<form role="form" id="submit-package" method="post" action="/emacshaqiba/package/submit/"
+      enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="container" align="center">
+  <h2>Submit individual package here!</h2>
+  </div>
+  <div class="well">
+  {% if success == "success" %}
+  <div class="alert alert-success" align="center">
+  <h3>Package Successfully submitted</h3>
+  </div>
+  {% else %}
+  {% if success == "error" %}
+  <div class="alert alert-warning" align="center">
+  <h3><b>Error</b>: submitting package!</h3>
+  </div>
+  {% endif %}
+  {% endif %}
+  <hr>
+
+  <div class="form-group" style="width:55%;">
+    {{ packagetemplate_form.name.errors }}
+    <label for="id_name">Name</label>
+    <input type="text" name="name" class="form-control" id="id_name" placeholder="Package name.">
+    <!-- {{ packagetemplate_form.name }} -->
+  </div> <!-- form-group name-->
+
+  <div class="form-group" style="width:80%;">
+    {{ packagetemplate_form.description.errors }}
+    <label for="id_description">Description</label>
+    <input type="text" name="description" class="form-control" id="id_description" placeholder="Package description(Optional).">
+    <!-- {{ packagetemplate_form.description }} -->
+  </div> <!-- form-group description-->
+
+  <div class="form-group" style="width:100%;">
+    {{ packagetemplate_form.config.errors }}
+    <label for="id_config">Config</label>(Package related snippet. Optional)
+    {{ packagetemplate_form.config }}
+  </div> <!-- form-group config-->
+
+  <div class="form-group">
+    {{ packagetemplate_form.tarFile.errors }}
+    <label for="id_tarFile">Tarball</label>
+    {{ packagetemplate_form.tarFile }}
+    <p class="help-block">Upload tarball of the package(.tar).</p>
+  </div> <!-- form-group tarFile -->
+  
+  </div> <!-- well -->
+  <div align="center">
+  <input class="btn btn-success" type="submit" name="submit" 
+	 value="Submit Package" />
+  </div>
+</form>
+
+</div> <!-- container -->
+<!-- codemirror settings -->
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("id_config"), {
+  lineNumbers: true,
+  styleActiveLine: true,
+  matchBrackets: true,
+  readOnly: false,
+  theme: "paraiso-dark",
+  mode: "commonlisp",
+  lineWrapping: true,
+  });
+</script>
+<!-- codemirror settings ends here -->
+<!-- {{packagetemplate_form.as_p}} -->
+
+{% endblock body_block %}
