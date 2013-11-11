@@ -12,14 +12,14 @@ def populate():
                      website=store.WEBSITE,
                      picture=store.PHOTO)
 
-    if store.USERNAME_2:
+    try:
         store.USERNAME_2 = add_user(store.USERNAME_2, store.EMAIL_2,
                                     store.PASSWORD_2)
 
         add_user_profile(user=store.USERNAME_2,
                          website=store.WEBSITE_2,
                          picture=store.PHOTO_2)
-    else:
+    except:
         print "No USERNAME_2."
     
     add_code_template(
@@ -350,10 +350,11 @@ programming."
         screenshot="/screenshot/viooz.png"
     )
 
-    add_code_template(
-        user_id=store.USERNAME_2.id,
-        name="Delete-current-buffer-file",
-        code="""
+    try:
+        add_code_template(
+            user_id=store.USERNAME_2.id,
+            name="Delete-current-buffer-file",
+            code="""
 (defun delete-current-buffer-file ()
   "Removes file connected to current buffer and kills buffer."
   (interactive)
@@ -367,10 +368,12 @@ programming."
 	(kill-buffer buffer)
 	(message "File '%s' successfully removed" filename)))))
 (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)""",
-        description="http://whattheemacsd.com/",
-        screenshot="/screenshot/delete_buffer-file.png",
-        download_count=6,
-    )
+            description="http://whattheemacsd.com/",
+            screenshot="/screenshot/delete_buffer-file.png",
+            download_count=6,
+        )
+    except:
+        print "No USERNAME_2 available for this code."
 
     for c in CodeTemplate.objects.all():
         print c.name
