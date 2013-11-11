@@ -41,11 +41,13 @@
 	  
 	    <div class="form-group" style="width:50%;">
 	      <!-- <label for="username">Username</label> -->
+	      {{ user_form.username.errors }}
 	      <input type="text" name="username" class="form-control" id="id_username" placeholder="Your Username.">
 	    </div> <!-- form-group username-->
 	    
 	    <div class="form-group" style="width:50%;">
 	      <!-- <label for="email">Email</label> -->
+	      <!-- {{ profile_form.email.errors }} -->
 	      <input type="text" name="email" class="form-control" id="id_email" placeholder="Your Email ID.">
 	    </div> <!-- form-group email-->
 
