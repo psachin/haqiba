@@ -1,14 +1,15 @@
-* [[http://sachin.pythonanywhere.com/][Haqiba]]
+* [[http://haqiba.org/][Haqiba]]
 
   #+CAPTION: Haqiba
   #+NAME: Haqiba
   [[./static/images/backpack.png]]
-  Download and submit custom Emacs init file.
+  Generate & Download custom Emacs init file.
 
-  Currently is support GNU Emacs init file. Select codes you want in
-  you Emacs init and generate it. It has a feature to submit new code
-  which will be available for download. The web-app is written in
-  Python-django and can be extended for vim.
+  Currently supports GNU Emacs init configuration. Select codes you
+  want to have in you Emacs init and generate it. It has a feature to
+  submit new code(with screenshot) which will be available for
+  download. The web-app is written in [[https://www.djangoproject.com/][Python-django]] and can be
+  extended for Vim.
 
 ** Clone
 
@@ -27,9 +28,12 @@
 
 *** Populate database
 
-     - =populate_haqiba.py= will create an Admin user, a regular user
-       and populate database with pre-written codes.
+     - =populate_haqiba.py= will create an Admin user with one regular
+       user, finally it populates the database with pre-written code
+       snippets.
      - Create a new file =store.py= with following content.
+
+       ----8<----------------------------------------
        #+BEGIN_SRC python
          USERNAME='YOUR NAME'
          PASSWORD='YOUR PASSWORD'
@@ -37,6 +41,7 @@
          WEBSITE='YOUR WEBSITE ADDRESS'
          PHOTO='profile_image/YOUR_IMAGE_NAME'
        #+END_SRC python
+       ---------------------------------------->8----
 
      - And run the script
        #+BEGIN_SRC sh
