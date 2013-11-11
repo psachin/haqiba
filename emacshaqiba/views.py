@@ -60,14 +60,6 @@ def about(request):
     context_dict = {'codetemplate': codetemplate,}
     return render_to_response('emacshaqiba/about.html', context_dict , context)
 
-def get_code_list():
-    codetemplate = CodeTemplate.objects.order_by('-download_count')
-    for e in codetemplate:
-        e.url = encode_url(e.name)
-        if e.download_count == None:
-            e.download_count = 0
-    return codetemplate
-
 @login_required
 def submitcode(request):
     context = RequestContext(request)
@@ -255,6 +247,7 @@ def submit_bundle(request):
                 
             bundletemplate.user = request.user
             bundletemplate.save()
+            bundletemplate_form.save_m2m()
             success = 'success'
         else:
             success = 'error'
@@ -301,7 +294,6 @@ def register(request):
         print ">>>> TEST COOKIE WORKED"
         request.session.delete_test_cookie()
         
-    #code_list = get_code_list()
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     # A boolean value for telling the template whether the
@@ -369,7 +361,7 @@ def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    # code_list = get_code_list()
+
     context_dict = {'codetemplate': codetemplate,}
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
@@ -412,7 +404,7 @@ def profile(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     codetemplate_user = CodeTemplate.objects.filter(user=request.user)
-    # code_list = get_code_list()
+
     context_dict = {'codetemplate': codetemplate,
                     'codetemplate_user': codetemplate_user,}
     u = User.objects.get(username=request.user)
