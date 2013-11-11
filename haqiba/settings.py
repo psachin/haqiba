@@ -133,6 +133,8 @@ INSTALLED_APPS = (
     'emacshaqiba',
 )
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+
 LOGIN_URL = '/emacshaqiba/login'
 
 # A sample logging configuration. The only tangible logging
