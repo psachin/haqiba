@@ -159,7 +159,20 @@ def display_code(request, id):
     context = RequestContext(request)
     codetemplate_id = CodeTemplate.objects.filter(pk=id)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-        
+
+    if request.POST:
+        for i in codetemplate_id:
+            response = HttpResponse(content_type='text/plain')
+            response['Content-Disposition'] = 'attachment; filename=emacs_init.el'
+            response.write(instruction + "\n")
+            response.write(";;; " + i.name + "\n" + i.code + "\n\n")
+            print i.name, i.download_count
+            temp_codetemplate = CodeTemplate.objects.get(name=i.name)
+            count = temp_codetemplate.download_count + 1
+            temp_codetemplate.download_count = count
+            temp_codetemplate.save()
+        return response
+    
     context_dict = {'codetemplate': codetemplate,
                     'codetemplate_id':codetemplate_id,}
 

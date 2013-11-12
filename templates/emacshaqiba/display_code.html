@@ -51,7 +51,14 @@
 	<p class="text-success">No description available.</p>
 	{% endif %}
 	<p class="text-muted"><small>by {{e.user}}</small></p>
-	<span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span>
+	<form id="display-code_form" method="post">
+	  {% csrf_token %}
+	  <button class="btn btn-primary btn-mini">
+	    <i class="glyphicon glyphicon-download"></i>
+	     {{e.download_count}} download{{e.download_count|pluralize}}
+	  </button>
+	  <!-- <span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span> -->
+	</form>
 	</div>
   </div>
   <div class="col-md-4">
