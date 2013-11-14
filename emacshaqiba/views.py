@@ -29,7 +29,9 @@ def index(request):
 def emacs_config(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    
+    dependency = Dependency.objects.order_by('download_count')
+    bundletemplate = BundleTemplate.objects.order_by('-download_count')
+
     if request.method == 'POST':
         selected_code_list = request.POST.getlist('selected_code_list')
         if selected_code_list:
@@ -51,7 +53,10 @@ def emacs_config(request):
     else:
         print "No POST request"
 
-    context_dict = {'codetemplate': codetemplate,}
+    context_dict = {
+        'codetemplate': codetemplate,
+        'dependency': dependency,
+        'bundletemplate': bundletemplate,}
     return render_to_response('emacshaqiba/emacs_config.html', context_dict, context)
 
 def about(request):
@@ -100,6 +105,32 @@ def editcode(request, delete_success=False):
                               {'codetemplate':codetemplate,
                                'codetemplate_user': codetemplate_user},
                               context)
+
+@login_required
+def editpackage(request, delete_success=False):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    dependency = Dependency.objects.order_by('-download_count')
+    dependency_user = Dependency.objects.filter(user=request.user)
+
+    return render_to_response('emacshaqiba/editpackage.html', 
+                              {'codetemplate':codetemplate,
+                               'dependency': dependency,
+                               'dependency_user': dependency_user},
+                              context)    
+
+@login_required
+def editbundle(request, delete_success=False):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    bundle = BundleTemplate.objects.order_by('-download_count')
+    bundle_user = BundleTemplate.objects.filter(user=request.user)
+
+    return render_to_response('emacshaqiba/editbundle.html', 
+                              {'codetemplate':codetemplate,
+                               'bundle': bundle,
+                               'bundle_user': bundle_user},
+                              context)    
     
 @login_required
 def editcode_p(request, id=None):
@@ -180,7 +211,31 @@ def display_code(request, id):
                               context_dict,
                               context)
 
-def display_bundle(request):
+def display_bundle(request, id):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    bundle = BundleTemplate.objects.filter(pk=id).order_by('-download_count')
+
+    
+    context_dict = {'codetemplate': codetemplate,
+                    'bundle':bundle,}
+
+    return render_to_response('emacshaqiba/display_bundle.html', 
+                              context_dict,
+                              context)
+    
+@login_required
+def delete_bundle(request, id):
+    try:
+        bundle = Dependency.objects.get(pk=id)
+        bundle.delete()
+        print "Bundle with id: %s deleted." % id
+        return HttpResponseRedirect('/emacshaqiba/bundle/edit/')
+    except:
+        print "Bundle with id: %s not found!!" % id
+        return HttpResponseRedirect('/emacshaqiba/bundle/edit/')
+        
+def displayBundle(request):
     """Dirty code, may not work(or misbehave) with multisessions.
 
     """

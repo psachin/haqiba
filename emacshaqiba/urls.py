@@ -12,15 +12,17 @@ urlpatterns = patterns(
     url(r'^profile/', views.profile, name='profile'),
 
     url(r'^code/submit/$', views.submitcode, name='submitcode'),
-    url(r'^package/submit/$', views.submit_package, name='submit_package'),
-    url(r'^bundle/submit/$', views.submit_bundle, name='submit_bundle'),
-
-
+    url(r'^code/(?P<id>\d+)/$', views.display_code,  name='display_code'),
     url(r'^code/edit/$', views.editcode, name='editcode'),
     url(r'^code/edit/(?P<id>\d+)/$', views.editcode_p, name='editcode_p'),
     url(r'^code/delete/(?P<id>\d+)/$', views.delete_code, name='delete_code'),
-    url(r'^code/(?P<id>\d+)/$', views.display_code, 
-        name='display_code'),
-
-    url(r'^display_bundle/$', views.display_bundle, name='display_bundle'),
+    
+    url(r'^package/submit/$', views.submit_package, name='submit_package'),
+    url(r'^package/edit/$', views.editpackage, name='editpackage'),
+    
+    url(r'^bundle/submit/$', views.submit_bundle, name='submit_bundle'),
+    url(r'^bundle/(?P<id>\d+)/$', views.display_bundle, name='display_bundle'),
+    url(r'^bundle/edit/$', views.editbundle, name='editbundle'),
+    url(r'^bundle/delete/(?P<id>\d+)/$', views.delete_bundle, name='delete_bundle'),
+    
 )

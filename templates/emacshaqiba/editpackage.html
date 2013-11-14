@@ -1,0 +1,41 @@
+{% extends 'emacshaqiba/base.html' %}
+{% load static %}
+
+{% block body_block %}
+<div class="container">
+  <div class="well">
+  {% if dependency_user %}
+  <table class="table table-striped table-bordered table-hover table-condensed table-responsive">
+    <tr>
+      <td colspan="4" align="center"><strong>Package{{dependency_user|length|pluralize}} submitted by you</strong></td>
+    </tr>
+  {% for i in dependency_user %}
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>
+      <a href="/emacshaqiba/package/{{i.id}}">{{i.name}}
+      </a>
+    </td>
+    <td align="center">
+      <a href="/emacshaqiba/package/edit/{{i.id}}"
+	 class="text-warning btn-sm btn-success">
+	<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+      </a>
+    </td>
+     <td align="center">
+      <a href="/emacshaqiba/package/delete/{{i.id}}"
+	 class="text-danger btn-sm btn-danger">
+	<i class="glyphicon glyphicon-trash icon-white"></i> Delete
+      </a>
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+  {% else %}
+  No Packages submitted by you.
+  {% endif %}
+</div>
+</div>
+{% endblock body_block %}
+
+

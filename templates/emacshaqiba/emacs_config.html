@@ -44,8 +44,8 @@ function toggle(source) {
 {% if codetemplate %}
 <form class="form-horizontal" role="form" id="download_form" method="post" 
       style="width:40%;" action="/emacshaqiba/emacs_config/">
-
 {% csrf_token %}
+<h4 class="text-warning"><strong>Codes</strong></h4>
 <div id="jsfiddle">
     <div class="row">
     {% for e in codetemplate %}
@@ -59,6 +59,38 @@ function toggle(source) {
 </div>
 
 </div>
+<hr>
+<!-- code ends here -->
+<h4 class="text-warning"><strong>Packages</strong></h4>
+<div id="jsfiddle">
+    <div class="row">
+    {% for e in dependency %}
+    <div class="block"> 
+    <label class="checkbox">
+	<input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
+	<a class="text-success" href="/emacshaqiba/package/{{e.id}}">{{e.name}}</a>
+      </label>
+    </div>
+    {% endfor %}
+</div>
+</div>
+<hr>
+<!-- dependency/package ends here -->
+<h4 class="text-warning"><strong>Bundles</strong></h4>
+<div id="jsfiddle">
+    <div class="row">
+    {% for e in bundletemplate %}
+    <div class="block"> 
+    <label class="checkbox">
+	<input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
+	<a class="text-success" href="/emacshaqiba/bundle/{{e.id}}">{{e.name}}</a>
+      </label>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+<!-- bundle ends here -->
 </div>
 </div>
 
