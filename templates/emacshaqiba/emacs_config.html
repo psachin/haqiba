@@ -22,6 +22,7 @@ function toggle(source) {
     padding: 10px;
 }
 #jsfiddle .row {
+    width: 100%;
     border: 0px solid green;
     border-left: 0;
     border-top: none;
@@ -37,7 +38,6 @@ function toggle(source) {
 }
 </style>
 
-<div class="row" align="">
 <div class="container" align="">
 <div class="well" align="">
 {% if codetemplate %}
@@ -60,9 +60,6 @@ function toggle(source) {
 </div>
 </div>
 </div>
-<br />
-
-
 
 <div class="container" align="">
   <div class="form-group" align="center">
@@ -72,40 +69,15 @@ function toggle(source) {
 </div>
 
 </form>
-</div> <!-- row main -->
 
 {% else %}
-<strong>Nothing to display.</strong>
-<hr>
-{% if user.is_authenticated %}
-<input class="btn btn-primary" type="button" name="submit" value="Submit Code" 
-       onClick="window.location.href='/emacshaqiba/submit_code/'"/>
-{% else %}
-You must 
-<input class="btn btn-info" type="button" name="submit" value="Log in" 
-       onClick="window.location.href='/emacshaqiba/login'"/> to
-<input class="btn btn-danger" type="button" name="submit" value="Submit Code" 
-       onClick="window.location.href='#'"/>
+<p align="center"><strong>Nothing to display.</strong></p>
+<p align="center">
+<input class="btn btn-primary" type="button" name="submit"
+       value="Submit Code"
+       onClick="window.location.href='/emacshaqiba/code/submit'"/>
+</p>
 {% endif %}
-{% endif %}
-
-<!-- <p class="field switch"> -->
-<!--     <label class="cb-enable"><span>On</span></label> -->
-<!--     <label class="cb-disable selected"><span>Off</span></label> -->
-<!--     <input type="checkbox" id="checkbox" class="checkbox" name="field2" /> -->
-<!-- </p> -->
 
 {% endblock body_block %}
 
-<!-- {% if codetemplate %} -->
-<!-- {% for e in codetemplate %} -->
-<!-- <ul><h2>{{e.name}}</h2></ul> -->
-<!-- <img src="media/{{e.screenshot}}" alt="{{e.screenshot}}"  height="170" width="200" class="img-thumbnail"> -->
-<!-- <ul><pre class="lead">{{e.code}}</pre></ul> -->
-<!-- {% endfor %} -->
-<!-- {% endif %} -->
-
-
-<!-- <label class="checkbox"> -->
-<!--   <input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>{{e.name}} -->
-<!-- </label> -->
