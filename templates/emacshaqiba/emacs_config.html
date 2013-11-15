@@ -41,11 +41,12 @@ function toggle(source) {
 
 <div class="container" align="">
 <div class="well" align="">
-{% if codetemplate %}
+
 <form class="form-horizontal" role="form" id="download_form" method="post" 
       style="width:40%;" action="/emacshaqiba/emacs_config/">
 {% csrf_token %}
 <h4 class="text-warning"><strong>Codes</strong></h4>
+{% if codetemplate %}
 <div id="jsfiddle">
     <div class="row">
     {% for e in codetemplate %}
@@ -57,11 +58,17 @@ function toggle(source) {
     </div>
     {% endfor %}
 </div>
-
 </div>
+{% else %}
+<p class="text-muted">No code snippets found.</p>
+<input class="btn btn-primary" type="button" name="submit"
+       value="Submit Code"
+       onClick="window.location.href='/emacshaqiba/code/submit'"/>
+{% endif %}
 <hr>
 <!-- code ends here -->
 <h4 class="text-warning"><strong>Packages</strong></h4>
+{% if dependency %}
 <div id="jsfiddle">
     <div class="row">
     {% for e in dependency %}
@@ -74,9 +81,16 @@ function toggle(source) {
     {% endfor %}
 </div>
 </div>
+{% else %}
+<p class="text-muted">No Packages found.</p>
+<input class="btn btn-primary" type="button" name="submit"
+       value="Submit Package"
+       onClick="window.location.href='/emacshaqiba/package/submit'"/>
+{% endif %}
 <hr>
 <!-- dependency/package ends here -->
 <h4 class="text-warning"><strong>Bundles</strong></h4>
+{% if bundletemplate %}
 <div id="jsfiddle">
     <div class="row">
     {% for e in bundletemplate %}
@@ -89,6 +103,12 @@ function toggle(source) {
     {% endfor %}
 </div>
 </div>
+{% else %}
+<p class="text-muted">No Bundles found.</p>
+<input class="btn btn-primary" type="button" name="submit"
+       value="Submit Bundle"
+       onClick="window.location.href='/emacshaqiba/bundle/submit'"/>
+{% endif %}
 
 <!-- bundle ends here -->
 </div>
@@ -103,14 +123,8 @@ function toggle(source) {
 
 </form>
 
-{% else %}
-<p align="center"><strong>Nothing to display.</strong></p>
-<p align="center">
-<input class="btn btn-primary" type="button" name="submit"
-       value="Submit Code"
-       onClick="window.location.href='/emacshaqiba/code/submit'"/>
-</p>
-{% endif %}
+
+
 
 {% endblock body_block %}
 

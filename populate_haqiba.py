@@ -391,6 +391,59 @@ programming."
     for c in CodeTemplate.objects.all():
         print c.name
 
+        # Populate Codes ends here.
+        
+    epc = add_package(user_id=store.USERNAME.id,
+                      name="emacs-epc",
+                      description="emacs-epc, https://github.com/kiwanami/emacs-epc",
+                      tarFile="deps/emacs-epc.tar",
+                      config="""(require 'emacs-epc)""")
+    epc.save()
+
+    deferred = add_package(user_id=store.USERNAME.id,
+                           name="emacs-deferred",
+                           description="emacs-deferred, https://github.com/kiwanami/emacs-deferred",
+                           tarFile="deps/emacs-deferred.tar",
+                           config="""(require 'emacs-deferred)""")
+    deferred.save()
+    
+    ctable = add_package(user_id=store.USERNAME.id,
+                         name="emacs-ctable",
+                         description="emacs-ctable, https://github.com/kiwanami/emacs-ctable",
+                         tarFile="deps/emacs-ctable.tar",
+                         config="""(require 'emacs-ctable)""")
+    ctable.save()
+
+    jedi = add_package(user_id=store.USERNAME.id,
+                       name="emacs-jedi",
+                       description="emacs-jedi, https://github.com/tkf/emacs-jedi",
+                       tarFile="deps/emacs-jedi.tar",
+                       config="""(require 'emacs-jedi)""")
+    jedi.save()
+    
+    print "---------- Packages ------------"
+    for p in Dependency.objects.all():
+        print p.name
+
+        # Populate Packages ends here.
+    python = add_bundle(user_id=store.USERNAME.id,
+                        name="Python",
+                        description="Python bundle. Includes emacs-epc, emacs-deferred, emacs-ctables & emacs-jedi.",
+                        config="""(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'jedi:ac-setup)
+(setq jedi:setup-keys t)                      ; optional
+(setq jedi:complete-on-dot t)                 ; optional""",
+               screenshot="/screenshot/banner.png",)
+
+    python.save()
+    python.dep.add(epc, deferred, ctable, jedi)
+    print "---------- Bundle ------------"
+    for b in BundleTemplate.objects.all():
+        print b.name
+        print "Depends on: "
+        for i in python.dep.all():
+            print i
+    
 def add_user(username, email, password):
     u = User.objects.create_user(username=username, email=email, 
                                           password=password)
@@ -407,11 +460,24 @@ def add_code_template(user_id, name, code, description, screenshot=None,
                      download_count=download_count)
     c.save()
 
+def add_package(user_id, name, description, tarFile, config, download_count=0):
+    p = Dependency(user_id=user_id, name=name, description=description,
+                   tarFile=tarFile, config=config, download_count=download_count)
+    return p
+
+def add_bundle(user_id, name, description, config, screenshot=None,
+               download_count=0):
+    b = BundleTemplate(user_id=user_id, name=name, description=description,
+                       config=config, screenshot=screenshot,
+                       download_count=download_count)
+    return b
+    
 # Start execution here!
 if __name__ == '__main__':
     print "Starting Haqiba population script..."
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'haqiba.settings')
-    from emacshaqiba.models import CodeTemplate, UserProfile
+    from emacshaqiba.models import CodeTemplate, UserProfile, Dependency
+    from emacshaqiba.models import BundleTemplate
     from django.contrib.auth.models import User
 
     if os.path.exists('haqiba.db'):
