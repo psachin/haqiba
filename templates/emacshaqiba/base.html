@@ -41,8 +41,6 @@
 	      <li><a tabindex="-1" href="/emacshaqiba/code/submit/">Code</a></li>
 	      <li><a tabindex="-1" href="/emacshaqiba/package/submit/">Package</a></li>
 	      <li><a tabindex="-1" href="/emacshaqiba/bundle/submit/">Bundle</a></li>
-              <li class="divider"></li>
-              <li><a tabindex="-1" href="#">Help</a></li>
             </ul>
 	  </li>
 	  <li class="dropdown">
@@ -51,10 +49,10 @@
 	       data-close-others="false">Edit<b class="caret"></b></a>
             <ul class="dropdown-menu">
 	      <li><a tabindex="-1" href="/emacshaqiba/code/edit/">Code</a></li>
-	      <li><a tabindex="-1" href="#">Package</a></li>
-	      <li><a tabindex="-1" href="#">Bundle</a></li>
-              <li class="divider"></li>
-              <li><a tabindex="-1" href="#">Help</a></li>
+	      <li><a tabindex="-1" href="/emacshaqiba/package/edit/">Package</a></li>
+	      <li><a tabindex="-1" href="/emacshaqiba/bundle/edit/">Bundle</a></li>
+              <!-- <li class="divider"></li> -->
+              <!-- <li><a tabindex="-1" href="#">Help</a></li> -->
             </ul>
 	  </li>
 	  {% else %}
@@ -155,7 +153,7 @@
 	<a href="https://github.com/psachin/haqiba">
 	  <img style="position: absolute; top:51px; 
 		      right:0; border:0;" 
-	       src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+	       src="{% static 'images/forkme_right_red_aa0000.png' %}"
 	       alt="Fork me on GitHub"></a>
       </div>
     </footer>

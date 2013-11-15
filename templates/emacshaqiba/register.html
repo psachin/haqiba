@@ -3,7 +3,6 @@
 {% block body_block %}
 
   <h1 align="center">Register with Haqiba</h1>
-  <hr>
   <div class="container" align="">
         {% if registered %}
         <strong>Thank you for registering!</strong>
@@ -14,9 +13,9 @@
                 enctype="multipart/form-data">
           {% csrf_token %}
 	  <img src="{% static "images/pencil.png" %}" alt="register"
-	       width=40
-	       heigth=40/>
-	  <h2 class="form-signin-heading">Sign up Here</h2>
+	       width=30
+	       heigth=30/>
+	  <h4 class="form-signin-heading">Sign up Here</h4>
           <!-- Display each form. The as.p method wraps each element in a paragraph
                (<p>) element. This ensures each element appears on a new line,
                making everything look neater. -->
@@ -62,12 +61,10 @@
 	    </div> <!-- form-group email-->
 
 	    <div class="form-group">
-	      <label for="picture">Profile photo</label>
 	      <input type="file" name="picture" id="id_picture">
 	      <p class="help-block">Upload your Profile photo(Optional).</p>
 	    </div>	    
 
-	    <br>
             <!-- Provide a button to click to submit the form. -->
             <input class="btn btn-success" type="submit" name="submit" value="Register" />
         </form>

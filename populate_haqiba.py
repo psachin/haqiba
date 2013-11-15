@@ -3,10 +3,14 @@ import os
 import sys
 import store
 
-def populate():
+def populate_users():
 
+    # Admin 
+    os.system("python manage.py syncdb --noinput")
+    os.system("python manage.py createsuperuser --username=admin --email=admin@example.com")
+
+    # Normal users
     store.USERNAME = add_user(store.USERNAME, store.EMAIL, store.PASSWORD)
-
     
     add_user_profile(user=store.USERNAME, 
                      website=store.WEBSITE,
@@ -21,6 +25,14 @@ def populate():
                          picture=store.PHOTO_2)
     except:
         print "No USERNAME_2."
+
+    user_list = User.objects.all()
+    if user_list:
+        print "Following user(s) created successfully."
+        for i in user_list:
+            print i.username
+
+def populate_codes():
     
     add_code_template(
         user_id=store.USERNAME.id,
@@ -54,7 +66,7 @@ buffer is not visiting a file."
                          (ido-read-file-name "Find file(as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 (global-set-key (kbd "C-x C-r") 'sudo-edit)""",
-        description="Edit currently visited file as root. Keybinding: C-x C-r",
+        description="Edit currently visited file as root. Key binding: C-x C-r",
         screenshot='screenshot/banner.png'
     )
 
@@ -157,7 +169,7 @@ buffer is not visiting a file."
 				(emacs-lisp . t)
 				(clojure . t)
 				(C . t)))""",
-        description="Provide language specific ayntax highlighting when converting org to PDF.",
+        description="Provide language specific syntax highlighting when converting org to PDF.",
         screenshot='screenshot/banner.png'
     )
 
@@ -258,7 +270,7 @@ buffer is not visiting a file."
 		 (pluralize "word" count))))))
 (global-set-key (kbd "C-x c") 'count-words-buffer)
 """,
-        description="Count total number of words in current buffer. Keybinding: C-x c.",
+        description="Count total number of words in current buffer. Key binding: C-x c.",
         screenshot="/screenshot/banner.png"
     )
 
@@ -278,7 +290,7 @@ buffer is not visiting a file."
         (ansi-term (getenv "SHELL")))
     (switch-to-buffer-other-window "*ansi-term*")))
 (global-set-key (kbd "C-c t") 'visit-term-buffer)""",
-        description="Visit terminal buffer. Keybinding: C-c t. From http://emacsredux.com/blog/page/2/",
+        description="Visit terminal buffer. Key binding: C-c t. From http://emacsredux.com/blog/page/2/",
         screenshot="/screenshot/banner.png"
     )    
 
@@ -291,7 +303,7 @@ buffer is not visiting a file."
   (interactive "nPercent: ")
   (goto-char (/ (* (point-max) pct) 100)))
 (global-set-key (kbd "C-x p") 'goto-percent)""",
-        description="Go to place in a buffer expressed in percentage. Keybinding: C-x p.",
+        description="Go to place in a buffer expressed in percentage. Key binding: C-x p.",
         screenshot="/screenshot/banner.png"
     )
 
@@ -375,9 +387,63 @@ programming."
     except:
         print "No USERNAME_2 available for this code."
 
+    print "---------- Codes ------------"
     for c in CodeTemplate.objects.all():
         print c.name
 
+        # Populate Codes ends here.
+        
+    epc = add_package(user_id=store.USERNAME.id,
+                      name="emacs-epc",
+                      description="emacs-epc, https://github.com/kiwanami/emacs-epc",
+                      tarFile="deps/emacs-epc.tar",
+                      config="""(require 'emacs-epc)""")
+    epc.save()
+
+    deferred = add_package(user_id=store.USERNAME.id,
+                           name="emacs-deferred",
+                           description="emacs-deferred, https://github.com/kiwanami/emacs-deferred",
+                           tarFile="deps/emacs-deferred.tar",
+                           config="""(require 'emacs-deferred)""")
+    deferred.save()
+    
+    ctable = add_package(user_id=store.USERNAME.id,
+                         name="emacs-ctable",
+                         description="emacs-ctable, https://github.com/kiwanami/emacs-ctable",
+                         tarFile="deps/emacs-ctable.tar",
+                         config="""(require 'emacs-ctable)""")
+    ctable.save()
+
+    jedi = add_package(user_id=store.USERNAME.id,
+                       name="emacs-jedi",
+                       description="emacs-jedi, https://github.com/tkf/emacs-jedi",
+                       tarFile="deps/emacs-jedi.tar",
+                       config="""(require 'emacs-jedi)""")
+    jedi.save()
+    
+    print "---------- Packages ------------"
+    for p in Dependency.objects.all():
+        print p.name
+
+        # Populate Packages ends here.
+    python = add_bundle(user_id=store.USERNAME.id,
+                        name="Python",
+                        description="Python bundle. Includes emacs-epc, emacs-deferred, emacs-ctables & emacs-jedi.",
+                        config="""(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'jedi:ac-setup)
+(setq jedi:setup-keys t)                      ; optional
+(setq jedi:complete-on-dot t)                 ; optional""",
+               screenshot="/screenshot/banner.png",)
+
+    python.save()
+    python.dep.add(epc, deferred, ctable, jedi)
+    print "---------- Bundle ------------"
+    for b in BundleTemplate.objects.all():
+        print b.name
+        print "Depends on: "
+        for i in python.dep.all():
+            print i
+    
 def add_user(username, email, password):
     u = User.objects.create_user(username=username, email=email, 
                                           password=password)
@@ -394,13 +460,28 @@ def add_code_template(user_id, name, code, description, screenshot=None,
                      download_count=download_count)
     c.save()
 
+def add_package(user_id, name, description, tarFile, config, download_count=0):
+    p = Dependency(user_id=user_id, name=name, description=description,
+                   tarFile=tarFile, config=config, download_count=download_count)
+    return p
+
+def add_bundle(user_id, name, description, config, screenshot=None,
+               download_count=0):
+    b = BundleTemplate(user_id=user_id, name=name, description=description,
+                       config=config, screenshot=screenshot,
+                       download_count=download_count)
+    return b
+    
 # Start execution here!
 if __name__ == '__main__':
     print "Starting Haqiba population script..."
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'haqiba.settings')
-    from emacshaqiba.models import CodeTemplate, UserProfile
+    from emacshaqiba.models import CodeTemplate, UserProfile, Dependency
+    from emacshaqiba.models import BundleTemplate
     from django.contrib.auth.models import User
-    os.system("rm haqiba.db")
-    os.system("python manage.py syncdb --noinput")
-    os.system("python manage.py createsuperuser --username=admin --email=admin@example.com")
-    populate()
+
+    if os.path.exists('haqiba.db'):
+        os.system("rm haqiba.db")
+
+    populate_users()
+    populate_codes()
