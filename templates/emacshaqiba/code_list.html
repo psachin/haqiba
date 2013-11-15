@@ -1,27 +1,68 @@
+{%load static %}
+
 <ul class="nav nav-list">
 <h2>Top codes</span></h2>
 {% if codetemplate %}
-{% for code in codetemplate|slice:":5" %}
-<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
-  {% if code.download_count %}
-  <span class="badge">{{code.download_count}}</span>
-  {% endif %}
-</ul>
-{% endfor %}
-<h2>All codes</h2>
-{% if codetemplate %}
-{% for code in codetemplate %}
-<ul>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
-  {% if code.download_count %}
-  <span class="badge">{{code.download_count}}</span>
-  {% endif %}
-</ul>
-{% endfor %}
-{% endif %}
+	<table>
+	{% for code in codetemplate|slice:":5" %}
+		<tr>
+                <td>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
+		  {% if code.download_count %}
+		  <span class="badge">{{code.download_count}}</span>
+		  {% endif %}</td>
+            	</tr>
+	{% endfor %}
+	</table>
+
+	<!-- paging to be apply for below list -->
+	<h2>All codes</h2>
+	{% if codetemplate %}
+		<table id="results">
+		{% for code in codetemplate %}
+			<tr>
+        			<td>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
+		  		{% if code.download_count %}
+		  		<span class="badge">{{code.download_count}}</span>
+		  		{% endif %}</td>
+    			</tr>
+		{% endfor %}
+		</table>
+	{% endif %}
+	<!-- add page navigator for list here-->
+	<div id="pageNavPosition"></div>	
 {% else %}
-<p>Nothing to display.</p>
+	<p>Nothing to display.</p>
 {% endif %}
 </ul>
+
+
+<!-- call paging using,-->
+<style>
+.pg-normal {
+	color: black;
+	font-weight: normal;
+	text-decoration: none;    
+	cursor: pointer;    
+}
+	.pg-selected {
+	color: black;
+	font-weight: bold;        
+	text-decoration: underline;
+	cursor: pointer;
+
+}
+</style>
+<script src="{% static 'js/paging.js' %}"></script>
+<script type="text/javascript">
+        var pager = new Pager('results', 10); 
+        //code before paging
+        pager.init(); 
+        //show page navigator
+        pager.showPageNav('pager', 'pageNavPosition'); 
+        //show page
+        pager.showPage(1);
+</script>
+
 
 {% comment %} 
 to show first five codes I hv used |slice...  This can
