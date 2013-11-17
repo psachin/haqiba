@@ -1,0 +1,128 @@
+{% extends 'emacshaqiba/base.html' %}
+{% load static %}
+
+
+{% block body_block %}
+
+<!-- codemirror settings -->
+<link rel="stylesheet" href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
+
+<script src="{% static 'codemirror-3.19/lib/codemirror.js' %}"></script>
+<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}"></script>
+<script src="{% static 'codemirror-3.19/keymap/extra.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}"></script>
+
+<style type="text/css">
+  .CodeMirror {
+  border: 1px solid black; 
+  font-size:13px; 
+  height: auto;
+  width: 95%;}
+
+  .CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
+  }
+</style>
+<!-- code mirror settings -->
+
+<!-- hover zoom settings -->
+<script src="{% static 'js/mootools-yui-compressed.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/imagezoom.css' %}">
+<script src="{% static 'js/imagezoom.js' %}"></script>
+<!-- hover zoom ends here -->
+
+<!-- style ends here -->
+
+<!-- body starts here -->
+<div class="row">
+  <ul>
+    <div class="row">
+      {% if package %}
+      <div class="col-md-8">
+	<div class="container">
+	  {% for e in package %}
+	  <h1>{{e.name}} </h1>
+	  <p class="text-muted">(Package)</p>
+	  {% if e.description %}
+	  <p class="text-success">{{e.description}}</p>
+	  {% else %}
+	  <p class="text-success">No description available.</p>
+	  {% endif %}
+	  <p class="text-muted"><small>by {{e.user}}</small></p>
+	  <form id="display-code_form" method="post">
+	    {% csrf_token %}
+	    <button class="btn btn-primary btn-mini">
+	      <i class="glyphicon glyphicon-download"></i>
+	      {{e.download_count}} download{{e.download_count|pluralize}}
+	    </button>
+	    <!-- <span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span> -->
+	  </form>
+	</div> <!-- container -->
+      </div>
+      <div class="col-md-4">
+	<!-- At present there are no screenshot field in Dependency model. -->
+	{% if e.screenshot %}
+	<div "container">
+	  <a id="image_link" rel="imagezoom" href="media/{{e.screenshot}}" >	
+	    <img src="media/{{e.screenshot}}" height="140" width="240" class="img-thumbnail">
+	  </a>
+	</div> <!-- image container -->
+      </div> <!-- col-md-4 -->
+      {% else %}
+      <p>No screenshot available.</p>
+      {% endif %}
+    </div>	 <!-- row -->
+  </ul>
+  {% if e.config %}
+  <ul>
+    <small>Config</small> 
+    {% if e.user == user %}
+    |
+    <a href="/emacshaqiba/config/edit/{{e.id}}" class="text-warning">Edit</a> |
+    <a href="/emacshaqiba/config/delete/{{e.id}}" class="text-danger">Delete</a>
+    {% endif %}
+    <textarea id="id_config" name="config">{{e.config}}
+    </textarea>
+  </ul>
+  {% endif %}
+</div>
+{% endfor %}
+{% else %}
+<p align="center" class="text-warning">No such Package exists!!</p>
+{% endif %}
+<!-- body ends here -->
+
+<!-- hover zoom settings -->
+<script>
+  /* Uncomment below lines for error handling.
+
+  onerror = handleErr;
+  function handleErr(msg,url,l){
+  alert(msg+" "+ url+" "+l);
+  return true;
+  }
+  */
+
+  /* initialize image zoom method */
+  initImageZoom();
+</script>
+<!-- hover zoom ends here -->
+
+<!-- codemirror settings -->
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("id_config"), {
+  lineNumbers: true,
+  styleActiveLine: true,
+  matchBrackets: true,
+  readOnly: true,
+  theme: "paraiso-dark",
+  mode: "commonlisp",
+  lineWrapping: true,
+  readOnly: true,
+  });
+</script>
+<!-- codemirror settings -->
+{% endblock body_block %}

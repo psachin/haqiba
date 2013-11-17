@@ -211,12 +211,23 @@ def display_code(request, id):
                               context_dict,
                               context)
 
+def display_package(request, id):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    package = Dependency.objects.filter(pk=id).order_by('-download_count')
+
+    context_dict = {'codetemplate': codetemplate,
+                    'package': package,}
+
+    return render_to_response('emacshaqiba/display_package.html', 
+                              context_dict,
+                              context)    
+
 def display_bundle(request, id):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     bundle = BundleTemplate.objects.filter(pk=id).order_by('-download_count')
 
-    
     context_dict = {'codetemplate': codetemplate,
                     'bundle':bundle,}
 
