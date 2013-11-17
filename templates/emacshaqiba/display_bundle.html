@@ -51,7 +51,7 @@
 	{% endif %}
         <p class="text-muted"><small>by {{e.user}}</small></p>
 	<div class="text-info">
-	  <strong>Depends on</strong>:
+	  <strong>Includes</strong>:
 	  <ol>
 	  {% for dep in e.dep.all %}
 	  <li><a href="/emacshaqiba/package/{{dep.id}}">{{dep.name}}</a></li>
@@ -83,7 +83,7 @@
 </div>	 <!-- row -->
 </ul>
 <ul>
-  <small>Code</small> 
+  <small>Config</small> 
   {% if e.user == user %}
   |
   <a href="/emacshaqiba/bundle/edit/{{e.id}}" class="text-warning">Edit</a> |

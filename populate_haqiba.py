@@ -9,22 +9,13 @@ def populate_users():
     os.system("python manage.py syncdb --noinput")
     os.system("python manage.py createsuperuser --username=admin --email=admin@example.com")
 
+    for u in store.users:
     # Normal users
-    store.USERNAME = add_user(store.USERNAME, store.EMAIL, store.PASSWORD)
+        u['USERNAME'] = add_user(u['USERNAME'], u['EMAIL'], u['PASSWORD'])
     
-    add_user_profile(user=store.USERNAME, 
-                     website=store.WEBSITE,
-                     picture=store.PHOTO)
-
-    try:
-        store.USERNAME_2 = add_user(store.USERNAME_2, store.EMAIL_2,
-                                    store.PASSWORD_2)
-
-        add_user_profile(user=store.USERNAME_2,
-                         website=store.WEBSITE_2,
-                         picture=store.PHOTO_2)
-    except:
-        print "No USERNAME_2."
+        add_user_profile(user=u['USERNAME'],
+                         website=u['WEBSITE'],
+                         picture=u['PHOTO'])
 
     user_list = User.objects.all()
     if user_list:
@@ -35,7 +26,7 @@ def populate_users():
 def populate_codes():
     
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Show-paren",
         code="(show-paren-mode t)",
         description="Show matching parenthesis.",
@@ -43,7 +34,7 @@ def populate_codes():
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Battery",
         code="(display-battery-mode t)",
         description="Show battery status in mode line.",
@@ -51,7 +42,7 @@ def populate_codes():
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Sudo-edit",
         code="""
 (defun sudo-edit (&optional arg)
@@ -71,7 +62,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Google",
         code="""
 (defun google ()
@@ -89,7 +80,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Youtube",
         code="""
 (defun youtube ()
@@ -107,7 +98,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="No-tool-menu-bar",
         code="""
 (menu-bar-mode 0)
@@ -117,7 +108,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Server",
         code="""
 (require 'server)
@@ -128,7 +119,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Package",
         code="""
 ;; Marmalade repo
@@ -145,7 +136,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Org-syntax-highlighting",
         code="""
 ;; Org-mode source syntax highlighting
@@ -174,7 +165,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Inhibit-startup",
         code="""
 (setq-default inhibit-startup-screen t)""",
@@ -183,7 +174,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Word-wrap",
         code="""
 ;; turn on word wrap
@@ -193,7 +184,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Hide-dot-files",
         code="""
 ;; Hide DOT files with M-o
@@ -210,7 +201,7 @@ buffer is not visiting a file."
     )
     
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Buffer-size",
         code="""
 ;; Show buffer size in mode-line.
@@ -220,7 +211,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Column-number",
         code="""
 ;; Show column number in mode-line.
@@ -230,7 +221,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Elisp-doc",
         code="""
 ;; show elisp function docs in result bar
@@ -242,7 +233,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Word-count",
         code="""
 ;; Pluralize
@@ -275,7 +266,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Terminal",
         code="""
 ;; terminal at your fingerprint
@@ -295,7 +286,7 @@ buffer is not visiting a file."
     )    
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Percentage-buffer",
         code="""
 (defun goto-percent (pct)
@@ -308,7 +299,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Org-mode-workflow-state",
         code="""
 (setq org-todo-keywords
@@ -318,7 +309,7 @@ buffer is not visiting a file."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Highlight-annotations",
         code="""
 (defun font-lock-comment-annotations ()
@@ -334,7 +325,7 @@ programming."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Global-indentation",
         code="""
 (define-key global-map (kbd "RET") 'newline-and-indent)
@@ -344,7 +335,7 @@ programming."
     )
 
     add_code_template(
-        user_id=store.USERNAME.id,
+        user_id=store.user1['USERNAME'].id,
         name="Viooz",
         code="""
 (defun viooz ()
@@ -362,11 +353,10 @@ programming."
         screenshot="/screenshot/viooz.png"
     )
 
-    try:
-        add_code_template(
-            user_id=store.USERNAME_2.id,
-            name="Delete-current-buffer-file",
-            code="""
+    add_code_template(
+        user_id=store.user2['USERNAME'].id,
+        name="Delete-current-buffer-file",
+        code="""
 (defun delete-current-buffer-file ()
   "Removes file connected to current buffer and kills buffer."
   (interactive)
@@ -380,12 +370,10 @@ programming."
 	(kill-buffer buffer)
 	(message "File '%s' successfully removed" filename)))))
 (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)""",
-            description="http://whattheemacsd.com/",
-            screenshot="/screenshot/delete_buffer-file.png",
-            download_count=6,
-        )
-    except:
-        print "No USERNAME_2 available for this code."
+        description="http://whattheemacsd.com/",
+        screenshot="/screenshot/delete_buffer-file.png",
+        download_count=10,
+    )
 
     print "---------- Codes ------------"
     for c in CodeTemplate.objects.all():
@@ -393,28 +381,28 @@ programming."
 
         # Populate Codes ends here.
         
-    epc = add_package(user_id=store.USERNAME.id,
+    epc = add_package(user_id=store.user1['USERNAME'].id,
                       name="emacs-epc",
                       description="emacs-epc, https://github.com/kiwanami/emacs-epc",
                       tarFile="deps/emacs-epc.tar",
                       config="""(require 'emacs-epc)""")
     epc.save()
 
-    deferred = add_package(user_id=store.USERNAME.id,
+    deferred = add_package(user_id=store.user1['USERNAME'].id,
                            name="emacs-deferred",
                            description="emacs-deferred, https://github.com/kiwanami/emacs-deferred",
                            tarFile="deps/emacs-deferred.tar",
                            config="""(require 'emacs-deferred)""")
     deferred.save()
     
-    ctable = add_package(user_id=store.USERNAME.id,
+    ctable = add_package(user_id=store.user1['USERNAME'].id,
                          name="emacs-ctable",
                          description="emacs-ctable, https://github.com/kiwanami/emacs-ctable",
                          tarFile="deps/emacs-ctable.tar",
                          config="""(require 'emacs-ctable)""")
     ctable.save()
 
-    jedi = add_package(user_id=store.USERNAME.id,
+    jedi = add_package(user_id=store.user1['USERNAME'].id,
                        name="emacs-jedi",
                        description="emacs-jedi, https://github.com/tkf/emacs-jedi",
                        tarFile="deps/emacs-jedi.tar",
@@ -426,7 +414,7 @@ programming."
         print p.name
 
         # Populate Packages ends here.
-    python = add_bundle(user_id=store.USERNAME.id,
+    python = add_bundle(user_id=store.user1['USERNAME'].id,
                         name="Python",
                         description="Python bundle. Includes emacs-epc, emacs-deferred, emacs-ctables & emacs-jedi.",
                         config="""(add-hook 'python-mode-hook 'jedi:setup)
@@ -442,7 +430,7 @@ programming."
         print b.name
         print "Depends on: "
         for i in python.dep.all():
-            print i
+            print "\t %s" % i
     
 def add_user(username, email, password):
     u = User.objects.create_user(username=username, email=email, 
