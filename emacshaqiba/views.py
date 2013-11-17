@@ -186,6 +186,28 @@ def delete_code(request, id):
         print "code with id: %s not found!!" % id
         return HttpResponseRedirect('/emacshaqiba/code/edit/')
 
+@login_required
+def delete_package(request, id):
+    try:
+        package = Dependency.objects.get(pk=id)
+        package.delete()
+        print "Package with id: %s deleted." % id
+        return HttpResponseRedirect('/emacshaqiba/package/edit/')
+    except:
+        print "Package with id: %s not found!!" % id
+        return HttpResponseRedirect('/emacshaqiba/package/edit/')
+
+@login_required
+def delete_bundle(request, id):
+    try:
+        bundle = BundleTemplate.objects.get(pk=id)
+        bundle.delete()
+        print "Bundle with id: %s deleted." % id
+        return HttpResponseRedirect('/emacshaqiba/bundle/edit/')
+    except:
+        print "Bundle with id: %s not found!!" % id
+        return HttpResponseRedirect('/emacshaqiba/bundle/edit/')        
+
 def display_code(request, id):
     context = RequestContext(request)
     codetemplate_id = CodeTemplate.objects.filter(pk=id)
@@ -235,17 +257,6 @@ def display_bundle(request, id):
                               context_dict,
                               context)
     
-@login_required
-def delete_bundle(request, id):
-    try:
-        bundle = Dependency.objects.get(pk=id)
-        bundle.delete()
-        print "Bundle with id: %s deleted." % id
-        return HttpResponseRedirect('/emacshaqiba/bundle/edit/')
-    except:
-        print "Bundle with id: %s not found!!" % id
-        return HttpResponseRedirect('/emacshaqiba/bundle/edit/')
-        
 def displayBundle(request):
     """Dirty code, may not work(or misbehave) with multisessions.
 
