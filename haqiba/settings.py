@@ -19,8 +19,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': DATABASE_PATH,                      # Or path to database file if using sqlite3.
-        'USER': store.USERNAME,                      # Not used with sqlite3.
-        'PASSWORD': store.PASSWORD,                  # Not used with sqlite3.
+        'USER': store.user1['USERNAME'],                      # Not used with sqlite3.
+        'PASSWORD': store.user1['PASSWORD'],                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }

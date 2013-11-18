@@ -45,7 +45,7 @@ function toggle(source) {
 <form class="form-horizontal" role="form" id="download_form" method="post" 
       style="width:40%;" action="/emacshaqiba/emacs_config/">
 {% csrf_token %}
-<h4 class="text-warning"><strong>Codes</strong></h4>
+<h4 class="text-warning"><strong>Code{{codetemplate|length|pluralize}}</strong></h4>
 {% if codetemplate %}
 <div id="jsfiddle">
     <div class="row">
@@ -67,7 +67,7 @@ function toggle(source) {
 {% endif %}
 <hr>
 <!-- code ends here -->
-<h4 class="text-warning"><strong>Packages</strong></h4>
+<h4 class="text-warning"><strong>Package{{dependency|length|pluralize}}</strong></h4>
 {% if dependency %}
 <div id="jsfiddle">
     <div class="row">
@@ -89,7 +89,7 @@ function toggle(source) {
 {% endif %}
 <hr>
 <!-- dependency/package ends here -->
-<h4 class="text-warning"><strong>Bundles</strong></h4>
+<h4 class="text-warning"><strong>Bundle{{bundletemplate|length|pluralize}}</strong></h4>
 {% if bundletemplate %}
 <div id="jsfiddle">
     <div class="row">

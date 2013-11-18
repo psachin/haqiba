@@ -38,19 +38,20 @@
 <div class="row">
 <ul>
 <div class="row">
+  {% if bundle %}
   <div class="col-md-8">
     <div class="container">
-    {% if bundle %}
     {% for e in bundle %}
 	<h1>{{e.name}}</h1>
-	<p class="text-muted">(bundle) <small>by {{e.user}}</small></p>
+	<p class="text-muted">(Bundle)</p>
 	{% if e.description %}
 	<p class="text-success">{{e.description}}</p>
 	{% else %}
 	<p class="text-success">No description available.</p>
 	{% endif %}
+        <p class="text-muted"><small>by {{e.user}}</small></p>
 	<div class="text-info">
-	  <strong>Depends on</strong>:
+	  <strong>Includes</strong>:
 	  <ol>
 	  {% for dep in e.dep.all %}
 	  <li><a href="/emacshaqiba/package/{{dep.id}}">{{dep.name}}</a></li>
@@ -67,36 +68,35 @@
 	  <!-- <span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span> -->
 	</form>
 	</div>
-  </div>
+  </div> <!-- col-md-8 -->
   <div class="col-md-4">
     {% if e.screenshot %}
-    <div >
+    <div class="container">
       <a id="image_link" rel="imagezoom" href="media/{{e.screenshot}}" >	
 	<img src="media/{{e.screenshot}}" height="140" width="240" class="img-thumbnail">
       </a>
-    </div>
+    </div> <!-- image container -->
     {% else %}
     <p>No screenshot available.</p>
     {% endif %}
   </div> <!-- col-md-4 -->
-</div>
+</div>	 <!-- row -->
 </ul>
 <ul>
-  <small>Code</small> 
+  <small>Config</small> 
   {% if e.user == user %}
   |
   <a href="/emacshaqiba/bundle/edit/{{e.id}}" class="text-warning">Edit</a> |
   <a href="/emacshaqiba/bundle/delete/{{e.id}}" class="text-danger">Delete</a>
   {% endif %}
-  <textarea id="id_code" name="code">{{e.config}}
+  <textarea id="id_config" name="config">{{e.config}}
   </textarea>
 </ul>
-</div>
-
 {% endfor %}
 {% else %}
-<h4>No such code!!</h4>
+<p align="center" class="text-warning">No such Bundle exist!!</p>
 {% endif %}
+</div>
 <!-- body ends here -->
 
 <!-- hover zoom settings -->
@@ -117,7 +117,7 @@ initImageZoom();
 
 <!-- codemirror settings -->
 <script>
-  var editor = CodeMirror.fromTextArea(document.getElementById("id_code"), {
+  var editor = CodeMirror.fromTextArea(document.getElementById("id_config"), {
   lineNumbers: true,
   styleActiveLine: true,
   matchBrackets: true,

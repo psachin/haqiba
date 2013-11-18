@@ -40,11 +40,12 @@
 <div class="row">
 <ul>
 <div class="row">
+  {% if codetemplate_id %}
   <div class="col-md-8">
     <div class="container">
-    {% if codetemplate %}
     {% for e in codetemplate_id %}
 	<h1>{{e.name}} </h1>
+        <p class="text-muted">(Code snippet)</p>
 	{% if e.description %}
 	<p class="text-success">{{e.description}}</p>
 	{% else %}
@@ -59,20 +60,20 @@
 	  </button>
 	  <!-- <span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span> -->
 	</form>
-	</div>
+    </div> <!-- container -->
   </div>
   <div class="col-md-4">
     {% if e.screenshot %}
-    <div >
+    <div "container">
       <a id="image_link" rel="imagezoom" href="media/{{e.screenshot}}" >	
 	<img src="media/{{e.screenshot}}" height="140" width="240" class="img-thumbnail">
       </a>
-    </div>
+    </div> <!-- image container -->
+  </div> <!-- col-md-4 -->
     {% else %}
     <p>No screenshot available.</p>
     {% endif %}
-  </div> <!-- col-md-4 -->
-</div>
+</div>	 <!-- row -->
 </ul>
 <ul>
   <small>Code</small> 
@@ -85,10 +86,9 @@
   </textarea>
 </ul>
 </div>
-
 {% endfor %}
 {% else %}
-<h4>No such code!!</h4>
+<p align="center" class="text-warning">No such Code exists!!</p>
 {% endif %}
 <!-- body ends here -->
 

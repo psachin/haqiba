@@ -33,18 +33,35 @@
        snippets.
      - Create a new file =store.py= with following content.
 
-       ----8<----------------------------------------
+       - - - - 8<- - - - - - - - - - - - - - - - - - - - - - - 
        #+BEGIN_SRC python
-         USERNAME='YOUR NAME'
-         PASSWORD='YOUR PASSWORD'
-         EMAIL='YOUR EMAIL'
-         WEBSITE='YOUR WEBSITE ADDRESS'
-         PHOTO='profile_image/YOUR_IMAGE_NAME'
+         user1 = {
+             'USERNAME': "sachin",
+             'PASSWORD': "mysupersecretepassword",
+             'EMAIL' : "isachin@iitb.ac.in",
+             'WEBSITE': "haqiba.org",
+             'PHOTO': "profile_image/tas_devil.gif"
+         }
+         
+         user2 = {
+             'USERNAME': "user2",
+             'PASSWORD': "secretpassword",
+             'EMAIL' : "user2@example.com",
+             'WEBSITE': "example.com",
+             'PHOTO': "profile_image/user2_photo.jpg"
+         }
+         
+         ..
+         
+         users = [user1, user2, ..]
+         
        #+END_SRC python
-       ---------------------------------------->8----
+       - - - - - - - - - - - - - - - - - - - - - - >8- - - - 
+	 
+     - Note: You should copy profile images to =media/profile_image= directory.
 
      - And run the script
-       #+BEGIN_SRC sh
+       #+BEGIN_SRC sh 
          python populate_haqiba.py
        #+END_SRC sh
 
@@ -56,7 +73,8 @@
        #+END_SRC sh
 
 ** Contribute
-   Please create a separate branch and send pull request.
+   Please create a separate branch(with appropriate name) and send
+   pull request.
 
 ** License
    - See [[https://github.com/psachin/haqiba/blob/master/COPYING][COPYING]]
