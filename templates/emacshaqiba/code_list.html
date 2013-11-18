@@ -14,7 +14,7 @@
 	{% endfor %}
 	</table>
 
-	<!-- paging to be apply for below list -->
+	<!-- paging to be applied for below list -->
 	<h2>All codes</h2>
 	{% if codetemplate %}
 		<table id="results">
@@ -28,41 +28,27 @@
 		{% endfor %}
 		</table>
 	{% endif %}
+	
 	<!-- add page navigator for list here-->
-	<div id="pageNavPosition"></div>	
+	<ul class="pagination" id="unordered-list"></ul>
+	
 {% else %}
 	<p>Nothing to display.</p>
 {% endif %}
 </ul>
 
-
-<!-- call paging using,-->
-<style>
-.pg-normal {
-	color: black;
-	font-weight: normal;
-	text-decoration: none;    
-	cursor: pointer;    
-}
-	.pg-selected {
-	color: black;
-	font-weight: bold;        
-	text-decoration: underline;
-	cursor: pointer;
-
-}
-</style>
+<!-- pagination code starts here-->
 <script src="{% static 'js/paging.js' %}"></script>
 <script type="text/javascript">
         var pager = new Pager('results', 10); 
         //code before paging
         pager.init(); 
         //show page navigator
-        pager.showPageNav('pager', 'pageNavPosition'); 
+        pager.showPageNav(); 
         //show page
         pager.showPage(1);
 </script>
-
+<!-- pagination code ends here-->
 
 {% comment %} 
 to show first five codes I hv used |slice...  This can
