@@ -72,7 +72,7 @@
 	</div> <!-- image container -->
       </div> <!-- col-md-4 -->
       {% else %}
-      <p>No screenshot available.</p>
+      <img src="{% static 'images/no_image_available.png' %}" height="140" width="240" class="img-thumbnail">
       {% endif %}
     </div>	 <!-- row -->
   </ul>
@@ -81,8 +81,8 @@
     <small>Config</small> 
     {% if e.user == user %}
     |
-    <a href="/emacshaqiba/config/edit/{{e.id}}" class="text-warning">Edit</a> |
-    <a href="/emacshaqiba/config/delete/{{e.id}}" class="text-danger">Delete</a>
+    <a href="/emacshaqiba/package/edit/{{e.id}}" class="text-warning">Edit</a> |
+    <a href="/emacshaqiba/package/delete/{{e.id}}" class="text-danger">Delete</a>
     {% endif %}
     <textarea id="id_config" name="config">{{e.config}}
     </textarea>

@@ -20,6 +20,7 @@ urlpatterns = patterns(
     url(r'^package/submit/$', views.submit_package, name='submit_package'),
     url(r'^package/(?P<id>\d+)/$', views.display_package,  name='display_package'),
     url(r'^package/edit/$', views.editpackage, name='editpackage'),
+    url(r'^package/edit/(?P<id>\d+)/$', views.editpackage_p, name='editpackage_p'),
     url(r'^package/delete/(?P<id>\d+)/$', views.delete_package, name='delete_package'),
     
     url(r'^bundle/submit/$', views.submit_bundle, name='submit_bundle'),

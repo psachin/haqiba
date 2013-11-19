@@ -9,12 +9,26 @@
     <p><strong>User ID</strong> : {{userprofile.user_id}}</p>
     <p><strong>Joined on</strong> : {{user.date_joined}}</p>
     <p><strong>Last login</strong> : {{user.last_login}}</p>
-    <p><strong>Number of Code(s) submitted</strong> : 
+    <hr>
+    <p><strong>Number of Codes submitted</strong> : 
       {% if codetemplate_user|length %}
-      {{codetemplate_user|length}}
+      <a href="/emacshaqiba/code/edit/">{{codetemplate_user|length}}</a>
       {% else %}
-      None
+      0
       {% endif %}
+    <p><strong>Number of Packages submitted</strong> : 
+      {% if dependency_user|length %}
+      <a href="/emacshaqiba/package/edit/">{{dependency_user|length}}</a>
+      {% else %}
+      0
+      {% endif %}
+    <p><strong>Number of Bundles submitted</strong> : 
+      {% if bundle_user|length %}
+      <a href="/emacshaqiba/bundle/edit/">{{bundle_user|length}}</a>
+      {% else %}
+      0
+      {% endif %}      
+      
 </div>
   </div>
 
@@ -25,7 +39,7 @@
       {% if userprofile %}
       {% if userprofile.picture %}
     <div class="container" align="center">
-      <img src="{{ userprofile.picture.url }}" alt={{user.username}} class="img-responsive img-circle"/>
+      <img src="{{ userprofile.picture.url }}" alt={{user.username}} class="img-responsive img-thumbnail"/>
       {% else %}
       No profile picture.
       {% endif %}

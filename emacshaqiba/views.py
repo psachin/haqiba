@@ -176,6 +176,49 @@ def editcode_p(request, id=None):
                               context)
 
 @login_required
+def editpackage_p(request, id=None):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    submitpackage_success="get"
+
+    if id:
+        print "Edit %s" % id 
+        dependency = get_object_or_404(Dependency, pk=id)
+        print dependency.user, dependency.name
+        if dependency.user != request.user:
+            return HttpResponseForbidden()
+            
+        if request.method == 'POST':
+            print "POST"
+            package_form = PackageTemplateForm(data=request.POST, instance=dependency)
+            
+            if package_form.is_valid():
+                dependency = package_form.save(commit=False)
+                if 'screenshot' in request.FILES:
+                    dependency.screenshot = request.FILES['screenshot']
+
+                dependency.save()
+                submitpackage_success="success"
+                print "Package edited successfully."
+                return HttpResponseRedirect("/emacshaqiba/package/edit/")
+                # return HttpResponseRedirect("/emacshaqiba/edit_code/%s" % id)
+            else:
+                submitcode_success="error"
+                print package_form.errors
+        else:
+            print "GET"
+            package_form = PackageTemplateForm(instance=dependency)
+
+    else:
+         return HttpResponse("Package does not exist!!")
+
+    return render_to_response('emacshaqiba/editpackage_page.html', 
+                              {'package_form': package_form,
+                               'codetemplate': codetemplate,
+                               'submitpackage_success': submitpackage_success},
+                              context)
+
+@login_required
 def delete_code(request, id):
     try:
         codetemplate = CodeTemplate.objects.get(pk=id)
@@ -494,9 +537,13 @@ def profile(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     codetemplate_user = CodeTemplate.objects.filter(user=request.user)
+    dependency_user = Dependency.objects.filter(user=request.user)
+    bundle_user = BundleTemplate.objects.filter(user=request.user)
 
     context_dict = {'codetemplate': codetemplate,
-                    'codetemplate_user': codetemplate_user,}
+                    'codetemplate_user': codetemplate_user,
+                    'dependency_user': dependency_user,
+                    'bundle_user': bundle_user,}
     u = User.objects.get(username=request.user)
 
     try:
