@@ -26,6 +26,7 @@ urlpatterns = patterns(
     url(r'^bundle/submit/$', views.submit_bundle, name='submit_bundle'),
     url(r'^bundle/(?P<id>\d+)/$', views.display_bundle, name='display_bundle'),
     url(r'^bundle/edit/$', views.editbundle, name='editbundle'),
+    url(r'^bundle/edit/(?P<id>\d+)/$', views.editbundle_p, name='editbundle_p'),
     url(r'^bundle/delete/(?P<id>\d+)/$', views.delete_bundle, name='delete_bundle'),
     
 )

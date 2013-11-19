@@ -408,12 +408,36 @@ programming."
                        tarFile="deps/emacs-jedi.tar",
                        config="""(require 'emacs-jedi)""")
     jedi.save()
+
+    yas = add_package(user_id=store.user1['USERNAME'].id,
+                      name="yasnippet",
+                      description="Template system for Emacs. https://github.com/capitaomorte/yasnippet",
+                      tarFile="deps/yasnippet.tar",
+                      config="""(require 'yasnippet)
+(yas-global-mode 1)""")
+    yas.save()
+
+    rainbow_delimiter = add_package(user_id=store.user1['USERNAME'].id,
+                                    name="rainbow-delimiter",
+                                    description="highlights parentheses, brackets, and braces according to their depth. Each successive level is highlighted in a different color. https://github.com/jlr/rainbow-delimiters",
+                                    tarFile="deps/rainbow-delimiters.tar",
+                                    config="""(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(global-rainbow-delimiters-mode)""")
+    rainbow_delimiter.save()
+
+    autopair = add_package(user_id=store.user1['USERNAME'].id,
+                           name="autopair",
+                           description="Automagically pair braces and quotes in emacs like TextMate. https://github.com/capitaomorte/autopair",
+                           tarFile="deps/autopair.tar",
+                           config="""(autopair-global-mode)""")
+    autopair.save()
     
     print "---------- Packages ------------"
     for p in Dependency.objects.all():
         print p.name
 
-        # Populate Packages ends here.
+    # Populate Packages ends here.
     python = add_bundle(user_id=store.user1['USERNAME'].id,
                         name="Python",
                         description="Python bundle. Includes emacs-epc, emacs-deferred, emacs-ctables & emacs-jedi.",
@@ -425,11 +449,22 @@ programming."
 
     python.save()
     python.dep.add(epc, deferred, ctable, jedi)
+
+    parentheses = add_bundle(user_id=store.user1['USERNAME'].id,
+                             name="Parentheses",
+                             description="Parentheses. Includes autopair & rainbow-delimiter.",
+                             config="""""",
+                             screenshot="/screenshot/banner.png",)
+
+    parentheses.save()
+    parentheses.dep.add(rainbow_delimiter, autopair)
+    
     print "---------- Bundle ------------"
     for b in BundleTemplate.objects.all():
+        print "........"
         print b.name
         print "Depends on: "
-        for i in python.dep.all():
+        for i in b.dep.all():
             print "\t %s" % i
     
 def add_user(username, email, password):

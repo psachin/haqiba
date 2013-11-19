@@ -1,0 +1,82 @@
+{% extends 'emacshaqiba/base.html' %}
+{% load static %}
+
+{% block body_block %}
+
+<!-- codemirror settings -->
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/lib/codemirror.css' %}">
+<link rel="stylesheet" 
+      href="{% static 'codemirror-3.19/theme/paraiso-dark.css' %}">
+
+<script src="{% static 'codemirror-3.19/lib/codemirror.js' %}"></script>
+<script src="{% static 'codemirror-3.19/mode/commonlisp/commonlisp.js' %}">
+</script>
+<script src="{% static 'codemirror-3.19/keymap/extra.js' %}"></script>
+<script src="{% static 'codemirror-3.19/addon/selection/active-line.js' %}">
+</script>
+<script src="{% static 'codemirror-3.19/addon/edit/matchbrackets.js' %}">
+</script>
+
+<style type="text/css">
+  .CodeMirror {border: 1px solid black; font-size:14px;}
+</style>
+<!-- END code mirror settings -->
+
+<div class="container">
+
+  <div align="center"><h2>Edit Bundle</h2></div>
+<div class="well">
+<form role="form" id="edit-code" method="post" action=""
+      enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div class="form-group">
+        {{ bundletemplate_form.name.errors }}
+  	<label for="id_name">Name</label><br>
+  	{{ bundletemplate_form.name }}
+  </div>
+  <div class="form-group">
+        {{ bundletemplate_form.description.errors }}
+  	<label for="id_description">Description</label><br>
+  	{{ bundletemplate_form.description }}
+  </div>
+  <div class="form-group">
+        {{ bundletemplate_form.dep.errors }}
+  	<label for="id_dep">Dependency</label><br>
+  	{{ bundletemplate_form.dep }}
+  </div>
+  <div class="form-group">
+        {{ bundletemplate_form.config.errors }}
+  	<label for="id_dep">Config</label><br>
+  	{{ bundletemplate_form.config }}
+  </div>
+  <div class="form-group">
+        {{ bundletemplate_form.screenshot.errors }}
+  	<label for="id_screenshot">Screenshot</label><br>
+  	{{ bundletemplate_form.screenshot }}
+  </div>
+  <!-- {{bundletemplate_form.as_p}} -->
+
+</div>
+<div align="center">
+  <input class="btn btn-success" type="submit" name="submit" value="Save changes" />
+  </div>
+</form>
+</div>
+<!-- codemirror settings -->
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("id_config"), {
+  lineNumbers: true,
+  styleActiveLine: true,
+  matchBrackets: true,
+  readOnly: false,
+  theme: "paraiso-dark",
+  mode: "commonlisp",
+  lineWrapping: true,
+  });
+</script>
+<!-- END codemirror settings -->
+{% endblock body_block %}
+
+

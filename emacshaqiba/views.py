@@ -201,9 +201,8 @@ def editpackage_p(request, id=None):
                 submitpackage_success="success"
                 print "Package edited successfully."
                 return HttpResponseRedirect("/emacshaqiba/package/edit/")
-                # return HttpResponseRedirect("/emacshaqiba/edit_code/%s" % id)
             else:
-                submitcode_success="error"
+                submitpackage_success="error"
                 print package_form.errors
         else:
             print "GET"
@@ -218,6 +217,50 @@ def editpackage_p(request, id=None):
                                'submitpackage_success': submitpackage_success},
                               context)
 
+@login_required
+def editbundle_p(request, id=None):
+    context = RequestContext(request)
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
+    success=True
+
+    if id:
+        print "Edit %s" % id
+        bundle = get_object_or_404(BundleTemplate, pk=id)
+        print bundle.user, bundle.name
+        if bundle.user != request.user:
+            return HttpResponseForbidden()
+
+        if request.method == 'POST':
+            print "Bundle POST."
+            bundletemplate_form = BundleTemplateForm(data=request.POST, instance=bundle)
+
+            if bundletemplate_form.is_valid():
+                bundletemplate = bundletemplate_form.save(commit=False)
+                if 'screenshot' in request.FILES:
+                    bundletemplate.screenshot = request.FILES['screenshot']
+                    
+                #bundletemplate.user = request.user
+                bundletemplate.save()
+                bundletemplate_form.save_m2m()
+                success = 'success'
+                print "Bundle edit success"
+                return HttpResponseRedirect("/emacshaqiba/bundle/edit/")
+            else:
+                success = 'error'
+                print bundletemplate_form.errors
+        else:
+            print "Bundle GET"
+            bundletemplate_form = BundleTemplateForm(instance=bundle)
+    else:
+        print "Bundle does not exist."
+
+    context_dict = {'codetemplate': codetemplate,
+                    'bundletemplate_form': bundletemplate_form,
+                    'success': success,}
+    return render_to_response('emacshaqiba/editbundle_page.html',
+                              context_dict, 
+                              context)
+    
 @login_required
 def delete_code(request, id):
     try:
@@ -389,7 +432,8 @@ def submit_bundle(request):
         bundletemplate_form = BundleTemplateForm()
 
     context_dict = {'codetemplate': codetemplate,
-                    'bundletemplate_form': bundletemplate_form,}
+                    'bundletemplate_form': bundletemplate_form,
+                    'success': success,}
     return render_to_response('emacshaqiba/submit_bundle.html', context_dict, 
                               context)
 
