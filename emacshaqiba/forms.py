@@ -60,7 +60,7 @@ class BundleTemplateForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'class':'form-control'}),
         required=False)
     screenshot = forms.ImageField(
-        help_text="Upload screenshot of your code(Optional).", 
+        help_text="Upload screenshot of your Bundle(Optional).", 
         required=False)
 
     class Meta:
@@ -79,8 +79,11 @@ class PackageTemplateForm(forms.ModelForm):
     config = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}),
         required=False)
+    screenshot = forms.ImageField(
+        help_text="Upload screenshot of your Package(Optional).", 
+        required=False)
 
     class Meta:
         model = Dependency
-        fields = ['name', 'description', 'config', 'tarFile']
+        fields = ['name', 'description', 'config', 'tarFile', 'screenshot']
 

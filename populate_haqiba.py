@@ -385,28 +385,32 @@ programming."
                       name="emacs-epc",
                       description="emacs-epc, https://github.com/kiwanami/emacs-epc",
                       tarFile="deps/emacs-epc.tar",
-                      config="""(require 'emacs-epc)""")
+                      config="""(require 'emacs-epc)""",
+                      screenshot=None)
     epc.save()
 
     deferred = add_package(user_id=store.user1['USERNAME'].id,
                            name="emacs-deferred",
                            description="emacs-deferred, https://github.com/kiwanami/emacs-deferred",
                            tarFile="deps/emacs-deferred.tar",
-                           config="""(require 'emacs-deferred)""")
+                           config="""(require 'emacs-deferred)""",
+                           screenshot=None)
     deferred.save()
     
     ctable = add_package(user_id=store.user1['USERNAME'].id,
                          name="emacs-ctable",
                          description="emacs-ctable, https://github.com/kiwanami/emacs-ctable",
                          tarFile="deps/emacs-ctable.tar",
-                         config="""(require 'emacs-ctable)""")
+                         config="""(require 'emacs-ctable)""",
+                         screenshot=None)
     ctable.save()
 
     jedi = add_package(user_id=store.user1['USERNAME'].id,
                        name="emacs-jedi",
                        description="emacs-jedi, https://github.com/tkf/emacs-jedi",
                        tarFile="deps/emacs-jedi.tar",
-                       config="""(require 'emacs-jedi)""")
+                       config="""(require 'emacs-jedi)""",
+                       screenshot=None)
     jedi.save()
 
     yas = add_package(user_id=store.user1['USERNAME'].id,
@@ -414,7 +418,8 @@ programming."
                       description="Template system for Emacs. https://github.com/capitaomorte/yasnippet",
                       tarFile="deps/yasnippet.tar",
                       config="""(require 'yasnippet)
-(yas-global-mode 1)""")
+(yas-global-mode 1)""",
+                      screenshot="screenshot/banner.png")
     yas.save()
 
     rainbow_delimiter = add_package(user_id=store.user1['USERNAME'].id,
@@ -423,14 +428,17 @@ programming."
                                     tarFile="deps/rainbow-delimiters.tar",
                                     config="""(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-(global-rainbow-delimiters-mode)""")
+(global-rainbow-delimiters-mode)""",
+                                    screenshot="screenshot/rainbow_delimiter.png",
+    )
     rainbow_delimiter.save()
 
     autopair = add_package(user_id=store.user1['USERNAME'].id,
                            name="autopair",
                            description="Automagically pair braces and quotes in emacs like TextMate. https://github.com/capitaomorte/autopair",
                            tarFile="deps/autopair.tar",
-                           config="""(autopair-global-mode)""")
+                           config="""(autopair-global-mode)""",
+                           screenshot="screenshot/autopair.png")
     autopair.save()
     
     print "---------- Packages ------------"
@@ -483,9 +491,10 @@ def add_code_template(user_id, name, code, description, screenshot=None,
                      download_count=download_count)
     c.save()
 
-def add_package(user_id, name, description, tarFile, config, download_count=0):
+def add_package(user_id, name, description, tarFile, config, screenshot, download_count=0):
     p = Dependency(user_id=user_id, name=name, description=description,
-                   tarFile=tarFile, config=config, download_count=download_count)
+                   tarFile=tarFile, config=config,
+                   download_count=download_count, screenshot=screenshot)
     return p
 
 def add_bundle(user_id, name, description, config, screenshot=None,

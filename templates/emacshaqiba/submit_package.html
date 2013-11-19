@@ -68,7 +68,13 @@
     {{ packagetemplate_form.tarFile }}
     <p class="help-block">Upload tarball of the package(.tar).</p>
   </div> <!-- form-group tarFile -->
-  
+
+    <div class="form-group">
+    {{ packagetemplate_form.screenshot.errors }}
+    <label for="id_screenshot">Screenshot</label>
+    <input type="file" name="screenshot" id="id_screenshot">
+    <p class="help-block">Upload screenshot of your Package(Optional).</p>
+  </div>
   </div> <!-- well -->
   <div align="center">
   <input class="btn btn-success" type="submit" name="submit" 

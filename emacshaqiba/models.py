@@ -19,6 +19,7 @@ class Dependency(models.Model):
     description = models.TextField(blank=True)
     tarFile = models.FileField(upload_to='deps', blank=True)
     config = models.TextField(blank=True)
+    screenshot = models.ImageField(upload_to='screenshot', blank=True)    
     download_count = models.IntegerField(default=0)
     
     def __unicode__(self):

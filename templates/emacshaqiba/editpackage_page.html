@@ -48,8 +48,13 @@
   </div>
   <div class="form-group">
         {{ package_form.tarFile.errors }}
-  	<label for="id_screenshot">TarFile</label><br>
+  	<label for="id_screenshot">Tarfile</label><br>
   	{{ package_form.tarFile }}
+  </div>
+  <div class="form-group">
+        {{ package_form.screenshot.errors }}
+  	<label for="id_screenshot">Screenshot</label><br>
+  	{{ package_form.screenshot }}
   </div>
   <!-- {{package_form.as_p}} -->
 
