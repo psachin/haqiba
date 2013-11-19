@@ -2,6 +2,7 @@
 
 var context;
 var old_page = 1;
+var next_counter = 3;
 
 function Pager(tableName, itemsPerPage) {
     context = this;
@@ -63,18 +64,47 @@ function Pager(tableName, itemsPerPage) {
         //add PREV link and set click event
         var prev = document.createElement('li');
     	ul.appendChild(prev);
-    	prev.innerHTML="<a class='pg-normal' style='cursor:hand; cursor:pointer;'>Prev</a>";
+    	prev.innerHTML="<a class='pg-normal' style='cursor:hand; cursor:pointer;'> << </a>";
     	prev.addEventListener("click", function (){
-    		if (currentPage >= 2){
-            		context.showPage(currentPage - 1);
-            	}else{
-            		//unfocus prev link from here when it comes to the first page
+    		try
+  		{
+	    		if (currentPage > 1){
+	    			//display page which is visible in the navigator
+	    			context.showPage(currentPage - 1);
+		    	}
             	}
+		catch(err)
+ 	 	{
+ 	 		//when we are trying to view previous page which is not 
+ 	 		//visible in the navigator add that page link in the navigator 
+ 	 		//remove the extreme right page link
+ 	 		var page_number = document.createElement('li');
+			page_number.innerHTML="<a id='pg" + (currentPage) + "' class='pg-normal' onclick='pager.showPage(" + (currentPage) + ");' style='cursor:hand; cursor:pointer;' >"+(currentPage)+"</a>";
+    			
+    			//remove extreme right link page from navigator
+			$('#pg'+(currentPage+3)).remove();
+			
+			//add new link to the left of navigator
+			$('#unordered-list li:eq(1)').after(page_number);
+			
+			//show page
+			context.showPage((currentPage));
+			
+ 	 		
+ 	 	}
     	} );
     	
     	//add pages links and set click event to display list in table row depending
     	//upon selected page
-    	for (var page = 1; page <= 3; page++) {
+    	var count = 3;
+    	if(context.pages == 2 ){
+    		count = 2;
+    	}else if(context.pages == 1){
+    		count = 1;
+    	}
+    	
+    	for (var page = 1; page <= count; page++) {
+    		
 		var page_number = document.createElement('li');
 		page_number.innerHTML="<a id='pg" + page + "' class='pg-normal' onclick='pager.showPage(" + page + ");' style='cursor:hand; cursor:pointer;' >"+page+"</a>";
     		
@@ -85,13 +115,36 @@ function Pager(tableName, itemsPerPage) {
     	//add NEXT link and set click event
     	var next = document.createElement('li');
     	ul.appendChild(next);
-    	next.innerHTML="<a class='pg-normal' style='cursor:hand; cursor:pointer;'>Next</a>";
+    	next.innerHTML="<a class='pg-normal' style='cursor:hand; cursor:pointer;'> >> </a>";
     	next.addEventListener("click", function (){
-    		if (currentPage >= 1 && currentPage+1 <= context.pages){
-            		context.showPage(currentPage + 1);
-            	}else{
-            		//unfocus next link from here when it comes to the last page
+    		try
+  		{
+  			//add next page which is not viewed before
+	    		if (currentPage < context.pages){
+	    			//show page
+				context.showPage(currentPage + 1);
+		    	}
             	}
+		catch(err)
+ 	 	{
+ 	 		//when we are trying to view next page which is added before but not 
+ 	 		//visible in the navigator, add that page link in the navigator 
+ 	 		//remove the extreme left page link
+	    		var page_number = document.createElement('li');
+			page_number.innerHTML="<a id='pg" + (currentPage) + "' class='pg-normal' onclick='pager.showPage(" + (currentPage) + ");' style='cursor:hand; cursor:pointer;' >"+(currentPage)+"</a>";
+    		
+    			//remove prev link(extreme left)
+			$('#pg'+(currentPage-3)).remove();
+			
+			//add new link to the right of the navigator
+			$('#unordered-list li:eq('+next_counter+')').after(page_number);
+			
+			next_counter++;
+			
+			//show page
+			context.showPage(currentPage);
+ 	 	}
+    		
     	});
     	
     	
