@@ -12,32 +12,7 @@ function toggle(source) {
 }
 </script>
 
-<!-- http://jsfiddle.net/userdude/KFFgf/1/ -->
-<style>
-#jsfiddle {
-    width: 280%;
-    max-width: 870px;
-    margin: 10px auto;
-    border: 0px solid black;
-    padding: 10px;
-}
-#jsfiddle .row {
-    width: 100%;
-    border: 0px solid green;
-    border-left: 0;
-    border-top: none;
-    margin: 0;
-    padding: 0;
-}
-#jsfiddle .block {
-    border: 0px solid blue;
-    border-bottom: 0;
-    border-right: 0;
-    float: left;
-    margin-right: 10px;
-    width: 200px;
-}
-</style>
+<link href="{% static 'css/jsfiddle.css' %}" rel="stylesheet">
 
 <div class="container" align="">
 <div class="well" align="">
@@ -122,9 +97,6 @@ function toggle(source) {
 </div>
 
 </form>
-
-
-
 
 {% endblock body_block %}
 

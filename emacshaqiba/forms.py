@@ -55,7 +55,8 @@ class BundleTemplateForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}),         
         help_text="Description of bundle.", required=False)
-    dep = forms.ModelMultipleChoiceField(queryset = Dependency.objects.all())
+    dep = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+                                         queryset = Dependency.objects.all())
     config = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}),
         required=False)
