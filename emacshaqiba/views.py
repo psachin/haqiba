@@ -31,31 +31,113 @@ def emacs_config(request):
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     dependency = Dependency.objects.order_by('download_count')
     bundletemplate = BundleTemplate.objects.order_by('-download_count')
+    
+    # Make a list of package with NO m2m relation.
+    single_package = []
+    for d in dependency:
+        if not d.bundletemplate_set.filter().exists():
+            single_package.append(d)
 
     if request.method == 'POST':
-        selected_code_list = request.POST.getlist('selected_code_list')
-        if selected_code_list:
-            response = HttpResponse(content_type='text/plain')
-            response['Content-Disposition'] = 'attachment; filename=emacs_init.el'
-            response.write(instruction + "\n")
-            for e in selected_code_list:
-                CODE = CodeTemplate.objects.filter(name=e)
-                for i in CODE:
-                    response.write(";;; " + i.name + "\n" + i.code + "\n\n")
-                    print i.name, i.download_count
-                    temp_codetemplate = CodeTemplate.objects.get(name=i.name)
-                    count = temp_codetemplate.download_count + 1
-                    temp_codetemplate.download_count = count
-                    temp_codetemplate.save()
-            return response
+        if os.path.exists('./temp/.emacs.d/'):
+            shutil.rmtree('./temp/.emacs.d/')
+            os.makedirs('./temp/.emacs.d/')
         else:
-            print "No code selected for download."
+            print "No such dir."
+            os.makedirs('./temp/.emacs.d/')
+        
+        selected_code_list = request.POST.getlist('selected_code_list')
+        selected_package_list = request.POST.getlist('selected_package_list')
+        selected_bundle_list = request.POST.getlist('selected_bundle_list')
+        print "Code: %s" % selected_code_list
+        print "Package: %s" % selected_package_list
+        print "Bundle: %s" % selected_bundle_list
+
+        if selected_code_list or selected_package_list or selected_bundle_list:
+            init_file = open("init.el","w")
+            init_file.write(instruction)
+            
+            if selected_code_list:
+                for code in selected_code_list:
+                    code = CodeTemplate.objects.get(name=code)
+                    init_file.write(";;; " + code.name)
+                    init_file.write(code.code)
+                    init_file.write("\n\n")
+            else:
+                print "No code selected for download."
+
+            #init_file = open("init.el","a")
+    
+            if selected_package_list:
+                for package in selected_package_list:
+                    package = Dependency.objects.get(name=package)
+                    dep_path = "media/%s" % package.tarFile
+                    print dep_path
+                    if os.path.exists(dep_path):
+                        tar = tarfile.open(dep_path)
+                        tar.extractall(path="./temp/.emacs.d/")
+                        tar.close()
+                        # (add-to-list 'load-path "emacs-epc/")
+                        temp_str = str(package.tarFile)
+                        temp_str2 = temp_str.split('/')[1].split(".")[0]
+                        load_path_string="\n" + "(add-to-list 'load-path \"" 
+                        end_str = "/\")"
+                        init_file.write(load_path_string)
+                        init_file.write(temp_str2)
+                        init_file.write(end_str + "\n")
+                        init_file.write(package.config)
+                        init_file.write("\n\n")        
+                    else:
+                        print "path does not exist."
+            else:
+                print "No package selected"
+
+            if selected_bundle_list:
+                for bundle in selected_bundle_list:
+                    bundle = BundleTemplate.objects.get(name=bundle)
+                    print bundle.name
+                    for p in bundle.dep.all():
+                        dep_path = "media/%s" % p.tarFile
+                        print dep_path
+                        if os.path.exists(dep_path):
+                            tar = tarfile.open(dep_path)
+                            tar.extractall(path="./temp/.emacs.d/")
+                            tar.close()
+                            # (add-to-list 'load-path "emacs-epc/")
+                            temp_str = str(p.tarFile)
+                            temp_str2 = temp_str.split('/')[1].split(".")[0]
+                            load_path_string="\n" + "(add-to-list 'load-path \"" 
+                            end_str = "/\")"
+                            init_file.write(load_path_string)
+                            init_file.write(temp_str2)
+                            init_file.write(end_str + "\n")
+                            init_file.write(p.config)
+                            init_file.write("\n\n")        
+                        else:
+                            print "path does not exist."
+            else:
+                print "No Bundle selected."
+            
+            init_file.close()
+            shutil.move('./init.el','./temp/.emacs.d/')    
+            tar = tarfile.open("emacs.d.tar","w")
+            dep_path = "./temp/.emacs.d/"
+            tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
+            tar.close()
+
+            # server tarball
+            tar_data = open("emacs.d.tar", "rb")
+            return HttpResponse(tar_data, mimetype="application/x-gzip")
+
+        else:
+            print "Nothing selected."
+                
     else:
         print "No POST request"
-
+            
     context_dict = {
         'codetemplate': codetemplate,
-        'dependency': dependency,
+        'dependency': single_package,
         'bundletemplate': bundletemplate,}
     return render_to_response('emacshaqiba/emacs_config.html', context_dict, context)
 

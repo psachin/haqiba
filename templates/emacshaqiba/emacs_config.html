@@ -5,7 +5,7 @@
 
 <script>
 function toggle(source) {
-  checkboxes = document.getElementsByName('selected_code_list');
+  checkboxes = document.getElementsByClassName('selected_list');
   for (var i=0, n=checkboxes.length; i<n; i++) {
     checkboxes[i].checked = source.checked;
   }
@@ -27,7 +27,7 @@ function toggle(source) {
     {% for e in codetemplate %}
     <div class="block"> 
     <label class="checkbox">
-	<input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
+	<input class="selected_list" name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
 	<a class="text-success" href="/emacshaqiba/code/{{e.id}}">{{e.name}}</a>
       </label>
     </div>
@@ -49,7 +49,7 @@ function toggle(source) {
     {% for e in dependency %}
     <div class="block"> 
     <label class="checkbox">
-	<input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
+	<input class="selected_list" name="selected_package_list" type="checkbox" id={{e.id}} value={{e.name}}>
 	<a class="text-success" href="/emacshaqiba/package/{{e.id}}">{{e.name}}</a>
       </label>
     </div>
@@ -71,7 +71,7 @@ function toggle(source) {
     {% for e in bundletemplate %}
     <div class="block"> 
     <label class="checkbox">
-	<input name="selected_code_list" type="checkbox" id={{e.id}} value={{e.name}}>
+    <input class="selected_list" name="selected_bundle_list" type="checkbox" id={{e.id}} value={{e.name}}>
 	<a class="text-success" href="/emacshaqiba/bundle/{{e.id}}">{{e.name}}</a>
       </label>
     </div>

@@ -1,7 +1,9 @@
 # template.py
 
 instruction=""";; INSTRUCTIONS: This file is auto-generated from Haqiba(haqiba.org).
-;; Rename THIS file to .emacs and copy to your $HOME path(~).
-;; Or you can test this config file using the command
-;; 'emacs -q -l emacs_init.el'
+;; Untar this tarball(emacs.d.tar) using the command
+;; 'tar -xvf emacs.d.tar'
+;; and copy the directory '.emacs.d' to your $HOME(~/).
+
+
 """
