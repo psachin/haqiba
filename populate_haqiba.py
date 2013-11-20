@@ -385,7 +385,7 @@ programming."
                       name="emacs-epc",
                       description="emacs-epc, https://github.com/kiwanami/emacs-epc",
                       tarFile="deps/emacs-epc.tar",
-                      config="""(require 'emacs-epc)""",
+                      config="",
                       screenshot=None)
     epc.save()
 
@@ -393,7 +393,7 @@ programming."
                            name="emacs-deferred",
                            description="emacs-deferred, https://github.com/kiwanami/emacs-deferred",
                            tarFile="deps/emacs-deferred.tar",
-                           config="""(require 'emacs-deferred)""",
+                           config="",
                            screenshot=None)
     deferred.save()
     
@@ -401,7 +401,7 @@ programming."
                          name="emacs-ctable",
                          description="emacs-ctable, https://github.com/kiwanami/emacs-ctable",
                          tarFile="deps/emacs-ctable.tar",
-                         config="""(require 'emacs-ctable)""",
+                         config="",
                          screenshot=None)
     ctable.save()
 
@@ -409,7 +409,7 @@ programming."
                        name="emacs-jedi",
                        description="emacs-jedi, https://github.com/tkf/emacs-jedi",
                        tarFile="deps/emacs-jedi.tar",
-                       config="""(require 'emacs-jedi)""",
+                       config="",
                        screenshot=None)
     jedi.save()
 
@@ -417,8 +417,7 @@ programming."
                       name="yasnippet",
                       description="Template system for Emacs. https://github.com/capitaomorte/yasnippet",
                       tarFile="deps/yasnippet.tar",
-                      config="""(require 'yasnippet)
-(yas-global-mode 1)""",
+                      config="""(yas-global-mode 1)""",
                       screenshot="screenshot/banner.png")
     yas.save()
 
@@ -461,7 +460,7 @@ programming."
     parentheses = add_bundle(user_id=store.user1['USERNAME'].id,
                              name="Parentheses",
                              description="Parentheses. Includes autopair & rainbow-delimiter.",
-                             config="""""",
+                             config="",
                              screenshot="/screenshot/banner.png",)
 
     parentheses.save()

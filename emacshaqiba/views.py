@@ -39,11 +39,10 @@ def emacs_config(request):
             single_package.append(d)
 
     if request.method == 'POST':
-        if os.path.exists('./temp/.emacs.d/'):
-            shutil.rmtree('./temp/.emacs.d/')
+        if not os.path.exists('./temp/.emacs.d/'):
             os.makedirs('./temp/.emacs.d/')
         else:
-            print "No such dir."
+            shutil.rmtree('./temp/.emacs.d/')
             os.makedirs('./temp/.emacs.d/')
         
         selected_code_list = request.POST.getlist('selected_code_list')
@@ -63,6 +62,7 @@ def emacs_config(request):
                     init_file.write(";;; " + code.name)
                     init_file.write(code.code)
                     init_file.write("\n\n")
+                    increment_download_count(code)
             else:
                 print "No code selected for download."
 
@@ -73,22 +73,7 @@ def emacs_config(request):
                     package = Dependency.objects.get(name=package)
                     dep_path = "media/%s" % package.tarFile
                     print dep_path
-                    if os.path.exists(dep_path):
-                        tar = tarfile.open(dep_path)
-                        tar.extractall(path="./temp/.emacs.d/")
-                        tar.close()
-                        # (add-to-list 'load-path "emacs-epc/")
-                        temp_str = str(package.tarFile)
-                        temp_str2 = temp_str.split('/')[1].split(".")[0]
-                        load_path_string="\n" + "(add-to-list 'load-path \"" 
-                        end_str = "/\")"
-                        init_file.write(load_path_string)
-                        init_file.write(temp_str2)
-                        init_file.write(end_str + "\n")
-                        init_file.write(package.config)
-                        init_file.write("\n\n")        
-                    else:
-                        print "path does not exist."
+                    write_package_config(dep_path, package, init_file)
             else:
                 print "No package selected"
 
@@ -96,25 +81,14 @@ def emacs_config(request):
                 for bundle in selected_bundle_list:
                     bundle = BundleTemplate.objects.get(name=bundle)
                     print bundle.name
+                    init_file.write(";;; " + bundle.name + "\n")
+                    increment_download_count(bundle)
                     for p in bundle.dep.all():
                         dep_path = "media/%s" % p.tarFile
                         print dep_path
-                        if os.path.exists(dep_path):
-                            tar = tarfile.open(dep_path)
-                            tar.extractall(path="./temp/.emacs.d/")
-                            tar.close()
-                            # (add-to-list 'load-path "emacs-epc/")
-                            temp_str = str(p.tarFile)
-                            temp_str2 = temp_str.split('/')[1].split(".")[0]
-                            load_path_string="\n" + "(add-to-list 'load-path \"" 
-                            end_str = "/\")"
-                            init_file.write(load_path_string)
-                            init_file.write(temp_str2)
-                            init_file.write(end_str + "\n")
-                            init_file.write(p.config)
-                            init_file.write("\n\n")        
-                        else:
-                            print "path does not exist."
+                        write_package_config(dep_path, p, init_file)
+                    # Write bundle related config code.
+                    init_file.write(bundle.config + "\n\n")
             else:
                 print "No Bundle selected."
             
@@ -125,13 +99,13 @@ def emacs_config(request):
             tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
             tar.close()
 
+            # Delete temp-space
+            shutil.rmtree('./temp/.emacs.d/')
             # server tarball
             tar_data = open("emacs.d.tar", "rb")
             return HttpResponse(tar_data, mimetype="application/x-gzip")
-
         else:
             print "Nothing selected."
-                
     else:
         print "No POST request"
             
@@ -141,6 +115,36 @@ def emacs_config(request):
         'bundletemplate': bundletemplate,}
     return render_to_response('emacshaqiba/emacs_config.html', context_dict, context)
 
+def write_package_config(dep_path, package, init_file):
+    if os.path.exists(dep_path):
+        tar = tarfile.open(dep_path)
+        tar.extractall(path="./temp/.emacs.d/")
+        tar.close()
+        init_file.write(";; " + package.name)
+        temp_str = str(package.tarFile)
+        temp_str2 = temp_str.split('/')[1].split(".")[0]
+        load_path_string="\n" + "(add-to-list 'load-path \"" 
+        end_str = "/\")"
+        init_file.write(load_path_string)
+        init_file.write(temp_str2)
+        init_file.write(end_str + "\n")
+        require_start_str="(require '"
+        require_end_str=")"
+        init_file.write(require_start_str)
+        init_file.write(package.name)
+        init_file.write(require_end_str + "\n")
+        if package.config:
+            init_file.write(package.config)
+        init_file.write("\n\n")
+        increment_download_count(package)
+    else:
+        print "path does not exist."
+
+def increment_download_count(instance):
+    count = instance.download_count + 1
+    instance.download_count = count
+    instance.save()
+    
 def about(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
@@ -423,70 +427,6 @@ def display_bundle(request, id):
 
     return render_to_response('emacshaqiba/display_bundle.html', 
                               context_dict,
-                              context)
-    
-def displayBundle(request):
-    """Dirty code, may not work(or misbehave) with multisessions.
-
-    """
-    context = RequestContext(request)
-    bundle = BundleTemplate.objects.all()
-    
-    
-    if os.path.exists('./temp/.emacs.d/'):
-        shutil.rmtree('./temp/.emacs.d/')
-        os.makedirs('./temp/.emacs.d/')
-    else:
-        print "No such dir."
-        os.makedirs('./temp/.emacs.d/')
-
-    selected_code_list = CodeTemplate.objects.filter(pk=1)
-    if selected_code_list:
-        init_file = open("init.el","w")
-        for code in selected_code_list:
-            init_file.write(code.code)
-        init_file.close()
-
-    init_file = open("init.el","a")
-    for b in bundle:
-        # print b.name, b.user, b.description, b.config, b.screenshot, b.download_count
-        # print b.id
-            
-        dependency = Dependency.objects.filter(bundletemplate=b.id)
-        for d in dependency:
-            # print d.name
-            dep_path = "media/%s" % d.tarFile
-            # print d.tarFile
-            if os.path.exists(dep_path):
-                tar = tarfile.open(dep_path)
-                tar.extractall(path="./temp/.emacs.d/")
-                tar.close()
-                # (add-to-list 'load-path "emacs-epc/")
-                temp_str = str(d.tarFile)
-                temp_str2 = temp_str.split('/')[1].split(".")[0]
-                load_path_string="\n" + "(add-to-list 'load-path \"" 
-                end_str = "/\")"
-                init_file.write(load_path_string)
-                init_file.write(temp_str2)
-                init_file.write(end_str)
-
-        init_file.write("\n\n")        
-        init_file.write(b.config)
-
-    init_file.close()
-    shutil.move('./init.el','./temp/.emacs.d/')    
-    tar = tarfile.open("emacs.d.tar","w")
-    dep_path = "./temp/.emacs.d/"
-    tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
-    tar.close()
-
-    # server tarball
-    tar_data = open("emacs.d.tar", "rb")
-    return HttpResponse(tar_data, mimetype="application/x-gzip")
-
-    
-    context_dict = {'bundle':bundle,}
-    return render_to_response('emacshaqiba/display_bundle.html', context_dict, 
                               context)
 
 @login_required
