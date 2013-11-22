@@ -439,6 +439,14 @@ programming."
                            config="""(autopair-global-mode)""",
                            screenshot="screenshot/autopair.png")
     autopair.save()
+
+    hackernews = add_package(user_id=store.user1['USERNAME'].id,
+                             name="hackernews",
+                             description="Hackernews client for Emacs. https://github.com/clarete/hackernews.el",
+                             tarFile="deps/hackernews.el.tar",
+                             config="",
+                             screenshot="screenshot/hn.png")
+    hackernews.save()
     
     print "---------- Packages ------------"
     for p in Dependency.objects.all():

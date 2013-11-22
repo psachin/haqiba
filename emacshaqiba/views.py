@@ -84,17 +84,7 @@ def emacs_config(request):
             else:
                 print "No Bundle selected."
             
-            init_file.close()
-            shutil.move('./init.el','./temp/.emacs.d/')
-            tar = tarfile.open("emacs.d.tar","w")
-            dep_path = "./temp/.emacs.d/"
-            tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
-            tar.close()
-
-            # Delete temp-space
-            shutil.rmtree('./temp/.emacs.d/')
-            # server tarball
-            tar_data = open("emacs.d.tar", "rb")
+            tar_data = make_tarball(init_file)
             return HttpResponse(tar_data, mimetype="application/x-gzip")
         else:
             print "Nothing selected."
@@ -115,7 +105,7 @@ def write_package_config(package, init_file):
         tar.close()
         init_file.write(";; " + package.name)
         temp_str = str(package.tarFile)
-        temp_str2 = temp_str.split('/')[1].split(".")[0]
+        temp_str2 = temp_str.split('/')[1].replace(".tar", "")
         load_path_string="\n" + "(add-to-list 'load-path \"" 
         end_str = "/\")"
         init_file.write(load_path_string)
@@ -133,6 +123,19 @@ def write_package_config(package, init_file):
     else:
         print "path does not exist."
 
+def make_tarball(init_file):
+    init_file.close()
+    shutil.move('./init.el','./temp/.emacs.d/')
+    tar = tarfile.open("emacs.d.tar","w")
+    dep_path = "./temp/.emacs.d/"
+    tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
+    tar.close()
+    
+    # Delete temp-space
+    shutil.rmtree('./temp/.emacs.d/')
+    # server tarball
+    return open("emacs.d.tar", "rb")
+            
 def make_temp_dir():
     if not os.path.exists('./temp/.emacs.d/'):
         os.makedirs('./temp/.emacs.d/')
@@ -416,17 +419,7 @@ def display_package(request, id):
         init_file = open("init.el","w")
         init_file.write(instruction)
         write_package_config(package_id, init_file)
-        init_file.close()
-        shutil.move('./init.el','./temp/.emacs.d/')
-        tar = tarfile.open("emacs.d.tar","w")
-        dep_path = "./temp/.emacs.d/"
-        tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
-        tar.close()
-
-        # Delete temp-space
-        shutil.rmtree('./temp/.emacs.d/')
-        # server tarball
-        tar_data = open("emacs.d.tar", "rb")
+        tar_data = make_tarball(init_file)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
 
     context_dict = {'codetemplate': codetemplate,
