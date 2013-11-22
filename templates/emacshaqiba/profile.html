@@ -1,5 +1,8 @@
 {% extends "emacshaqiba/base.html" %}
-{% block title %}Profile{% endblock %}
+
+{% block title %}
+- Profile - {{user.username}}
+{% endblock title %}
 
 {% block body_block %}
 <div class="container">

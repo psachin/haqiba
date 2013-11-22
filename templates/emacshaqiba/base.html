@@ -2,7 +2,8 @@
 {% load static %}
 <html class="font-size-base ">
   <head>
-    <title>haqiba - {% block title %} emacshaqiba {% endblock %}</title>
+    <title>Haqiba{% block title %} - Emacs starter-kit {% endblock title %}</title>
+    <meta name="description" content="Generate and download GNU Emacs configuration.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen">
@@ -31,7 +32,7 @@
       <div class="collapse navbar-collapse navbar-ex1-collapse">
 	<ul class="nav navbar-nav">
 	  <li><a href="/emacshaqiba/about">About</a></li>
-	  <li><a href="/emacshaqiba/emacs_config">Emacs config</a></li>
+	  <li><a href="/emacshaqiba/emacs_config">Emacs</a></li>
 	  {% if user.is_authenticated %}
 	  <li class="dropdown">
 	    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
@@ -114,7 +115,7 @@
 	<div class="col-md-9">
 	  <div class="well">
 	  {% block body_block %}
-          {% endblock %}
+          {% endblock body_block %}
 	  </div>
 	</div>
       </div>

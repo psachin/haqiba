@@ -1,6 +1,10 @@
 {% extends 'emacshaqiba/base.html' %}
 {% load static %}
 
+{% block title %}
+- Bundle - Edit
+{% endblock title %}
+
 {% block body_block %}
 <div class="container">
   <div class="well">
@@ -32,7 +36,7 @@
   {% endfor %}
   </table>
   {% else %}
-  No Packages submitted by you.
+  No Bundles submitted by you.
   {% endif %}
 </div>
 </div>

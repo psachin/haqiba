@@ -1,6 +1,10 @@
 {% extends 'emacshaqiba/base.html' %}
 {% load static %}
 
+{% block title %}
+- Bundle - Submit
+{% endblock title %}
+
 {% block body_block %}
 <!-- codemirror settings -->
 <link rel="stylesheet" 
@@ -60,7 +64,8 @@
 
   <div class="form-group" style="width:100%;">
     {{ bundletemplate_form.deperrors }}
-    <label for="id_dep">Dependency</label>
+    <label for="id_dep">Dependencies</label>
+    [<a href="/emacshaqiba/package/submit/">Add</a>]
     {{ bundletemplate_form.dep }}
   </div> <!-- form-group dep-->
 

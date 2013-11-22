@@ -1,8 +1,11 @@
 {% extends 'emacshaqiba/base.html' %}
 {% load static %}
 
-{% block body_block %}
+{% block title %}
+- Generate config for Emacs
+{% endblock title %}
 
+{% block body_block %}
 <script>
 function toggle(source) {
   checkboxes = document.getElementsByClassName('selected_list');

@@ -1,6 +1,9 @@
 {% extends 'emacshaqiba/base.html' %}
 {% load static %}
 
+{% block title %}
+- Bundle - {{bundle.name}}
+{% endblock title %}
 
 {% block body_block %}
 <!-- codemirror settings -->
@@ -41,19 +44,18 @@
   {% if bundle %}
   <div class="col-md-8">
     <div class="container">
-    {% for e in bundle %}
-	<h1>{{e.name}}</h1>
+	<h1>{{bundle.name}}</h1>
 	<p class="text-muted">(Bundle)</p>
-	{% if e.description %}
-	<p class="text-success">{{e.description}}</p>
+	{% if bundle.description %}
+	<p class="text-success">{{bundle.description}}</p>
 	{% else %}
 	<p class="text-success">No description available.</p>
 	{% endif %}
-        <p class="text-muted"><small>by {{e.user}}</small></p>
+        <p class="text-muted"><small>by {{bundle.user}}</small></p>
 	<div class="text-info">
 	  <strong>Includes</strong>:
 	  <ol>
-	  {% for dep in e.dep.all %}
+	  {% for dep in bundle.dep.all %}
 	  <li><a href="/emacshaqiba/package/{{dep.id}}">{{dep.name}}</a></li>
 	  {% endfor%}
 	  </ol>
@@ -63,17 +65,17 @@
 	  {% csrf_token %}
 	  <button class="btn btn-primary btn-mini">
 	    <i class="glyphicon glyphicon-download"></i>
-	     {{e.download_count}} download{{e.download_count|pluralize}}
+	     {{bundle.download_count}} download{{bundle.download_count|pluralize}}
 	  </button>
-	  <!-- <span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span> -->
+	  <!-- <span class="badge">{{bundle.download_count}} download{{bundle.download_count|pluralize}}</span> -->
 	</form>
 	</div>
   </div> <!-- col-md-8 -->
   <div class="col-md-4">
-    {% if e.screenshot %}
+    {% if bundle.screenshot %}
     <div class="container">
-      <a id="image_link" rel="imagezoom" href="media/{{e.screenshot}}" >	
-	<img src="media/{{e.screenshot}}" height="140" width="240" class="img-thumbnail">
+      <a id="image_link" rel="imagezoom" href="media/{{bundle.screenshot}}" >	
+	<img src="media/{{bundle.screenshot}}" height="140" width="240" class="img-thumbnail">
       </a>
     </div> <!-- image container -->
     {% else %}
@@ -84,15 +86,14 @@
 </ul>
 <ul>
   <small>Config</small> 
-  {% if e.user == user %}
+  {% if bundle.user == user %}
   |
-  <a href="/emacshaqiba/bundle/edit/{{e.id}}" class="text-warning">Edit</a> |
-  <a href="/emacshaqiba/bundle/delete/{{e.id}}" class="text-danger">Delete</a>
+  <a href="/emacshaqiba/bundle/edit/{{bundle.id}}" class="text-warning">Edit</a> |
+  <a href="/emacshaqiba/bundle/delete/{{bundle.id}}" class="text-danger">Delete</a>
   {% endif %}
-  <textarea id="id_config" name="config">{{e.config}}
+  <textarea id="id_config" name="config">{{bundle.config}}
   </textarea>
 </ul>
-{% endfor %}
 {% else %}
 <p align="center" class="text-warning">No such Bundle exist!!</p>
 {% endif %}

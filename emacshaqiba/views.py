@@ -430,10 +430,10 @@ def display_package(request, id):
 def display_bundle(request, id):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    bundle = BundleTemplate.objects.filter(pk=id).order_by('-download_count')
+    bundle_id = BundleTemplate.objects.get(pk=id)
 
     context_dict = {'codetemplate': codetemplate,
-                    'bundle':bundle,}
+                    'bundle': bundle_id,}
 
     return render_to_response('emacshaqiba/display_bundle.html', 
                               context_dict,
