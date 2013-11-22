@@ -1,41 +1,29 @@
 {%load static %}
 
-<ul class="nav nav-list">
-<h2>Top codes</span></h2>
-{% if codetemplate %}
-	<table>
-	{% for code in codetemplate|slice:":5" %}
-		<tr>
-                <td>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
-		  {% if code.download_count %}
-		  <span class="badge">{{code.download_count}}</span>
-		  {% endif %}</td>
-            	</tr>
-	{% endfor %}
-	</table>
+<div class="nav nav-list">
+  {% if codetemplate %}
+  <!-- paging to be applied for below list -->
+  <h2>Code{{codetemplate|length|pluralize}}</h2>
+  {% if codetemplate %}
+  <table id="results">
+    {% for code in codetemplate %}
+    <tr>
+      <td>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
+	{% if code.download_count %}
+	<span class="badge">{{code.download_count}}</span>
+	{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
 
-	<!-- paging to be applied for below list -->
-	<h2>All codes</h2>
-	{% if codetemplate %}
-		<table id="results">
-		{% for code in codetemplate %}
-			<tr>
-        			<td>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
-		  		{% if code.download_count %}
-		  		<span class="badge">{{code.download_count}}</span>
-		  		{% endif %}</td>
-    			</tr>
-		{% endfor %}
-		</table>
-	{% endif %}
-	
-	<!-- add page navigator for list here-->
-	<ul class="pagination" id="unordered-list"></ul>
-	
-{% else %}
-	<p>Nothing to display.</p>
-{% endif %}
-</ul>
+  <!-- add page navigator for list here-->
+  <ul class="pagination" id="unordered-list"></ul>
+  
+  {% else %}
+  <p>Nothing to display.</p>
+  {% endif %}
+</div>
 
 <!-- pagination code starts here-->
 <script src="{% static 'js/paging.js' %}"></script>
