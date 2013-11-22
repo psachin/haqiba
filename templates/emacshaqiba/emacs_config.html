@@ -13,6 +13,27 @@ function toggle(source) {
     checkboxes[i].checked = source.checked;
   }
 }
+
+function toggle_code(source) {
+  checkboxes = document.getElementsByName('selected_code_list');
+  for (var i=0, n=checkboxes.length; i<n; i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+
+function toggle_package(source) {
+  checkboxes = document.getElementsByName('selected_package_list');
+  for (var i=0, n=checkboxes.length; i<n; i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+
+function toggle_bundle(source) {
+  checkboxes = document.getElementsByName('selected_bundle_list');
+  for (var i=0, n=checkboxes.length; i<n; i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}					  
 </script>
 
 <link href="{% static 'css/jsfiddle.css' %}" rel="stylesheet">
@@ -23,7 +44,11 @@ function toggle(source) {
 <form class="form-horizontal" role="form" id="download_form" method="post" 
       style="width:40%;" action="/emacshaqiba/emacs_config/">
 {% csrf_token %}
-<h4 class="text-warning"><strong>Code{{codetemplate|length|pluralize}}</strong></h4>
+<h4 class="text-warning"><strong>Code{{codetemplate|length|pluralize}}</strong>
+  <label class="text-mutes">
+    [<input type="checkbox" onClick="toggle_code(this)"> all]
+  </label>
+</h4>
 {% if codetemplate %}
 <div id="jsfiddle">
     <div class="row">
@@ -45,7 +70,11 @@ function toggle(source) {
 {% endif %}
 <hr>
 <!-- code ends here -->
-<h4 class="text-warning"><strong>Package{{dependency|length|pluralize}}</strong></h4>
+<h4 class="text-warning"><strong>Package{{dependency|length|pluralize}}</strong>
+  <label class="text-muted">
+    [<input type="checkbox" onClick="toggle_package(this)"> all]
+  </label>
+</h4>
 {% if dependency %}
 <div id="jsfiddle">
     <div class="row">
@@ -67,7 +96,11 @@ function toggle(source) {
 {% endif %}
 <hr>
 <!-- dependency/package ends here -->
-<h4 class="text-warning"><strong>Bundle{{bundletemplate|length|pluralize}}</strong></h4>
+<h4 class="text-warning"><strong>Bundle{{bundletemplate|length|pluralize}}</strong>
+  <label class="text-muted">
+    [<input type="checkbox" onClick="toggle_bundle(this)"> all]
+  </label>
+</h4>
 {% if bundletemplate %}
 <div id="jsfiddle">
     <div class="row">
@@ -89,8 +122,8 @@ function toggle(source) {
 {% endif %}
 
 <!-- bundle ends here -->
-</div>
-</div>
+</div> <!-- well -->
+</div> <!-- container -->
 
 <div class="container" align="">
   <div class="form-group" align="center">
