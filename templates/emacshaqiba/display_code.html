@@ -43,30 +43,29 @@
   {% if codetemplate_id %}
   <div class="col-md-8">
     <div class="container">
-    {% for e in codetemplate_id %}
-	<h1>{{e.name}} </h1>
+	<h1>{{codetemplate_id.name}} </h1>
         <p class="text-muted">(Code snippet)</p>
-	{% if e.description %}
-	<p class="text-success">{{e.description}}</p>
+	{% if codetemplate_id.description %}
+	<p class="text-success">{{codetemplate_id.description}}</p>
 	{% else %}
 	<p class="text-success">No description available.</p>
 	{% endif %}
-	<p class="text-muted"><small>by {{e.user}}</small></p>
+	<p class="text-muted"><small>by {{codetemplate_id.user}}</small></p>
 	<form id="display-code_form" method="post">
 	  {% csrf_token %}
 	  <button class="btn btn-primary btn-mini">
 	    <i class="glyphicon glyphicon-download"></i>
-	     {{e.download_count}} download{{e.download_count|pluralize}}
+	     {{codetemplate_id.download_count}} download{{codetemplate_id.download_count|pluralize}}
 	  </button>
-	  <!-- <span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span> -->
+	  <!-- <span class="badge">{{codetemplate_id.download_count}} download{{codetemplate_id.download_count|pluralize}}</span> -->
 	</form>
     </div> <!-- container -->
   </div>
   <div class="col-md-4">
-    {% if e.screenshot %}
+    {% if codetemplate_id.screenshot %}
     <div "container">
-      <a id="image_link" rel="imagezoom" href="media/{{e.screenshot}}" >	
-	<img src="media/{{e.screenshot}}" height="140" width="240" class="img-thumbnail">
+      <a id="image_link" rel="imagezoom" href="media/{{codetemplate_id.screenshot}}" >	
+	<img src="media/{{codetemplate_id.screenshot}}" height="140" width="240" class="img-thumbnail">
       </a>
     </div> <!-- image container -->
   </div> <!-- col-md-4 -->
@@ -77,16 +76,15 @@
 </ul>
 <ul>
   <small>Code</small> 
-  {% if e.user == user %}
+  {% if codetemplate_id.user == user %}
   |
-  <a href="/emacshaqiba/code/edit/{{e.id}}" class="text-warning">Edit</a> |
-  <a href="/emacshaqiba/code/delete/{{e.id}}" class="text-danger">Delete</a>
+  <a href="/emacshaqiba/code/edit/{{codetemplate_id.id}}" class="text-warning">Edit</a> |
+  <a href="/emacshaqiba/code/delete/{{codetemplate_id.id}}" class="text-danger">Delete</a>
   {% endif %}
-  <textarea id="id_code" name="code">{{e.code}}
+  <textarea id="id_code" name="code">{{codetemplate_id.code}}
   </textarea>
 </ul>
 </div>
-{% endfor %}
 {% else %}
 <p align="center" class="text-warning">No such Code exists!!</p>
 {% endif %}

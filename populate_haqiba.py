@@ -421,8 +421,8 @@ programming."
                       screenshot="screenshot/banner.png")
     yas.save()
 
-    rainbow_delimiter = add_package(user_id=store.user1['USERNAME'].id,
-                                    name="rainbow-delimiter",
+    rainbow_delimiters = add_package(user_id=store.user1['USERNAME'].id,
+                                    name="rainbow-delimiters",
                                     description="highlights parentheses, brackets, and braces according to their depth. Each successive level is highlighted in a different color. https://github.com/jlr/rainbow-delimiters",
                                     tarFile="deps/rainbow-delimiters.tar",
                                     config="""(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
@@ -430,7 +430,7 @@ programming."
 (global-rainbow-delimiters-mode)""",
                                     screenshot="screenshot/rainbow_delimiter.png",
     )
-    rainbow_delimiter.save()
+    rainbow_delimiters.save()
 
     autopair = add_package(user_id=store.user1['USERNAME'].id,
                            name="autopair",
@@ -472,7 +472,7 @@ programming."
                              screenshot="/screenshot/banner.png",)
 
     parentheses.save()
-    parentheses.dep.add(rainbow_delimiter, autopair)
+    parentheses.dep.add(rainbow_delimiters, autopair)
     
     print "---------- Bundle ------------"
     for b in BundleTemplate.objects.all():

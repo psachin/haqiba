@@ -39,7 +39,7 @@ def emacs_config(request):
             single_package.append(d)
 
     if request.method == 'POST':
-        make_temp_dir
+        make_temp_dir()
         
         selected_code_list = request.POST.getlist('selected_code_list')
         selected_package_list = request.POST.getlist('selected_package_list')
@@ -55,10 +55,7 @@ def emacs_config(request):
             if selected_code_list:
                 for code in selected_code_list:
                     code = CodeTemplate.objects.get(name=code)
-                    init_file.write(";;; " + code.name)
-                    init_file.write(code.code)
-                    init_file.write("\n\n")
-                    increment_download_count(code)
+                    write_code_config(code, init_file)
             else:
                 print "No code selected for download."
 
@@ -123,6 +120,12 @@ def write_package_config(package, init_file):
     else:
         print "path does not exist."
 
+def write_code_config(code, init_file):
+    init_file.write(";;; " + code.name)
+    init_file.write(code.code)
+    init_file.write("\n\n")
+    increment_download_count(code)
+    
 def make_tarball(init_file):
     init_file.close()
     shutil.move('./init.el','./temp/.emacs.d/')
@@ -385,22 +388,17 @@ def delete_bundle(request, id):
 
 def display_code(request, id):
     context = RequestContext(request)
-    codetemplate_id = CodeTemplate.objects.filter(pk=id)
+    codetemplate_id = CodeTemplate.objects.get(pk=id)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
 
     if request.POST:
-        for i in codetemplate_id:
-            response = HttpResponse(content_type='text/plain')
-            response['Content-Disposition'] = 'attachment; filename=emacs_init.el'
-            response.write(instruction + "\n")
-            response.write(";;; " + i.name + "\n" + i.code + "\n\n")
-            print i.name, i.download_count
-            temp_codetemplate = CodeTemplate.objects.get(name=i.name)
-            count = temp_codetemplate.download_count + 1
-            temp_codetemplate.download_count = count
-            temp_codetemplate.save()
-        return response
-    
+        make_temp_dir()
+        init_file = open("init.el","w")
+        init_file.write(instruction)
+        write_code_config(codetemplate_id, init_file)
+        tar_data = make_tarball(init_file)
+        return HttpResponse(tar_data, mimetype="application/x-gzip")
+        
     context_dict = {'codetemplate': codetemplate,
                     'codetemplate_id':codetemplate_id,}
 
@@ -415,7 +413,7 @@ def display_package(request, id):
     package_id = Dependency.objects.get(pk=id)
 
     if request.POST:
-        make_temp_dir
+        make_temp_dir()
         init_file = open("init.el","w")
         init_file.write(instruction)
         write_package_config(package_id, init_file)
