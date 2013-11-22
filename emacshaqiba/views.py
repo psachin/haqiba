@@ -39,11 +39,7 @@ def emacs_config(request):
             single_package.append(d)
 
     if request.method == 'POST':
-        if not os.path.exists('./temp/.emacs.d/'):
-            os.makedirs('./temp/.emacs.d/')
-        else:
-            shutil.rmtree('./temp/.emacs.d/')
-            os.makedirs('./temp/.emacs.d/')
+        make_temp_dir
         
         selected_code_list = request.POST.getlist('selected_code_list')
         selected_package_list = request.POST.getlist('selected_package_list')
@@ -71,9 +67,7 @@ def emacs_config(request):
             if selected_package_list:
                 for package in selected_package_list:
                     package = Dependency.objects.get(name=package)
-                    dep_path = "media/%s" % package.tarFile
-                    print dep_path
-                    write_package_config(dep_path, package, init_file)
+                    write_package_config(package, init_file)
             else:
                 print "No package selected"
 
@@ -84,16 +78,14 @@ def emacs_config(request):
                     init_file.write(";;; " + bundle.name + "\n")
                     increment_download_count(bundle)
                     for p in bundle.dep.all():
-                        dep_path = "media/%s" % p.tarFile
-                        print dep_path
-                        write_package_config(dep_path, p, init_file)
+                        write_package_config(p, init_file)
                     # Write bundle related config code.
                     init_file.write(bundle.config + "\n\n")
             else:
                 print "No Bundle selected."
             
             init_file.close()
-            shutil.move('./init.el','./temp/.emacs.d/')    
+            shutil.move('./init.el','./temp/.emacs.d/')
             tar = tarfile.open("emacs.d.tar","w")
             dep_path = "./temp/.emacs.d/"
             tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
@@ -115,7 +107,8 @@ def emacs_config(request):
         'bundletemplate': bundletemplate,}
     return render_to_response('emacshaqiba/emacs_config.html', context_dict, context)
 
-def write_package_config(dep_path, package, init_file):
+def write_package_config(package, init_file):
+    dep_path = "media/%s" % package.tarFile
     if os.path.exists(dep_path):
         tar = tarfile.open(dep_path)
         tar.extractall(path="./temp/.emacs.d/")
@@ -140,6 +133,13 @@ def write_package_config(dep_path, package, init_file):
     else:
         print "path does not exist."
 
+def make_temp_dir():
+    if not os.path.exists('./temp/.emacs.d/'):
+        os.makedirs('./temp/.emacs.d/')
+    else:
+        shutil.rmtree('./temp/.emacs.d/')
+        os.makedirs('./temp/.emacs.d/')
+        
 def increment_download_count(instance):
     count = instance.download_count + 1
     instance.download_count = count
@@ -408,10 +408,29 @@ def display_code(request, id):
 def display_package(request, id):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    package = Dependency.objects.filter(pk=id).order_by('-download_count')
+    packages = Dependency.objects.order_by('-download_count')
+    package_id = Dependency.objects.get(pk=id)
+
+    if request.POST:
+        make_temp_dir
+        init_file = open("init.el","w")
+        init_file.write(instruction)
+        write_package_config(package_id, init_file)
+        init_file.close()
+        shutil.move('./init.el','./temp/.emacs.d/')
+        tar = tarfile.open("emacs.d.tar","w")
+        dep_path = "./temp/.emacs.d/"
+        tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
+        tar.close()
+
+        # Delete temp-space
+        shutil.rmtree('./temp/.emacs.d/')
+        # server tarball
+        tar_data = open("emacs.d.tar", "rb")
+        return HttpResponse(tar_data, mimetype="application/x-gzip")
 
     context_dict = {'codetemplate': codetemplate,
-                    'package': package,}
+                    'package_id': package_id,}
 
     return render_to_response('emacshaqiba/display_package.html', 
                               context_dict,

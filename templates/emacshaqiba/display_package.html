@@ -40,43 +40,42 @@
 <div class="row">
   <ul>
     <div class="row">
-      {% if package %}
+      {% if package_id %}
       <div class="col-md-8">
 	<div class="container">
-	  {% for e in package %}
-	  <h1>{{e.name}} </h1>
+	  <h1>{{package_id.name}} </h1>
 	  <p class="text-muted">(Package)</p>
-	  {% if e.description %}
-	  <p class="text-success">{{e.description}}</p>
+	  {% if package_id.description %}
+	  <p class="text-success">{{package_id.description}}</p>
 	  {% else %}
 	  <p class="text-success">No description available.</p>
 	  {% endif %}
 	  <div class="text-info">
-	  {% if e.tarFile %}
+	  {% if package_id.tarFile %}
 	  <strong>Associated file</strong>:<br />
 	  <ol>
-	    <li><a href="/media/{{e.tarFile}}">{{e.tarFile}}</a></li>
+	    <li><a href="/media/{{package_id.tarFile}}">{{package_id.tarFile}}</a></li>
 	  </ol>
 	  {% endif %}
 	  </div> <!-- text-info -->
 	  <br />
-	  <p class="text-muted"><small>by {{e.user}}</small></p>
+	  <p class="text-muted"><small>by {{package_id.user}}</small></p>
 	  <form id="display-code_form" method="post">
 	    {% csrf_token %}
 	    <button class="btn btn-primary btn-mini">
 	      <i class="glyphicon glyphicon-download"></i>
-	      {{e.download_count}} download{{e.download_count|pluralize}}
+	      {{package_id.download_count}} download{{package_id.download_count|pluralize}}
 	    </button>
-	    <!-- <span class="badge">{{e.download_count}} download{{e.download_count|pluralize}}</span> -->
+	    <!-- <span class="badge">{{package_id.download_count}} download{{package_id.download_count|pluralize}}</span> -->
 	  </form>
 	</div> <!-- container -->
       </div>
       <div class="col-md-4">
 	<!-- At present there are no screenshot field in Dependency model. -->
-	{% if e.screenshot %}
+	{% if package_id.screenshot %}
 	<div "container">
-	  <a id="image_link" rel="imagezoom" href="media/{{e.screenshot}}" >	
-	    <img src="media/{{e.screenshot}}" height="140" width="240" class="img-thumbnail">
+	  <a id="image_link" rel="imagezoom" href="media/{{package_id.screenshot}}" >	
+	    <img src="media/{{package_id.screenshot}}" height="140" width="240" class="img-thumbnail">
 	  </a>
 	</div> <!-- image container -->
       </div> <!-- col-md-4 -->
@@ -85,20 +84,19 @@
       {% endif %}
     </div>	 <!-- row -->
   </ul>
-  {% if e.config %}
+  {% if package_id.config %}
   <ul>
     <small>Config</small> 
-    {% if e.user == user %}
+    {% if package_id.user == user %}
     |
-    <a href="/emacshaqiba/package/edit/{{e.id}}" class="text-warning">Edit</a> |
-    <a href="/emacshaqiba/package/delete/{{e.id}}" class="text-danger">Delete</a>
+    <a href="/emacshaqiba/package/edit/{{package_id.id}}" class="text-warning">Edit</a> |
+    <a href="/emacshaqiba/package/delete/{{package_id.id}}" class="text-danger">Delete</a>
     {% endif %}
-    <textarea id="id_config" name="config">{{e.config}}
+    <textarea id="id_config" name="config">{{package_id.config}}
     </textarea>
   </ul>
   {% endif %}
 </div>
-{% endfor %}
 {% else %}
 <p align="center" class="text-warning">No such Package exists!!</p>
 {% endif %}
