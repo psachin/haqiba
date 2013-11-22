@@ -121,7 +121,7 @@ def write_package_config(package, init_file):
         print "path does not exist."
 
 def write_code_config(code, init_file):
-    init_file.write(";;; " + code.name)
+    init_file.write(";;; " + code.name + "\n")
     init_file.write(code.code)
     init_file.write("\n\n")
     increment_download_count(code)
