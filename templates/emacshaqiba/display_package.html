@@ -51,6 +51,15 @@
 	  {% else %}
 	  <p class="text-success">No description available.</p>
 	  {% endif %}
+	  <div class="text-info">
+	  {% if e.tarFile %}
+	  <strong>Associated file</strong>:<br />
+	  <ol>
+	    <li><a href="/media/{{e.tarFile}}">{{e.tarFile}}</a></li>
+	  </ol>
+	  {% endif %}
+	  </div> <!-- text-info -->
+	  <br />
 	  <p class="text-muted"><small>by {{e.user}}</small></p>
 	  <form id="display-code_form" method="post">
 	    {% csrf_token %}
