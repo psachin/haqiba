@@ -39,8 +39,6 @@ def emacs_config(request):
             single_package.append(d)
 
     if request.method == 'POST':
-        make_temp_dir()
-        
         selected_code_list = request.POST.getlist('selected_code_list')
         selected_package_list = request.POST.getlist('selected_package_list')
         selected_bundle_list = request.POST.getlist('selected_bundle_list')
@@ -49,8 +47,7 @@ def emacs_config(request):
         print "Bundle: %s" % selected_bundle_list
 
         if selected_code_list or selected_package_list or selected_bundle_list:
-            init_file = open("init.el","w")
-            init_file.write(instruction)
+            init_file = make_init()
             
             if selected_code_list:
                 for code in selected_code_list:
@@ -59,8 +56,6 @@ def emacs_config(request):
             else:
                 print "No code selected for download."
 
-            #init_file = open("init.el","a")
-    
             if selected_package_list:
                 for package in selected_package_list:
                     package = Dependency.objects.get(name=package)
@@ -71,13 +66,8 @@ def emacs_config(request):
             if selected_bundle_list:
                 for bundle in selected_bundle_list:
                     bundle = BundleTemplate.objects.get(name=bundle)
-                    print bundle.name
-                    init_file.write(";;; " + bundle.name + "\n")
-                    increment_download_count(bundle)
-                    for p in bundle.dep.all():
-                        write_package_config(p, init_file)
-                    # Write bundle related config code.
-                    init_file.write(bundle.config + "\n\n")
+                    # print bundle.name
+                    write_bundle_config(bundle, init_file)
             else:
                 print "No Bundle selected."
             
@@ -127,6 +117,20 @@ def write_code_config(code, init_file):
     init_file.write(code.code)
     init_file.write("\n\n")
     increment_download_count(code)
+
+def write_bundle_config(bundle, init_file):
+    init_file.write(";;; " + bundle.name + "\n")
+    for p in bundle.dep.all():
+        write_package_config(p, init_file)
+    # Write bundle related config code.
+    init_file.write(bundle.config + "\n\n")
+    increment_download_count(bundle)
+    
+def make_init():
+    make_temp_dir()
+    init_file = open("init.el","w")
+    init_file.write(instruction)
+    return init_file
     
 def make_tarball(init_file):
     init_file.close()
@@ -394,9 +398,7 @@ def display_code(request, id):
     codetemplate = CodeTemplate.objects.order_by('-download_count')
 
     if request.POST:
-        make_temp_dir()
-        init_file = open("init.el","w")
-        init_file.write(instruction)
+        init_file = make_init()
         write_code_config(codetemplate_id, init_file)
         tar_data = make_tarball(init_file)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
@@ -415,9 +417,7 @@ def display_package(request, id):
     package_id = Dependency.objects.get(pk=id)
 
     if request.POST:
-        make_temp_dir()
-        init_file = open("init.el","w")
-        init_file.write(instruction)
+        init_file = make_init()
         write_package_config(package_id, init_file)
         tar_data = make_tarball(init_file)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
@@ -434,6 +434,12 @@ def display_bundle(request, id):
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     bundle_id = BundleTemplate.objects.get(pk=id)
 
+    if request.POST:
+        init_file = make_init()
+        write_bundle_config(bundle_id, init_file)
+        tar_data = make_tarball(init_file)
+        return HttpResponse(tar_data, mimetype="application/x-gzip")
+        
     context_dict = {'codetemplate': codetemplate,
                     'bundle': bundle_id,}
 

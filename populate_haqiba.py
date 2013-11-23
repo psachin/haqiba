@@ -461,6 +461,31 @@ programming."
 (show-smartparens-global-mode +1)""",
                               screenshot=None,)
     smartparens.save()
+
+    xml_rpc = add_package(user_id=store.user1['USERNAME'].id,
+                          name="xml-rpc",
+                          description="XML-RPC client implementation in elisp, capable of both synchronous and asynchronous method calls. https://launchpad.net/xml-rpc-el.",
+                          tarFile="deps/xml-rpc.tar",
+                          config="",
+                          screenshot=None,)
+    xml_rpc.save()
+
+    metaweblog = add_package(user_id=store.user1['USERNAME'].id,
+                          name="metaweblog",
+                          description="An emacs library to access metaweblog based weblogs. https://github.com/punchagan/metaweblog.",
+                          tarFile="deps/metaweblog.el.tar",
+                          config="",
+                          screenshot=None,)
+    metaweblog.save()
+
+    o2b = add_package(user_id=store.user1['USERNAME'].id,
+                      name="org2blog",
+                      description="Blog from org-mode to wordpress. https://github.com/punchagan/org2blog.",
+                      tarFile="deps/org2blog.tar",
+                      require=False,
+                      config="""(require 'org2blog-autoloads)""",
+                      screenshot=None,)
+    o2b.save()
     
     print "---------- Packages ------------"
     for p in Dependency.objects.all():
@@ -474,7 +499,7 @@ programming."
 (add-hook 'python-mode-hook 'jedi:ac-setup)
 (setq jedi:setup-keys t)                      ; optional
 (setq jedi:complete-on-dot t)                 ; optional""",
-               screenshot="/screenshot/banner.png",)
+               screenshot="screenshot/banner.png",)
 
     python.save()
     python.dep.add(epc, deferred, ctable, jedi)
@@ -483,10 +508,19 @@ programming."
                              name="Parentheses",
                              description="Parentheses. Includes autopair & rainbow-delimiter.",
                              config="",
-                             screenshot="/screenshot/banner.png",)
+                             screenshot="screenshot/banner.png",)
 
     parentheses.save()
     parentheses.dep.add(rainbow_delimiters, autopair, smartparens)
+
+    org2blog = add_bundle(user_id=store.user1['USERNAME'].id,
+                          name="org2blog",
+                          description="Blog from org-mode to wordpress(Dependencies included).",
+                          config="",
+                          screenshot="screenshot/o2b.png",)
+
+    org2blog.save()
+    org2blog.dep.add(xml_rpc, metaweblog, o2b)
     
     print "---------- Bundle ------------"
     for b in BundleTemplate.objects.all():
