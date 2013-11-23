@@ -44,9 +44,45 @@
   	<label for="id_description">Description</label><br>
   	{{ package_form.description }}
   </div>
+  
+  <!-- by default the checkbox get checked even it is False(beacause
+  of form attrs) -->
+  {% if package_form.loadpath.value %}
+  <div class="form-group">
+    {{ package_form.loadpath.errors }}
+    {{ package_form.loadpath }}
+    <label for="id_loadpath"><pre>(add-to-list 'load-path "package-path/")</pre>
+    </label><br>
+  </div>
+  {% else %}
+  <div class="form-group">
+    {{ package_form.loadpath.errors }}
+    <input type="checkbox" id="id_loadpath" name="loadpath" >
+    <label for="id_loadpath"><pre>(add-to-list 'load-path "package-path/")</pre>
+    </label><br>
+  </div>
+  {% endif %}
+  
+  <!-- by default the checkbox get checked even it is False(beacause
+  of form attrs) --> {% if package_form.require.value %}
+  <div class="form-group">
+    {{ package_form.require.errors }}
+    {{ package_form.require }}
+    <label for="id_require"><pre>(require 'package-name)</pre>
+    </label><br>
+  </div>
+  {% else %}
+  <div class="form-group">
+    {{ package_form.require.errors }}
+    <input type="checkbox" id="id_require" name="require" >
+    <label for="id_require"><pre>(require 'package-name)</pre>
+    </label><br>
+  </div>
+  {% endif %}
+
   <div class="form-group">
         {{ package_form.config.errors }}
-  	<label for="id_code">Config</label><br>
+  	<label for="id_config">Config</label><br>
   	{{ package_form.config }}
   </div>
   <div class="form-group">

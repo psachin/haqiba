@@ -76,6 +76,12 @@ class PackageTemplateForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}),         
         help_text="Description of a Package.", required=False)
+    loadpath = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={'checked':'checked'}),
+        required=False)
+    require = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={'checked':'checked'}),
+        required=False)
     tarFile = forms.FileField(required=False)
     config = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}),
@@ -86,5 +92,5 @@ class PackageTemplateForm(forms.ModelForm):
 
     class Meta:
         model = Dependency
-        fields = ['name', 'description', 'config', 'tarFile', 'screenshot']
+        fields = ['name', 'description', 'loadpath', 'require', 'config', 'tarFile', 'screenshot']
 

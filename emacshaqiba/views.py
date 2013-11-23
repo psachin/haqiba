@@ -100,19 +100,21 @@ def write_package_config(package, init_file):
         tar = tarfile.open(dep_path)
         tar.extractall(path="./temp/.emacs.d/")
         tar.close()
-        init_file.write(";; " + package.name)
-        temp_str = str(package.tarFile)
-        temp_str2 = temp_str.split('/')[1].replace(".tar", "")
-        load_path_string="\n" + "(add-to-list 'load-path \"" 
-        end_str = "/\")"
-        init_file.write(load_path_string)
-        init_file.write(temp_str2)
-        init_file.write(end_str + "\n")
-        require_start_str="(require '"
-        require_end_str=")"
-        init_file.write(require_start_str)
-        init_file.write(package.name)
-        init_file.write(require_end_str + "\n")
+        init_file.write(";; " + package.name + "\n")
+        if package.loadpath:
+            temp_str = str(package.tarFile)
+            temp_str2 = temp_str.split('/')[1].replace(".tar", "")
+            load_path_string="\n" + "(add-to-list 'load-path \"" 
+            end_str = "/\")"
+            init_file.write(load_path_string)
+            init_file.write(temp_str2)
+            init_file.write(end_str + "\n")
+        if package.require:
+            require_start_str="(require '"
+            require_end_str=")"
+            init_file.write(require_start_str)
+            init_file.write(package.name)
+            init_file.write(require_end_str + "\n")
         if package.config:
             init_file.write(package.config)
         init_file.write("\n\n")

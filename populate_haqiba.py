@@ -456,6 +456,7 @@ programming."
                               name="smartparens",
                               description="Smartparens is minor mode for Emacs that *deals with parens pairs and tries to be smart about it. https://github.com/Fuco1/smartparens",
                               tarFile="deps/smartparens.tar",
+                              require=False,
                               config="""(require 'smartparens-config)
 (show-smartparens-global-mode +1)""",
                               screenshot=None,)
@@ -511,9 +512,11 @@ def add_code_template(user_id, name, code, description, screenshot=None,
                      download_count=download_count)
     c.save()
 
-def add_package(user_id, name, description, tarFile, config, screenshot, download_count=0):
+def add_package(user_id, name, description, tarFile, config,
+                screenshot, download_count=0, loadpath=True, require=True):
     p = Dependency(user_id=user_id, name=name, description=description,
                    tarFile=tarFile, config=config,
+                   loadpath=loadpath, require=require,
                    download_count=download_count, screenshot=screenshot)
     return p
 

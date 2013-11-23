@@ -59,6 +59,23 @@
     <!-- {{ packagetemplate_form.description }} -->
   </div> <!-- form-group description-->
 
+  <div class="well" style="width:80%;">
+  <p class="help-block">Keep both the check-boxes <em>checked</em> if you want
+  to append both lines by default. Else you can un-check to write your
+  own in <b>Config</b> field.</p>
+  <div class="form-group" style="width:80%;">
+    {{ packagetemplate_form.loadpath.errors }}
+    {{ packagetemplate_form.loadpath }} 
+    <label for="id_loadpath"><pre>(add-to-list 'load-path "package-path/")</pre></label>
+  </div> <!-- form-group loadpath-->
+  
+  <div class="form-group" style="width:80%;">
+    {{ packagetemplate_form.require.errors }}
+    {{ packagetemplate_form.require }} 
+    <label for="id_require"><pre>(require 'package-name)</pre></label>
+  </div> <!-- form-group require-->
+  </div> <!-- well -->
+  
   <div class="form-group" style="width:100%;">
     {{ packagetemplate_form.config.errors }}
     <label for="id_config">Config</label>(Package related snippet. Optional)
