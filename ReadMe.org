@@ -33,7 +33,7 @@
        snippets.
      - Create a new file =store.py= with following content.
 
-       - - - - 8<- - - - - - - - - - - - - - - - - - - - - - - 
+      - - - - 8<- - - - - - - - - - - - - - - - - - - - - - - 
        #+BEGIN_SRC python
          user1 = {
              'USERNAME': "sachin",
@@ -56,9 +56,10 @@
          users = [user1, user2, ..]
          
        #+END_SRC python
-       - - - - - - - - - - - - - - - - - - - - - - >8- - - - 
+      - - - - - - - - - - - - - - - - - - - - - - >8- - - - 
 	 
-     - Note: You should copy profile images to =media/profile_image= directory.
+     - Note: You should copy profile images to =media/profile_image=
+       directory and tarballs to =media/deps=.
 
      - And run the script
        #+BEGIN_SRC sh 
