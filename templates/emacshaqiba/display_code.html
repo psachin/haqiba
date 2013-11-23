@@ -89,11 +89,13 @@
     {% endif %}
 </div>	 <!-- row -->
 </ul>
+{% if codetemplate_id.code %}
 <ul>
   <small>Code</small> 
   <textarea id="id_code" name="code">{{codetemplate_id.code}}
   </textarea>
 </ul>
+{% endif %}
 </div>
 {% else %}
 <p align="center" class="text-warning">No such Code exists!!</p>
