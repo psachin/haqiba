@@ -26,7 +26,7 @@ def index(request):
     context_dict = {'codetemplate':codetemplate,}
     return render_to_response('emacshaqiba/index.html', context_dict ,context)
 
-def emacs_config(request):
+def emacs(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     dependency = Dependency.objects.order_by('download_count')
@@ -82,7 +82,7 @@ def emacs_config(request):
         'codetemplate': codetemplate,
         'dependency': single_package,
         'bundletemplate': bundletemplate,}
-    return render_to_response('emacshaqiba/emacs_config.html', context_dict, context)
+    return render_to_response('emacshaqiba/emacs.html', context_dict, context)
 
 def write_package_config(package, init_file):
     dep_path = "media/%s" % package.tarFile

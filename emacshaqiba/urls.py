@@ -4,7 +4,7 @@ from emacshaqiba import views
 urlpatterns = patterns(
     '',
     url(r'^$', views.index, name='index'),
-    url(r'^emacs_config/$', views.emacs_config, name='emacs_config'),
+    url(r'^emacs/$', views.emacs, name='emacs'),
     url(r'^about/$', views.about, name='about'),
     url(r'^register/$', views.register, name='register'), 
     url(r'^login/$', views.user_login, name='login'),
