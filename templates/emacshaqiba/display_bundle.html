@@ -68,6 +68,18 @@
 	     {{bundle.download_count}} download{{bundle.download_count|pluralize}}
 	  </button>
 	  <!-- <span class="badge">{{bundle.download_count}} download{{bundle.download_count|pluralize}}</span> -->
+	  {% if bundle.user == user %}
+	  &nbsp
+	  <a href="/emacshaqiba/bundle/edit/{{bundle.id}}"
+	     class="text-warning btn-sm btn-success">
+	    <i class="glyphicon glyphicon-edit icon-white"></i> Edit
+	  </a>
+	  &nbsp
+	  <a href="/emacshaqiba/bundle/delete/{{bundle.id}}"
+	     class="text-danger btn-sm btn-danger">
+	    <i class="glyphicon glyphicon-trash icon-white"></i> Delete
+	  </a>
+	  {% endif %}
 	</form>
 	</div>
   </div> <!-- col-md-8 -->
@@ -86,11 +98,6 @@
 </ul>
 <ul>
   <small>Config</small> 
-  {% if bundle.user == user %}
-  |
-  <a href="/emacshaqiba/bundle/edit/{{bundle.id}}" class="text-warning">Edit</a> |
-  <a href="/emacshaqiba/bundle/delete/{{bundle.id}}" class="text-danger">Delete</a>
-  {% endif %}
   <textarea id="id_config" name="config">{{bundle.config}}
   </textarea>
 </ul>

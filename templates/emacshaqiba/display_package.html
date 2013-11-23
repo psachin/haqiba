@@ -70,6 +70,18 @@
 	      {{package_id.download_count}} download{{package_id.download_count|pluralize}}
 	    </button>
 	    <!-- <span class="badge">{{package_id.download_count}} download{{package_id.download_count|pluralize}}</span> -->
+	    {% if package_id.user == user %}
+	    &nbsp
+	    <a href="/emacshaqiba/package/edit/{{package_id.id}}"
+	       class="text-warning btn-sm btn-success">
+	      <i class="glyphicon glyphicon-edit icon-white"></i> Edit
+	    </a>
+	    &nbsp
+	    <a href="/emacshaqiba/package/delete/{{package_id.id}}"
+	       class="text-danger btn-sm btn-danger">
+	      <i class="glyphicon glyphicon-trash icon-white"></i> Delete
+	    </a>
+	    {% endif %}
 	  </form>
 	</div> <!-- container -->
       </div>
@@ -90,11 +102,6 @@
   {% if package_id.config %}
   <ul>
     <small>Config</small> 
-    {% if package_id.user == user %}
-    |
-    <a href="/emacshaqiba/package/edit/{{package_id.id}}" class="text-warning">Edit</a> |
-    <a href="/emacshaqiba/package/delete/{{package_id.id}}" class="text-danger">Delete</a>
-    {% endif %}
     <textarea id="id_config" name="config">{{package_id.config}}
     </textarea>
   </ul>
