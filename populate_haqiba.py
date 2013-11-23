@@ -431,6 +431,35 @@ programming."
                              config="",
                              screenshot="screenshot/hn.png")
     hackernews.save()
+
+    mc = add_package(user_id=store.user1['USERNAME'].id,
+                     name="multiple-cursors",
+                     description="Multiple cursors for Emacs. https://github.com/emacsmirror/multiple-cursors.",
+                     tarFile="deps/multiple-cursors.tar",
+                     config="",
+                     screenshot="screenshot/mc.png")
+    mc.save()
+
+    md = add_package(user_id=store.user1['USERNAME'].id,
+                     name="markdown-mode",
+                     description="Major mode for editing Markdown files. https://github.com/defunkt/markdown-mode",
+                     tarFile="deps/markdown-mode.tar",
+                     config="""(autoload 'markdown-mode "markdown-mode"
+"Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))""",
+                     screenshot=None,)
+    md.save()
+
+    smartparens = add_package(user_id=store.user1['USERNAME'].id,
+                              name="smartparens",
+                              description="Smartparens is minor mode for Emacs that *deals with parens pairs and tries to be smart about it. https://github.com/Fuco1/smartparens",
+                              tarFile="deps/smartparens.tar",
+                              config="""(require 'smartparens-config)
+(show-smartparens-global-mode +1)""",
+                              screenshot=None,)
+    smartparens.save()
     
     print "---------- Packages ------------"
     for p in Dependency.objects.all():
@@ -456,7 +485,7 @@ programming."
                              screenshot="/screenshot/banner.png",)
 
     parentheses.save()
-    parentheses.dep.add(rainbow_delimiters, autopair)
+    parentheses.dep.add(rainbow_delimiters, autopair, smartparens)
     
     print "---------- Bundle ------------"
     for b in BundleTemplate.objects.all():
