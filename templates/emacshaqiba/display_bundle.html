@@ -96,11 +96,13 @@
   </div> <!-- col-md-4 -->
 </div>	 <!-- row -->
 </ul>
+{% if bundle.config %}
 <ul>
   <small>Config</small> 
   <textarea id="id_config" name="config">{{bundle.config}}
   </textarea>
 </ul>
+{% endif %}
 {% else %}
 <p align="center" class="text-warning">No such Bundle exist!!</p>
 {% endif %}
