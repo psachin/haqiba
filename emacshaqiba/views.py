@@ -484,7 +484,6 @@ def submit_bundle(request):
 def submit_package(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    success = False
 
     if request.method == 'POST':
         packagetemplate_form = PackageTemplateForm(data=request.POST)
@@ -496,17 +495,19 @@ def submit_package(request):
             
             packagetemplate.user = request.user
             packagetemplate.save()
-            success = "success"
+            messages.success(request, "Package submitted successfully !!")
+            url = reverse('emacshaqiba.views.submit_package')
+            return HttpResponseRedirect(url)
         else:
-            success = "error"
             packagetemplate_form.errors
+            messages.error(request, "Error: Submitting package!")
     else:
         packagetemplate_form = PackageTemplateForm()
         
     context_dict = {'packagetemplate_form': packagetemplate_form,
-                    'codetemplate': codetemplate,
-                    'success': success,}
-    return render_to_response('emacshaqiba/submit_package.html', context_dict, 
+                    'codetemplate': codetemplate,}
+    return render_to_response('emacshaqiba/submit_package.html',
+                              context_dict, 
                               context)
 
 def register(request):

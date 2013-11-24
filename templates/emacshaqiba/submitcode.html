@@ -34,12 +34,14 @@
   <h2>Submit your code here!</h2>
   </div>
   <div class="well">
+    <!-- Success/Error messages -->
     {% if messages %}
     {% for message in messages %}
     <p class="text-info" align="center"><strong>{{ message }}</strong></p>
     {% endfor %}
     {% endif %} 
-
+    <!-- Success/Error messages ends here -->
+    
   <div class="form-group" style="width:55%;">
     {{ codetemplate_form.name.errors }}
     <label for="id_name">Name</label>
