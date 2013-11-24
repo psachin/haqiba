@@ -56,7 +56,8 @@ class BundleTemplateForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'class':'form-control'}),         
         help_text="Description of bundle.", required=False)
     dep = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-                                         queryset = Dependency.objects.all())
+                                         queryset = Dependency.objects.all(),
+                                         error_messages={'required':'At-least one Dependency has to be included.'})
     config = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}),
         required=False)
@@ -67,7 +68,6 @@ class BundleTemplateForm(forms.ModelForm):
     class Meta:
         model = BundleTemplate
         fields = ['name', 'description', 'dep', 'config', 'screenshot']
-
 
 class PackageTemplateForm(forms.ModelForm):
     name = forms.CharField(
@@ -92,5 +92,6 @@ class PackageTemplateForm(forms.ModelForm):
 
     class Meta:
         model = Dependency
-        fields = ['name', 'description', 'loadpath', 'require', 'config', 'tarFile', 'screenshot']
+        fields = ['name', 'description', 'loadpath', 'require', 'config',
+                  'tarFile', 'screenshot']
 

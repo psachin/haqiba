@@ -454,7 +454,6 @@ def display_bundle(request, id):
 def submit_bundle(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    success=True
 
     if request.method == 'POST':
         bundletemplate_form = BundleTemplateForm(data=request.POST)
@@ -467,17 +466,19 @@ def submit_bundle(request):
             bundletemplate.user = request.user
             bundletemplate.save()
             bundletemplate_form.save_m2m()
-            success = 'success'
+            messages.success(request, "Bundle submitted successfully !!")
+            url = reverse('emacshaqiba.views.submit_bundle')
+            return HttpResponseRedirect(url)
         else:
-            success = 'error'
             print bundletemplate_form.errors
+            messages.error(request, "Error: Submitting bundle!")
     else:
         bundletemplate_form = BundleTemplateForm()
 
     context_dict = {'codetemplate': codetemplate,
-                    'bundletemplate_form': bundletemplate_form,
-                    'success': success,}
-    return render_to_response('emacshaqiba/submit_bundle.html', context_dict, 
+                    'bundletemplate_form': bundletemplate_form,}
+    return render_to_response('emacshaqiba/submit_bundle.html',
+                              context_dict, 
                               context)
 
 @login_required
