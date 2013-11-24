@@ -7,33 +7,20 @@
 
 {% block body_block %}
 <script>
-function toggle(source) {
-  checkboxes = document.getElementsByClassName('selected_list');
-  for (var i=0, n=checkboxes.length; i<n; i++) {
-    checkboxes[i].checked = source.checked;
-  }
+function toggle(source, type, name) {
+    if (type == 'class') {
+	checkboxes = document.getElementsByClassName(name);
+	for (var i=0, n=checkboxes.length; i<n; i++) {
+	    checkboxes[i].checked = source.checked;
+	}
+    }
+    else if (type == 'name') {
+	checkboxes = document.getElementsByName(name);
+	for (var i=0, n=checkboxes.length; i<n; i++) {
+	    checkboxes[i].checked = source.checked;
+	}
+    }
 }
-
-function toggle_code(source) {
-  checkboxes = document.getElementsByName('selected_code_list');
-  for (var i=0, n=checkboxes.length; i<n; i++) {
-    checkboxes[i].checked = source.checked;
-  }
-}
-
-function toggle_package(source) {
-  checkboxes = document.getElementsByName('selected_package_list');
-  for (var i=0, n=checkboxes.length; i<n; i++) {
-    checkboxes[i].checked = source.checked;
-  }
-}
-
-function toggle_bundle(source) {
-  checkboxes = document.getElementsByName('selected_bundle_list');
-  for (var i=0, n=checkboxes.length; i<n; i++) {
-    checkboxes[i].checked = source.checked;
-  }
-}					  
 </script>
 
 <link href="{% static 'css/jsfiddle.css' %}" rel="stylesheet">
@@ -46,7 +33,7 @@ function toggle_bundle(source) {
 {% csrf_token %}
 <h4 class="text-warning"><strong>Code{{codetemplate|length|pluralize}}</strong>
   <label class="text-muted">
-    [<input type="checkbox" onClick="toggle_code(this)"> all]
+    [<input type="checkbox" onClick="toggle(this, 'name', 'selected_code_list')"> all]
   </label>
 </h4>
 {% if codetemplate %}
@@ -72,7 +59,7 @@ function toggle_bundle(source) {
 <!-- code ends here -->
 <h4 class="text-warning"><strong>Package{{dependency|length|pluralize}}</strong>
   <label class="text-muted">
-    [<input type="checkbox" onClick="toggle_package(this)"> all]
+    [<input type="checkbox" onClick="toggle(this, 'name', 'selected_package_list')"> all]
   </label>
 </h4>
 {% if dependency %}
@@ -98,7 +85,7 @@ function toggle_bundle(source) {
 <!-- dependency/package ends here -->
 <h4 class="text-warning"><strong>Bundle{{bundletemplate|length|pluralize}}</strong>
   <label class="text-muted">
-    [<input type="checkbox" onClick="toggle_bundle(this)"> all]
+    [<input type="checkbox" onClick="toggle(this, 'name', 'selected_bundle_list')"> all]
   </label>
 </h4>
 {% if bundletemplate %}
@@ -127,7 +114,7 @@ function toggle_bundle(source) {
 
 <div class="container" align="">
   <div class="form-group" align="center">
-    <input type="checkbox" onClick="toggle(this)"/> Toggle All <br>
+    <input type="checkbox" onClick="toggle(this, 'class', 'selected_list')"/> Toggle All <br>
     <button type="submit" class="btn btn-success">Generate & Download config</button>
   </div> 
 </div>
