@@ -11,6 +11,7 @@ from django.contrib import messages
 
 # additional python libs
 import os, tarfile, shutil
+from loadGist import load_gist
 
 # import models
 from emacshaqiba.models import CodeTemplate, UserProfile
@@ -168,9 +169,12 @@ def about(request):
 def submitcode(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    
+
     if request.method == 'POST':
         codetemplate_form = CodeTemplateForm(data=request.POST)
+        if codetemplate_form.data['gist_url']:
+            code_from_gist = load_gist(codetemplate_form.data['gist_url'])
+            codetemplate_form.data['code'] = code_from_gist
 
         if codetemplate_form.is_valid():
             codetemplate = codetemplate_form.save(commit=False)
@@ -249,6 +253,9 @@ def editcode_p(request, id=None):
         if request.method == 'POST':
             print "POST"
             codetemplate_form = CodeTemplateForm(data=request.POST, instance=code_template)
+            if codetemplate_form.data['gist_url']:
+                code_from_gist = load_gist(codetemplate_form.data['gist_url'])
+                codetemplate_form.data['code'] = code_from_gist
             
             if codetemplate_form.is_valid():
                 codetemplate = codetemplate_form.save(commit=False)

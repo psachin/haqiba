@@ -22,7 +22,9 @@
 </script>
 
 <style type="text/css">
-  .CodeMirror {border: 1px solid black; font-size:14px;}
+  .CodeMirror {
+  border: 1px solid black;
+  font-size:13px;}
 </style>
 <!-- END code mirror settings -->
 
@@ -44,6 +46,19 @@
 	<label for="id_description">Description</label><br>
 	{{ codetemplate_form.description }}
   </div>
+  <div class="form-group">
+        {{ codetemplate_form.gist_url.errors }}
+	<label for="id_code">Github Gist</label>
+	<strong class="text-muted">(Optional)</strong><br>
+	{% if codetemplate_form.gist_url.value != Null %}
+	{{ codetemplate_form.gist_url }}
+	{% else %}
+	<input type="text" name="gist_url" class="form-control" 
+	       id="id_gist_url"
+	       placeholder="Below code was not fetched from GitHub Gist.">
+	{% endif %}
+  </div>
+  <p class="text-muted"><strong>OR</strong></p>
   <div class="form-group">
         {{ codetemplate_form.code.errors }}
 	<label for="id_code">Code</label><br>

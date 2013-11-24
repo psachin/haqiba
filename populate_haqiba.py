@@ -539,10 +539,12 @@ def add_user_profile(user, website, picture):
     up = UserProfile(user=user, website=website, picture=picture)
     up.save()
 
-def add_code_template(user_id, name, code, description, screenshot=None, 
+def add_code_template(user_id, name, code, description, gist_url=None,
+                      screenshot=None, 
                       download_count=0):
     c = CodeTemplate(user_id=user_id, name=name, code=code, 
-                     description=description, screenshot=screenshot, 
+                     description=description, gist_url=gist_url,
+                     screenshot=screenshot, 
                      download_count=download_count)
     c.save()
 

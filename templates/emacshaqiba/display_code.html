@@ -20,9 +20,9 @@
 <style type="text/css">
   .CodeMirror {
   border: 1px solid black; 
-  font-size:13px; 
-  height: auto;
-  width: 95%;}
+  font-size:13px;
+  height: 305px;}
+  <!-- width: 95%;} -->
 
   .CodeMirror-scroll {
   overflow-y: hidden;
@@ -90,11 +90,11 @@
 </div>	 <!-- row -->
 </ul>
 {% if codetemplate_id.code %}
-<ul>
-  <small>Code</small> 
+  <div class="container">
+  <strong>Code</strong>
   <textarea id="id_code" name="code">{{codetemplate_id.code}}
   </textarea>
-</ul>
+  </div>
 {% endif %}
 </div>
 {% else %}
@@ -128,8 +128,8 @@ initImageZoom();
   theme: "paraiso-dark",
   mode: "commonlisp",
   lineWrapping: true,
-  readOnly: true,
   });
+  <!-- editor.setSize(1000, 300); -->
 </script>
 <!-- codemirror settings -->
 {% endblock body_block %}

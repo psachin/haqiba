@@ -9,6 +9,10 @@ class CodeTemplateForm(forms.ModelForm):
     name = forms.CharField(
         widget=forms.TextInput(attrs={'class':'form-control'}),
         help_text="Name of code snippet.", required=True)
+    gist_url = forms.URLField(
+        widget=forms.TextInput(attrs={'class':'form-control'}),
+        help_text="GitHub gist url",
+        required=False)
     code = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}), 
         help_text="Type your code snippet here.", 
@@ -24,7 +28,7 @@ class CodeTemplateForm(forms.ModelForm):
     class Meta:
         model = CodeTemplate
         exclude = ('user')      # to use instance.
-        fields = ['name', 'description', 'code','screenshot']
+        fields = ['name', 'description', 'gist_url', 'code','screenshot']
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")
