@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 # additional python libs
 import os, tarfile, shutil
@@ -166,7 +167,7 @@ def about(request):
 @login_required
 def submitcode(request):
     context = RequestContext(request)
-    submitcode_success="get"
+    codetemplate = CodeTemplate.objects.order_by('-download_count')
     
     if request.method == 'POST':
         codetemplate_form = CodeTemplateForm(data=request.POST)
@@ -179,18 +180,20 @@ def submitcode(request):
             print request.user
             codetemplate.user = request.user
             codetemplate.save()
-            submitcode_success="success"
+            messages.success(request, "Code submitted successfully !!")
+            url = reverse('emacshaqiba.views.submitcode')
+            return HttpResponseRedirect(url)
         else:
-            submitcode_success="error"
             print codetemplate_form.errors
+            messages.error(request, "Error: Submitting code!")
     else:
         codetemplate_form = CodeTemplateForm()
-    
-    codetemplate = CodeTemplate.objects.order_by('-download_count')
+
+    context_dict = {'codetemplate_form': codetemplate_form,
+                    'codetemplate': codetemplate,}
+
     return render_to_response('emacshaqiba/submitcode.html', 
-                              {'codetemplate_form': codetemplate_form,
-                               'codetemplate': codetemplate,
-                               'submitcode_success': submitcode_success,},
+                              context_dict,
                               context)
 
 @login_required
