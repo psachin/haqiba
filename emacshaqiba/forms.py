@@ -16,7 +16,7 @@ class CodeTemplateForm(forms.ModelForm):
     code = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}), 
         help_text="Type your code snippet here.", 
-        required=True)
+        required=False)
     description = forms.CharField(
         widget=forms.Textarea(attrs={'class':'form-control'}), 
         help_text="Type description of your code snippet here(Optional).", 
@@ -29,6 +29,21 @@ class CodeTemplateForm(forms.ModelForm):
         model = CodeTemplate
         exclude = ('user')      # to use instance.
         fields = ['name', 'description', 'gist_url', 'code','screenshot']
+
+    def clean_gist_url(self):
+        try:
+            return self.cleaned_data['gist_url']
+        except:                 # don't raise any exception. 
+            pass
+        
+    def clean_code(self):
+        print self.cleaned_data['code']
+        if self.clean_gist_url():
+            print "LOG: gist_url entered."
+        elif self.cleaned_data['code']:
+            print "LOG: code entered"
+        else:
+            raise forms.ValidationError("At least this field is required.")
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")
