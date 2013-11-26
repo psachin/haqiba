@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from emacshaqiba.models import CodeTemplate, UserProfile
 from emacshaqiba.models import BundleTemplate, Dependency
 
+# Extra libs
+import urllib2
+
 class CodeTemplateForm(forms.ModelForm):
     name = forms.CharField(
         widget=forms.TextInput(attrs={'class':'form-control'}),
@@ -32,12 +35,16 @@ class CodeTemplateForm(forms.ModelForm):
 
     def clean_gist_url(self):
         try:
-            return self.cleaned_data['gist_url']
-        except:                 # don't raise any exception. 
+            self.cleaned_data['gist_url']
+            try:
+                urllib2.urlopen(self.cleaned_data['gist_url'])
+                return self.cleaned_data['gist_url']
+            except urllib2.HTTPError, error:
+                raise forms.ValidationError("Unable to fetch gist, check your URL.")
+        except:
             pass
         
     def clean_code(self):
-        print self.cleaned_data['code']
         if self.clean_gist_url():
             print "LOG: gist_url entered."
         elif self.cleaned_data['code']:
