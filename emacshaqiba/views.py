@@ -532,7 +532,6 @@ def submit_package(request):
 
     if request.method == 'POST':
         packagetemplate_form = PackageTemplateForm(data=request.POST)
-        # FIXME: tarFile is required
         if packagetemplate_form.is_valid():
             packagetemplate = packagetemplate_form.save(commit=False)
             if 'tarFile' in request.FILES:
