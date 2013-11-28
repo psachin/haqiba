@@ -33,7 +33,9 @@ function toggle(source, type, name) {
 {% csrf_token %}
 <h4 class="text-warning"><strong>Code{{codetemplate|length|pluralize}}</strong>
   <label class="text-muted">
-    [<input type="checkbox" onClick="toggle(this, 'name', 'selected_code_list')"> all]
+    <small>[Select all codes
+      <input type="checkbox" onClick="toggle(this, 'name', 'selected_code_list')"> ]
+    </small>
   </label>
 </h4>
 {% if codetemplate %}
@@ -59,7 +61,9 @@ function toggle(source, type, name) {
 <!-- code ends here -->
 <h4 class="text-warning"><strong>Package{{dependency|length|pluralize}}</strong>
   <label class="text-muted">
-    [<input type="checkbox" onClick="toggle(this, 'name', 'selected_package_list')"> all]
+    <small>[Select all packages
+      <input type="checkbox" onClick="toggle(this, 'name', 'selected_package_list')"> ]
+    </small>
   </label>
 </h4>
 {% if dependency %}
@@ -85,7 +89,9 @@ function toggle(source, type, name) {
 <!-- dependency/package ends here -->
 <h4 class="text-warning"><strong>Bundle{{bundles|length|pluralize}}</strong>
   <label class="text-muted">
-    [<input type="checkbox" onClick="toggle(this, 'name', 'selected_bundle_list')"> all]
+    <small>[Select all bundles
+      <input type="checkbox" onClick="toggle(this, 'name', 'selected_bundle_list')"> ]
+    </small>
   </label>
 </h4>
 {% if bundles %}
