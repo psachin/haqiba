@@ -76,6 +76,12 @@
 	<!-- </form> -->
 
 	<ul class="nav navbar-nav navbar-right">
+	  <form class="navbar-form navbar-left" role="search">
+	    <div class="form-group">
+	      <input type="text" class="form-control" name="suggestion"
+		     placeholder="Search code" id="suggestion">
+	    </div>
+	  </form>
 	  {% if user.is_authenticated %}
 	  <li class="navbar-text">Welcome, {{ user.username|capfirst }}!</li>
 	  <li><a href="/emacshaqiba/profile/">Profile</a></li>
@@ -102,9 +108,11 @@
       <div class="row-fluid">
 	<div class="col-md-3">
 	  <div class="well">
-	  {% block sidebar %} 
-          {% include 'emacshaqiba/code_list.html' with codetemplate=codetemplate %}
-	  {% endblock sidebar %}
+	    {% block sidebar %}
+	    <div id="cats">
+              {% include 'emacshaqiba/code_list.html' with codetemplate=codetemplate %}
+	    </div>
+	    {% endblock sidebar %}
 	  </div>
 	</div>
 	<div class="col-md-9">
@@ -175,6 +183,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static 'js/bootstrap.js' %}"></script>
     <script src="{% static 'js/twitter-bootstrap-hover-dropdown.min.js' %}"></script>
+    <script src="{% static 'js/suggest.js' %}"></script>
 
     <!-- Place this tag after the last +1 button tag. -->
     <script type="text/javascript">

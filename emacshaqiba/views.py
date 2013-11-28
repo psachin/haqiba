@@ -424,6 +424,36 @@ def display_code(request, id):
                               context_dict,
                               context)
 
+def get_code_list(max_results=0, starts_with=''):
+    code_list = []
+    if starts_with:
+        code_list = CodeTemplate.objects.filter(name__startswith=starts_with).order_by('-download_count')
+    else:
+        code_list = CodeTemplate.objects.all().order_by('-download_count')
+        
+    # if max_results > 0:
+    #     if len(code_list) > max_results:
+    #         code_list = code_list[:max_results]
+
+    return code_list
+
+def suggest_code(request):
+    context = RequestContext(request)
+    code_list = []
+    starts_with = ''
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+        print "GET: suggestion"
+        print starts_with
+    else:
+        starts_with = request.POST['suggestion']
+        
+    code_list = get_code_list(8, starts_with)
+
+    context_dict = {'codetemplate': code_list,}
+    return render_to_response('emacshaqiba/code_list.html',
+                              context_dict, context)
+
 def display_package(request, id):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
