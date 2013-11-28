@@ -33,24 +33,39 @@ class CodeTemplateForm(forms.ModelForm):
         exclude = ('user')      # to use instance.
         fields = ['name', 'description', 'gist_url', 'code','screenshot']
 
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if cleaned_data.get('gist_url'):
+            print "Got gist_url"
+            self.clean_gist_url()
+        elif cleaned_data.get('code'):
+            print "Got code"
+            self.clean_code()
+        else:
+            msg = u"At least this field is required."
+            self._errors["code"] = self.error_class([msg])
+            #raise forms.ValidationError("At least ONE field is required.")
+        return cleaned_data
+
     def clean_gist_url(self):
-        try:
-            self.cleaned_data['gist_url']
+        cleaned_data = self.cleaned_data
+        if cleaned_data.get('gist_url'):
+            url = cleaned_data['gist_url']
             try:
                 urllib2.urlopen(self.cleaned_data['gist_url'])
-                return self.cleaned_data['gist_url']
+                return cleaned_data['gist_url']
             except urllib2.HTTPError, error:
                 raise forms.ValidationError("Unable to fetch gist, check your URL.")
-        except:
-            pass
-        
-    def clean_code(self):
-        if self.clean_gist_url():
-            print "LOG: gist_url entered."
-        elif self.cleaned_data['code']:
-            print "LOG: code entered"
         else:
-            raise forms.ValidationError("At least this field is required.")
+            pass
+
+    def clean_code(self):
+        cleaned_data = self.cleaned_data
+        if cleaned_data.get('code'):
+            cleaned_data['code'] = cleaned_data.get('code')
+            return cleaned_data['code']
+        else:
+            pass
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")
