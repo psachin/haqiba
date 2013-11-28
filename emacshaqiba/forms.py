@@ -34,7 +34,7 @@ class CodeTemplateForm(forms.ModelForm):
         fields = ['name', 'description', 'gist_url', 'code','screenshot']
 
     def clean(self):
-        cleaned_data = self.cleaned_data
+        cleaned_data = super(CodeTemplateForm, self).clean()
         if cleaned_data.get('gist_url'):
             print "Got gist_url"
             self.clean_gist_url()
@@ -48,22 +48,20 @@ class CodeTemplateForm(forms.ModelForm):
         return cleaned_data
 
     def clean_gist_url(self):
-        cleaned_data = self.cleaned_data
-        if cleaned_data.get('gist_url'):
-            url = cleaned_data['gist_url']
+        if self.cleaned_data['gist_url']:
+            url = self.cleaned_data['gist_url']
             try:
                 urllib2.urlopen(self.cleaned_data['gist_url'])
-                return cleaned_data['gist_url']
+                return url
             except urllib2.HTTPError, error:
                 raise forms.ValidationError("Unable to fetch gist, check your URL.")
         else:
             pass
 
     def clean_code(self):
-        cleaned_data = self.cleaned_data
-        if cleaned_data.get('code'):
-            cleaned_data['code'] = cleaned_data.get('code')
-            return cleaned_data['code']
+        if self.cleaned_data['code']:
+            code = self.cleaned_data['code']
+            return code
         else:
             pass
 
@@ -136,3 +134,8 @@ class PackageTemplateForm(forms.ModelForm):
         fields = ['name', 'description', 'loadpath', 'require', 'config',
                   'tarFile', 'screenshot']
 
+    def clean_tarFile(self):
+        if self.cleaned_data['tarFile']:
+            return self.cleaned_data['tarFile']
+        else:
+            raise forms.ValidationError("Tarball of a package is required.")
