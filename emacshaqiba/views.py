@@ -427,7 +427,7 @@ def display_code(request, id):
 def get_code_list(max_results=0, starts_with=''):
     code_list = []
     if starts_with:
-        code_list = CodeTemplate.objects.filter(name__startswith=starts_with).order_by('-download_count')
+        code_list = CodeTemplate.objects.filter(name__contains=starts_with).order_by('-download_count')
     else:
         code_list = CodeTemplate.objects.all().order_by('-download_count')
         
