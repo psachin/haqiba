@@ -83,15 +83,15 @@ function toggle(source, type, name) {
 {% endif %}
 <hr>
 <!-- dependency/package ends here -->
-<h4 class="text-warning"><strong>Bundle{{bundletemplate|length|pluralize}}</strong>
+<h4 class="text-warning"><strong>Bundle{{bundles|length|pluralize}}</strong>
   <label class="text-muted">
     [<input type="checkbox" onClick="toggle(this, 'name', 'selected_bundle_list')"> all]
   </label>
 </h4>
-{% if bundletemplate %}
+{% if bundles %}
 <div id="jsfiddle">
     <div class="row">
-    {% for e in bundletemplate %}
+    {% for e in bundles %}
     <div class="block"> 
     <label class="checkbox">
     <input class="selected_list" name="selected_bundle_list" type="checkbox" id={{e.id}} value={{e.name}}>

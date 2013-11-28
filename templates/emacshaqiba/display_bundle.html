@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-- Bundle - {{bundle.name}}
+- Bundle - {{bundle_id.name}}
 {% endblock title %}
 
 {% block body_block %}
@@ -41,21 +41,21 @@
 <div class="row">
 <ul>
 <div class="row">
-  {% if bundle %}
+  {% if bundle_id %}
   <div class="col-md-8">
     <div class="container">
-	<h1>{{bundle.name}}</h1>
+	<h1>{{bundle_id.name}}</h1>
 	<p class="text-muted">(Bundle)</p>
-	{% if bundle.description %}
-	<p class="text-success">{{bundle.description}}</p>
+	{% if bundle_id.description %}
+	<p class="text-success">{{bundle_id.description}}</p>
 	{% else %}
 	<p class="text-success">No description available.</p>
 	{% endif %}
-        <p class="text-muted"><small>by {{bundle.user}}</small></p>
+        <p class="text-muted"><small>by {{bundle_id.user}}</small></p>
 	<div class="text-info">
 	  <strong>Includes</strong>:
 	  <ol>
-	  {% for dep in bundle.dep.all %}
+	  {% for dep in bundle_id.dep.all %}
 	  <li><a href="/emacshaqiba/package/{{dep.id}}">{{dep.name}}</a></li>
 	  {% endfor%}
 	  </ol>
@@ -65,17 +65,17 @@
 	  {% csrf_token %}
 	  <button class="btn btn-primary btn-mini">
 	    <i class="glyphicon glyphicon-download"></i>
-	     {{bundle.download_count}} download{{bundle.download_count|pluralize}}
+	     {{bundle_id.download_count}} download{{bundle_id.download_count|pluralize}}
 	  </button>
 	  <!-- <span class="badge">{{bundle.download_count}} download{{bundle.download_count|pluralize}}</span> -->
-	  {% if bundle.user == user %}
+	  {% if bundle_id.user == user %}
 	  &nbsp
-	  <a href="/emacshaqiba/bundle/edit/{{bundle.id}}"
+	  <a href="/emacshaqiba/bundle/edit/{{bundle_id.id}}"
 	     class="text-warning btn-sm btn-success">
 	    <i class="glyphicon glyphicon-edit icon-white"></i> Edit
 	  </a>
 	  &nbsp
-	  <a href="/emacshaqiba/bundle/delete/{{bundle.id}}"
+	  <a href="/emacshaqiba/bundle/delete/{{bundle_id.id}}"
 	     class="text-danger btn-sm btn-danger">
 	    <i class="glyphicon glyphicon-trash icon-white"></i> Delete
 	  </a>
@@ -84,10 +84,10 @@
 	</div>
   </div> <!-- col-md-8 -->
   <div class="col-md-4">
-    {% if bundle.screenshot %}
+    {% if bundle_id.screenshot %}
     <div class="container">
-      <a id="image_link" rel="imagezoom" href="media/{{bundle.screenshot}}" >	
-	<img src="media/{{bundle.screenshot}}" height="140" width="240" class="img-thumbnail">
+      <a id="image_link" rel="imagezoom" href="media/{{bundle_id.screenshot}}" >	
+	<img src="media/{{bundle_id.screenshot}}" height="140" width="240" class="img-thumbnail">
       </a>
     </div> <!-- image container -->
     {% else %}
@@ -96,10 +96,10 @@
   </div> <!-- col-md-4 -->
 </div>	 <!-- row -->
 </ul>
-{% if bundle.config %}
+{% if bundle_id.config %}
 <ul>
   <small>Config</small> 
-  <textarea id="id_config" name="config">{{bundle.config}}
+  <textarea id="id_config" name="config">{{bundle_id.config}}
   </textarea>
 </ul>
 {% endif %}

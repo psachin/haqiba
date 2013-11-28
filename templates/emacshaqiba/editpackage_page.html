@@ -27,12 +27,22 @@
 <!-- END code mirror settings -->
 
 <div class="container">
-
-  <div align="center"><h2>Edit Package</h2></div>
-<div class="well">
 <form role="form" id="edit-code" method="post" action=""
       enctype="multipart/form-data">
   {% csrf_token %}
+  <div align="center"><h2>Edit Package</h2></div>
+  <div class="well">
+    <!-- Success/Error messages -->
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == "success "%}
+    <p class="text-info" align="center"><strong>{{ message }}</strong></p>
+    {% else %}
+    <p class="text-danger" align="center"><strong>{{ message }}</strong></p>
+    {% endif %}
+    {% endfor %}
+    {% endif %} 
+    <!-- Success/Error messages ends here -->
 
   <div class="form-group">
         {{ package_form.name.errors }}

@@ -25,18 +25,23 @@ from template import instruction
 def index(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    context_dict = {'codetemplate':codetemplate,}
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
+    context_dict = {'codetemplate':codetemplate,
+                    'packages':packages,
+                    'bundles':bundles}
     return render_to_response('emacshaqiba/index.html', context_dict ,context)
 
 def emacs(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    dependency = Dependency.objects.order_by('download_count')
-    bundletemplate = BundleTemplate.objects.order_by('-download_count')
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
     
     # Make a list of package with NO m2m relation.
     single_package = []
-    for d in dependency:
+    for d in packages:
         if not d.bundletemplate_set.filter().exists():
             single_package.append(d)
 
@@ -82,8 +87,9 @@ def emacs(request):
             
     context_dict = {
         'codetemplate': codetemplate,
-        'dependency': single_package,
-        'bundletemplate': bundletemplate,}
+        'packages': packages,
+        'bundles': bundles,
+        'dependency': single_package,}
     return render_to_response('emacshaqiba/emacs.html', context_dict, context)
 
 def write_package_config(package, init_file):
@@ -162,14 +168,22 @@ def increment_download_count(instance):
 def about(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    context_dict = {'codetemplate': codetemplate,}
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
+    context_dict = {'codetemplate':codetemplate,
+                    'packages':packages,
+                    'bundles':bundles}
+
     return render_to_response('emacshaqiba/about.html', context_dict , context)
 
 @login_required
 def submitcode(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
     if request.method == 'POST':
         codetemplate_form = CodeTemplateForm(data=request.POST)
 
@@ -198,7 +212,9 @@ def submitcode(request):
         codetemplate_form = CodeTemplateForm()
 
     context_dict = {'codetemplate_form': codetemplate_form,
-                    'codetemplate': codetemplate,}
+                    'codetemplate': codetemplate,
+                    'packages':packages,
+                    'bundles':bundles}
 
     return render_to_response('emacshaqiba/submitcode.html', 
                               context_dict,
@@ -208,44 +224,56 @@ def submitcode(request):
 def editcode(request, delete_success=False):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    codetemplate_user = CodeTemplate.objects.filter(user=request.user)
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
+    context_dict = {'codetemplate_user': codetemplate.filter(user=request.user),
+                    'codetemplate': codetemplate,
+                    'packages':packages,
+                    'bundles':bundles}
 
-    return render_to_response('emacshaqiba/editcode.html', 
-                              {'codetemplate':codetemplate,
-                               'codetemplate_user': codetemplate_user},
+    return render_to_response('emacshaqiba/editcode.html',
+                              context_dict,
                               context)
 
 @login_required
 def editpackage(request, delete_success=False):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    dependency = Dependency.objects.order_by('-download_count')
-    dependency_user = Dependency.objects.filter(user=request.user)
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+
+    context_dict = {'package_user': packages.filter(user=request.user),
+                    'codetemplate': codetemplate,
+                    'packages':packages,
+                    'bundles':bundles}
 
     return render_to_response('emacshaqiba/editpackage.html', 
-                              {'codetemplate':codetemplate,
-                               'dependency': dependency,
-                               'dependency_user': dependency_user},
+                              context_dict,
                               context)    
 
 @login_required
 def editbundle(request, delete_success=False):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    bundle = BundleTemplate.objects.order_by('-download_count')
-    bundle_user = BundleTemplate.objects.filter(user=request.user)
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
+    context_dict = {'bundle_user': bundles.filter(user=request.user),
+                    'codetemplate': codetemplate,
+                    'packages':packages,
+                    'bundles':bundles}
 
     return render_to_response('emacshaqiba/editbundle.html', 
-                              {'codetemplate':codetemplate,
-                               'bundle': bundle,
-                               'bundle_user': bundle_user},
+                              context_dict,
                               context)    
     
 @login_required
 def editcode_p(request, id=None):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    submitcode_success="get"
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
 
     if id:
         print "Edit %s" % id 
@@ -270,13 +298,11 @@ def editcode_p(request, id=None):
                     codetemplate.screenshot = request.FILES['screenshot']
 
                 codetemplate.save()
-                submitcode_success="success"
                 print "Code edited successfully."
                 return HttpResponseRedirect("/emacshaqiba/code/edit/")
-                # return HttpResponseRedirect("/emacshaqiba/edit_code/%s" % id)
             else:
-                submitcode_success="error"
                 print codetemplate_form.errors
+                messages.error(request, "Error: Saving changes!")
         else:
             print "GET"
             codetemplate_form = CodeTemplateForm(instance=code_template)
@@ -284,17 +310,21 @@ def editcode_p(request, id=None):
     else:
          return HttpResponse("Code does not exist!!")
 
+    context_dict = {'codetemplate_form': codetemplate_form,
+                    'codetemplate':codetemplate,
+                    'packages':packages,
+                    'bundles':bundles,}
+
     return render_to_response('emacshaqiba/editcode_page.html', 
-                              {'codetemplate_form': codetemplate_form,
-                               'codetemplate':codetemplate,
-                               'submitcode_success':submitcode_success},
+                              context_dict,
                               context)
 
 @login_required
 def editpackage_p(request, id=None):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    submitpackage_success="get"
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')    
 
     if id:
         print "Edit %s" % id 
@@ -313,30 +343,32 @@ def editpackage_p(request, id=None):
                     dependency.screenshot = request.FILES['screenshot']
 
                 dependency.save()
-                submitpackage_success="success"
                 print "Package edited successfully."
                 return HttpResponseRedirect("/emacshaqiba/package/edit/")
             else:
-                submitpackage_success="error"
                 print package_form.errors
+                messages.error(request, "Error: Saving changes!")
         else:
             print "GET"
             package_form = PackageTemplateForm(instance=dependency)
-
     else:
          return HttpResponse("Package does not exist!!")
 
+    context_dict = {'package_form': package_form,
+                    'codetemplate':codetemplate,
+                    'packages':packages,
+                    'bundles':bundles,}
+    
     return render_to_response('emacshaqiba/editpackage_page.html', 
-                              {'package_form': package_form,
-                               'codetemplate': codetemplate,
-                               'submitpackage_success': submitpackage_success},
+                              context_dict,
                               context)
 
 @login_required
 def editbundle_p(request, id=None):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    success=True
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')    
 
     if id:
         print "Edit %s" % id
@@ -357,21 +389,23 @@ def editbundle_p(request, id=None):
                 #bundletemplate.user = request.user
                 bundletemplate.save()
                 bundletemplate_form.save_m2m()
-                success = 'success'
                 print "Bundle edit success"
                 return HttpResponseRedirect("/emacshaqiba/bundle/edit/")
             else:
-                success = 'error'
                 print bundletemplate_form.errors
+                messages.error(request, "Error: Saving changes!")
         else:
             print "Bundle GET"
             bundletemplate_form = BundleTemplateForm(instance=bundle)
     else:
         print "Bundle does not exist."
 
-    context_dict = {'codetemplate': codetemplate,
-                    'bundletemplate_form': bundletemplate_form,
-                    'success': success,}
+
+    context_dict = {'bundletemplate_form': bundletemplate_form,
+                    'codetemplate':codetemplate,
+                    'packages':packages,
+                    'bundles':bundles,}        
+
     return render_to_response('emacshaqiba/editbundle_page.html',
                               context_dict, 
                               context)
@@ -411,17 +445,20 @@ def delete_bundle(request, id):
 
 def display_code(request, id):
     context = RequestContext(request)
-    codetemplate_id = CodeTemplate.objects.get(pk=id)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
 
     if request.POST:
         init_file = make_init()
-        write_code_config(codetemplate_id, init_file)
+        write_code_config(codetemplate.get(pk=id), init_file)
         tar_data = make_tarball(init_file)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
         
-    context_dict = {'codetemplate': codetemplate,
-                    'codetemplate_id':codetemplate_id,}
+    context_dict = {'codetemplate':codetemplate,
+                    'packages':packages,
+                    'bundles':bundles,
+                    'codetemplate_id':codetemplate.get(pk=id),}
 
     return render_to_response('emacshaqiba/display_code.html', 
                               context_dict,
@@ -461,16 +498,18 @@ def display_package(request, id):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     packages = Dependency.objects.order_by('-download_count')
-    package_id = Dependency.objects.get(pk=id)
+    bundles = BundleTemplate.objects.order_by('-download_count')
 
     if request.POST:
         init_file = make_init()
-        write_package_config(package_id, init_file)
+        write_package_config(packages.get(pk=id), init_file)
         tar_data = make_tarball(init_file)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
 
     context_dict = {'codetemplate': codetemplate,
-                    'package_id': package_id,}
+                    'packages': packages,
+                    'bundles': bundles,
+                    'package_id': packages.get(pk=id),}
 
     return render_to_response('emacshaqiba/display_package.html', 
                               context_dict,
@@ -479,16 +518,19 @@ def display_package(request, id):
 def display_bundle(request, id):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    bundle_id = BundleTemplate.objects.get(pk=id)
-
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
     if request.POST:
         init_file = make_init()
-        write_bundle_config(bundle_id, init_file)
+        write_bundle_config(bundles.get(pk=id), init_file)
         tar_data = make_tarball(init_file)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
         
     context_dict = {'codetemplate': codetemplate,
-                    'bundle': bundle_id,}
+                    'packages': packages,
+                    'bundles': bundles,
+                    'bundle_id': bundles.get(pk=id),}
 
     return render_to_response('emacshaqiba/display_bundle.html', 
                               context_dict,
@@ -498,7 +540,9 @@ def display_bundle(request, id):
 def submit_bundle(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
     if request.method == 'POST':
         bundletemplate_form = BundleTemplateForm(data=request.POST)
 
@@ -520,7 +564,10 @@ def submit_bundle(request):
         bundletemplate_form = BundleTemplateForm()
 
     context_dict = {'codetemplate': codetemplate,
-                    'bundletemplate_form': bundletemplate_form,}
+                    'bundletemplate_form': bundletemplate_form,
+                    'packages': packages,
+                    'bundles': bundles}
+
     return render_to_response('emacshaqiba/submit_bundle.html',
                               context_dict, 
                               context)
@@ -529,7 +576,9 @@ def submit_bundle(request):
 def submit_package(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
+    
     if request.method == 'POST':
         packagetemplate_form = PackageTemplateForm(data=request.POST)
         if packagetemplate_form.is_valid():
@@ -549,18 +598,18 @@ def submit_package(request):
         packagetemplate_form = PackageTemplateForm()
         
     context_dict = {'packagetemplate_form': packagetemplate_form,
-                    'codetemplate': codetemplate,}
+                    'codetemplate': codetemplate,
+                    'packages': packages,
+                    'bundles': bundles}
     return render_to_response('emacshaqiba/submit_package.html',
                               context_dict, 
                               context)
 
 def register(request):
-    if request.session.test_cookie_worked():
-        print ">>>> TEST COOKIE WORKED"
-        request.session.delete_test_cookie()
-        
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
     # A boolean value for telling the template whether the
     # registration was successful.  Set to False initially. Code
     # changes value to True when registration succeeds.
@@ -597,13 +646,12 @@ def register(request):
             # was successful.
             registered = True
             
-        
         # Invalid form or forms - mistakes or something else?  Print
         # problems to the terminal.  They'll also be shown to the
         # user.
         else:
             if user_form.errors or profile_form.errors:
-                form_error = True
+                messages.error(request, "Warning! One or more field required!.")
             print user_form.errors, profile_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm
@@ -612,22 +660,29 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
+    context_dict = {'user_form': user_form, 
+                    'profile_form': profile_form, 
+                    'registered': registered,
+                    'form_error': form_error,
+                    'codetemplate': codetemplate,
+                    'packages': packages,
+                    'bundles': bundles} 
     # Render the template depending on the context.
-    return render_to_response( 
-        'emacshaqiba/register.html', 
-        {'user_form': user_form, 
-         'profile_form': profile_form, 
-         'registered': registered,
-         'form_error': form_error,
-         'codetemplate': codetemplate,}, 
-        context)
+    return render_to_response('emacshaqiba/register.html', 
+                              context_dict,
+                              context)
 
 def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
 
-    context_dict = {'codetemplate': codetemplate,}
+    context_dict = {'codetemplate': codetemplate,
+                    'packages': packages,
+                    'bundles': bundles,}
+
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -668,14 +723,15 @@ def user_login(request):
 def profile(request):
     context = RequestContext(request)
     codetemplate = CodeTemplate.objects.order_by('-download_count')
-    codetemplate_user = CodeTemplate.objects.filter(user=request.user)
-    dependency_user = Dependency.objects.filter(user=request.user)
-    bundle_user = BundleTemplate.objects.filter(user=request.user)
+    packages = Dependency.objects.order_by('-download_count')
+    bundles = BundleTemplate.objects.order_by('-download_count')
 
     context_dict = {'codetemplate': codetemplate,
-                    'codetemplate_user': codetemplate_user,
-                    'dependency_user': dependency_user,
-                    'bundle_user': bundle_user,}
+                    'packages': packages,
+                    'bundles': bundles,
+                    'codetemplate_user': codetemplate.filter(user=request.user),
+                    'dependency_user': packages.filter(user=request.user),
+                    'bundle_user': bundles.filter(user=request.user),}
     u = User.objects.get(username=request.user)
 
     try:

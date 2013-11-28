@@ -66,11 +66,14 @@ class CodeTemplateForm(forms.ModelForm):
             pass
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(help_text="Please enter a username.")
-    email = forms.CharField(help_text="Please enter your email.")
+    username = forms.CharField(help_text="Please enter a username.",
+    error_messages={'required':'Username is required.'})
+    email = forms.CharField(help_text="Please enter your email.",
+    error_messages={'required':'Valid Email address is required.'})
     password = forms.CharField(
         widget=forms.PasswordInput(), 
-        help_text="Please enter a password.")
+        help_text="Please enter a password.",
+        error_messages={'required':'Password is missing.'})
 
     class Meta:
         model = User
