@@ -255,14 +255,17 @@ def editcode_p(request, id=None):
             return HttpResponseForbidden()
             
         if request.method == 'POST':
-            print "POST"
             codetemplate_form = CodeTemplateForm(data=request.POST, instance=code_template)
-            if codetemplate_form.data['gist_url']:
-                code_from_gist = load_gist(codetemplate_form.data['gist_url'])
-                codetemplate_form.data['code'] = code_from_gist
             
             if codetemplate_form.is_valid():
                 codetemplate = codetemplate_form.save(commit=False)
+
+                if codetemplate.gist_url:
+                    code_from_gist = load_gist(codetemplate.gist_url)
+                    codetemplate.code = code_from_gist
+                else:
+                    codetemplate.code = request.POST['code']
+                    
                 if 'screenshot' in request.FILES:
                     codetemplate.screenshot = request.FILES['screenshot']
 
