@@ -36,7 +36,7 @@
     <!-- Success/Error messages -->
     {% if messages %}
     {% for message in messages %}
-    {% if message.tags == "success "%}
+    {% if message.tags == "success" %}
     <p class="text-info" align="center"><strong>{{ message }}</strong></p>
     {% else %}
     <p class="text-danger" align="center"><strong>{{ message }}</strong></p>

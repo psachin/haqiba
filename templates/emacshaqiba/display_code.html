@@ -91,7 +91,11 @@
 </ul>
 {% if codetemplate_id.code %}
   <div class="container">
-  <strong>Code</strong>
+    <strong>Code</strong>
+    {% if codetemplate_id.gist_url %}
+    | <span class="glyphicon glyphicon-globe"></span>
+    <a href={{codetemplate_id.gist_url}}>{{codetemplate_id.gist_url}}</a>
+  {% endif %}
   <textarea id="id_code" name="code">{{codetemplate_id.code}}
   </textarea>
   </div>
