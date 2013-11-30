@@ -107,7 +107,7 @@ def write_package_config(package, init_file):
         if package.loadpath:
             temp_str = str(package.tarFile)
             temp_str2 = temp_str.split('/')[1].replace(".tar", "")
-            load_path_string = "\n" + "(add-to-list 'load-path \""
+            load_path_string = "\n" + "(add-to-list 'load-path \"~/.emacs.d/"
             end_str = "/\")"
             init_file.write(load_path_string)
             init_file.write(temp_str2)

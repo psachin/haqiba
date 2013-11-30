@@ -281,11 +281,44 @@ buffer is not visiting a file."
 
     add_code_template(
         user_id=store.user1['USERNAME'].id,
-        name="Org-mode-workflow-state",
+        name="Org-workflow",
         code="""(setq org-todo-keywords
     '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))""",
         description="Add workflow state in org-mode.",
         screenshot="/screenshot/banner.png"
+    )
+
+    add_code_template(
+        user_id=store.user1['USERNAME'].id,
+        name="Emacs-home",
+        code="""(defun open-emacs-home ()
+"Open emacs HOME directory."
+(interactive)
+(find-file-other-window (substring
+			 user-init-file 0 -6)))
+(global-set-key (kbd "C-c h") 'open-emacs-home)""",
+        description="Open Emacs home directory. http://emacsredux.com",
+        screenshot=None,
+    )
+
+    add_code_template(
+        user_id=store.user1['USERNAME'].id,
+        name="User-init-file",
+        code="""(defun open-user-init-file ()
+"Find User Init file."
+(interactive)
+(find-file-other-window user-init-file ))
+(global-set-key (kbd "C-x e") 'open-user-init-file)""",
+        description="Open user init file. http://emacsredux.com/blog/2013/05/18/instant-access-to-init-dot-el/",
+        screenshot=None,
+    )
+
+    add_code_template(
+        user_id=store.user1['USERNAME'].id,
+        name="Which-function",
+        code="""(which-function-mode t)""",
+        description="Show the function name in mode-line.",
+        screenshot=None,
     )
 
     add_code_template(
@@ -355,7 +388,7 @@ programming."
         user_id=store.user1['USERNAME'].id,
         name="Subword",
         code="""(add-hook 'prog-mode-hook 'subword-mode)""",
-        description="Handles symbols with mixed UPPER case & lower case letters. Useful while editing CamelCase words in Python.",
+        description="Handles symbols with mixed UPPER case & lower case letters. Useful while editing Camel-Case words in Python.",
         screenshot="/screenshot/subword.png"
     )
     
@@ -364,36 +397,71 @@ programming."
         print c.name
 
         # Populate Codes ends here.
-        
-    epc = add_package(user_id=store.user1['USERNAME'].id,
-                      name="emacs-epc",
-                      description="emacs-epc, https://github.com/kiwanami/emacs-epc",
-                      tarFile="deps/emacs-epc.tar",
+
+    ac = add_package(user_id=store.user1['USERNAME'].id,
+                     name="Auto Complete",
+                     description="Auto complete mode for Emacs. http://cx4a.org/software/auto-complete.",
+                     tarFile="deps/auto-complete.tar",
+                     require=False,
+                     config="""(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/ac-dict")
+(ac-config-default)
+(auto-complete-mode t)""",
+                     screenshot=None,)
+    ac.save()
+
+    dash = add_package(user_id=store.user1['USERNAME'].id,
+                      name="dash",
+                      description="A modern list api for Emacs. https://github.com/magnars/dash.el",
+                      tarFile="deps/dash.tar",
                       config="",
-                      screenshot=None)
-    epc.save()
+                      screenshot=None,)
+    dash.save()    
+
+    smartparens = add_package(user_id=store.user1['USERNAME'].id,
+                              name="smartparens",
+                              description="Smartparens is minor mode for Emacs that *deals with parens pairs and tries to be smart about it. https://github.com/Fuco1/smartparens",
+                              tarFile="deps/smartparens.tar",
+                              require=False,
+                              config="""(require 'smartparens-config)
+(show-smartparens-global-mode +1)""",
+                              screenshot=None,)
+    smartparens.save()    
 
     deferred = add_package(user_id=store.user1['USERNAME'].id,
                            name="emacs-deferred",
                            description="emacs-deferred, https://github.com/kiwanami/emacs-deferred",
                            tarFile="deps/emacs-deferred.tar",
-                           config="",
+                           require=False,
+                           config="""(require 'deferred)
+(require 'concurrent)""",
                            screenshot=None)
     deferred.save()
-    
+
     ctable = add_package(user_id=store.user1['USERNAME'].id,
                          name="emacs-ctable",
                          description="emacs-ctable, https://github.com/kiwanami/emacs-ctable",
                          tarFile="deps/emacs-ctable.tar",
+                         require=False,
                          config="",
                          screenshot=None)
-    ctable.save()
+    ctable.save()    
+    
+    epc = add_package(user_id=store.user1['USERNAME'].id,
+                      name="emacs-epc",
+                      description="emacs-epc, https://github.com/kiwanami/emacs-epc",
+                      tarFile="deps/emacs-epc.tar",
+                      require=False,
+                      config="""(require 'epc)""",
+                      screenshot=None)
+    epc.save()
 
     jedi = add_package(user_id=store.user1['USERNAME'].id,
                        name="emacs-jedi",
                        description="emacs-jedi, https://github.com/tkf/emacs-jedi",
                        tarFile="deps/emacs-jedi.tar",
-                       config="",
+                       require=False,
+                       config="""(require 'jedi)""",
                        screenshot=None)
     jedi.save()
 
@@ -452,16 +520,6 @@ programming."
                      screenshot=None,)
     md.save()
 
-    smartparens = add_package(user_id=store.user1['USERNAME'].id,
-                              name="smartparens",
-                              description="Smartparens is minor mode for Emacs that *deals with parens pairs and tries to be smart about it. https://github.com/Fuco1/smartparens",
-                              tarFile="deps/smartparens.tar",
-                              require=False,
-                              config="""(require 'smartparens-config)
-(show-smartparens-global-mode +1)""",
-                              screenshot=None,)
-    smartparens.save()
-
     xml_rpc = add_package(user_id=store.user1['USERNAME'].id,
                           name="xml-rpc",
                           description="XML-RPC client implementation in elisp, capable of both synchronous and asynchronous method calls. https://launchpad.net/xml-rpc-el.",
@@ -486,7 +544,7 @@ programming."
                       config="""(require 'org2blog-autoloads)""",
                       screenshot=None,)
     o2b.save()
-    
+
     print "---------- Packages ------------"
     for p in Dependency.objects.all():
         print p.name
@@ -502,7 +560,7 @@ programming."
                screenshot="screenshot/banner.png",)
 
     python.save()
-    python.dep.add(epc, deferred, ctable, jedi)
+    python.dep.add(ac, deferred, ctable, epc, jedi)
 
     parentheses = add_bundle(user_id=store.user1['USERNAME'].id,
                              name="Parentheses",
@@ -511,16 +569,16 @@ programming."
                              screenshot="screenshot/banner.png",)
 
     parentheses.save()
-    parentheses.dep.add(rainbow_delimiters, autopair, smartparens)
+    parentheses.dep.add(dash, rainbow_delimiters, autopair, smartparens)
 
-    org2blog = add_bundle(user_id=store.user1['USERNAME'].id,
-                          name="org2blog",
+    blog = add_bundle(user_id=store.user1['USERNAME'].id,
+                          name="Blog",
                           description="Blog from org-mode to wordpress(Dependencies included).",
                           config="",
                           screenshot="screenshot/o2b.png",)
 
-    org2blog.save()
-    org2blog.dep.add(xml_rpc, metaweblog, o2b)
+    blog.save()
+    blog.dep.add(xml_rpc, metaweblog, o2b)
     
     print "---------- Bundle ------------"
     for b in BundleTemplate.objects.all():
