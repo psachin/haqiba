@@ -506,9 +506,28 @@ def get_code_list(max_results=0, starts_with=''):
     return code_list
 
 
-def suggest_code(request):
+def get_package_list(max_results=0, starts_with=''):
+    package_list = []
+    if starts_with:
+        package_list = Dependency.objects.filter(name__contains=starts_with)
+        package_list = package_list.order_by('-download_count')
+    else:
+        package_list = Dependency.objects.all().order_by('-download_count')
+    return package_list
+
+
+def get_bundle_list(max_results=0, starts_with=''):
+    bundle_list = []
+    if starts_with:
+        bundle_list = BundleTemplate.objects.filter(name__contains=starts_with)
+        bundle_list = bundle_list.order_by('-download_count')
+    else:
+        bundle_list = BundleTemplate.objects.all().order_by('-download_count')
+    return bundle_list
+
+
+def suggest(request):
     context = RequestContext(request)
-    code_list = []
     starts_with = ''
     if request.method == 'GET':
         starts_with = request.GET['suggestion']
@@ -518,8 +537,12 @@ def suggest_code(request):
         starts_with = request.POST['suggestion']
 
     code_list = get_code_list(8, starts_with)
+    package_list = get_package_list(8, starts_with)
+    bundle_list = get_bundle_list(8, starts_with)
 
-    context_dict = {'codetemplate': code_list}
+    context_dict = {'codetemplate': code_list,
+                    'packages': package_list,
+                    'bundles': bundle_list}
     return render_to_response('emacshaqiba/code_list.html',
                               context_dict, context)
 
