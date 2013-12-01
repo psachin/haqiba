@@ -399,7 +399,7 @@ programming."
         # Populate Codes ends here.
 
     ac = add_package(user_id=store.user1['USERNAME'].id,
-                     name="Auto Complete",
+                     name="auto-complete",
                      description="Auto complete mode for Emacs. http://cx4a.org/software/auto-complete.",
                      tarFile="deps/auto-complete.tar",
                      require=False,
