@@ -15,12 +15,20 @@ function Pager(tableName, itemsPerPage, listID) {
     this.old_page = 1;
     this.currentPage = 1;
     
-    //code before paging
-    init(tableName, context);
-    //show page navigator
-    showPageNav(tableName, context, listID, 'c'); 
-    //show page
-    showPage(1, tableName);
+    try{
+    	//code before paging
+	init(tableName, context);
+	if(context.pages > 1){
+		//show page navigator
+		showPageNav(tableName, context, listID, 'c'); 
+	}
+	//show page
+	showPage(1, tableName);
+    }catch(err){
+    	//do nothing, execute remaining code
+    }
+    
+    
 }
 
 function Packages(tableName, itemsPerPage, listID) {
@@ -34,12 +42,18 @@ function Packages(tableName, itemsPerPage, listID) {
     this.old_page = 1;
     this.currentPage = 1;
     
-    //code before paging
-    init(tableName, package_context);
-    //show page navigator
-    showPageNav(tableName, package_context, listID, 'p'); 
-    //show page
-    showPage(1, tableName);
+    try{
+	//code before paging
+	init(tableName, package_context);
+	if(package_context.pages > 1){
+		//show page navigator
+		showPageNav(tableName, package_context, listID, 'p'); 
+	}
+	//show page
+	showPage(1, tableName);
+    }catch(err){
+    	//do nothing, execute remaining code
+    }
 }
 
 function Bundles(tableName, itemsPerPage, listID) {
@@ -53,12 +67,18 @@ function Bundles(tableName, itemsPerPage, listID) {
     this.old_page = 1;
     this.currentPage = 1;
     
-    //code before paging
-    init(tableName, bundle_context);
-    //show page navigator
-    showPageNav(tableName, bundle_context, listID, 'b'); 
-    //show page
-    showPage(1, tableName);
+    try{
+	//code before paging
+	init(tableName, bundle_context);
+	if(bundle_context.pages > 1){
+		//show page navigator
+		showPageNav(tableName, bundle_context, listID, 'b'); 
+	}
+	//show page
+	showPage(1, tableName);
+    }catch(err){
+    	//do nothing, execute remaining code
+    }
 }
 
 
