@@ -10,20 +10,35 @@ import urllib2
 
 class CodeTemplateForm(forms.ModelForm):
     name = forms.CharField(
-        widget=forms.TextInput(attrs={'class':'form-control'}),
-        help_text="Name of code snippet.", required=True)
-    gist_url = forms.URLField(
-        widget=forms.TextInput(attrs={'class':'form-control'}),
-        help_text="GitHub gist url",
-        required=False)
-    code = forms.CharField(
-        widget=forms.Textarea(attrs={'class':'form-control'}), 
-        help_text="Type your code snippet here.", 
-        required=False)
+        label = 'Name',
+        widget=forms.TextInput(
+            attrs={'class':'form-control',
+                   'placeholder': 'Name of your code snippet.'}),
+        error_messages={'required': 'Name is required.'},
+        required=True)
+
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'class':'form-control'}), 
-        help_text="Type description of your code snippet here(Optional).", 
+        widget=forms.Textarea(
+            attrs={'class':'form-control',
+                   'rows': '3',
+                   'placeholder': 'Description of your code snippet(Optional).'}),
         required=False)
+    
+    gist_url = forms.URLField(
+        label = 'GitHub gist URL',
+        widget=forms.TextInput(
+            attrs={'class':'form-control',
+                   'placeholder': 'Example: https://gist.github.com/psachin/7631864 (Optional)'}),
+        error_messages={'invalid': 'Enter valid URL.'},
+        required=False)
+    
+    code = forms.CharField(
+        label = 'Code(Or write code below.)',
+        widget=forms.Textarea(
+            attrs={'class':'form-control',
+               'placeholder': 'Write you code here.'}),
+        required=False)
+
     screenshot = forms.ImageField(
         help_text="Upload screenshot of your code(Optional).", 
         required=False)

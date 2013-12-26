@@ -45,48 +45,9 @@
     {% endfor %}
     {% endif %} 
     <!-- Success/Error messages ends here -->
+
+    {{codetemplate_form.as_p}}
     
-  <div class="form-group" style="width:55%;">
-    {{ codetemplate_form.name.errors }}
-    <label for="id_name">Name</label>
-    <input type="text" name="name" class="form-control" id="id_name" 
-	   placeholder="Name of your code snippet.">
-    <!-- {{ codetemplate_form.name }} -->
-  </div> <!-- form-group name-->
-
-  <div class="form-group" style="width:80%;">
-    {{ codetemplate_form.description.errors }}
-    <label for="id_description">Description</label>
-    <input type="text" name="description" class="form-control" 
-	   id="id_description"  placeholder="Description of your code snippet(Optional).">
-    <!-- {{ codetemplate_form.description }} -->
-  </div> <!-- form-group desc-->
-
-  <div class="form-group" style="width:80%;">
-    {{ codetemplate_form.gist_url.errors }}
-    <label for="id_gist_url">GitHub Gist</label>
-    <strong class="text-muted">
-	| Example: https://gist.github.com/psachin/7631864
-    </strong>
-    <input type="text" name="gist_url" class="form-control" 
-	   id="id_gist_url"  placeholder="Fetch code snippet from GitHub Gist URL(Optional)">
-    <!-- {{ codetemplate_form.gist_url }} -->
-  </div> <!-- form-group gist_url-->
-  
-  <p class="text-muted"><strong>OR write code snippet below.</strong></p>
-  
-  <div class="form-group" style="width:100%;">
-    {{ codetemplate_form.code.errors }}
-    <label for="id_code">Code</label>
-    {{ codetemplate_form.code }}
-  </div> <!-- form-group code-->
-
-  <div class="form-group">
-    {{ codetemplate_form.screenshot.errors }}
-    <label for="id_screenshot">Screenshot</label>
-    <input type="file" name="screenshot" id="id_screenshot">
-    <p class="help-block">Upload screenshot of your code(Optional).</p>
-  </div>
   </div> <!-- well -->
   <div align="center">
   <input class="btn btn-success" type="submit" name="submit" 
