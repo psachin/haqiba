@@ -39,6 +39,12 @@ def index(request):
 
 def emacs(request):
     context = RequestContext(request)
+
+    if request.session.session_key == None:
+        request.session['has_session'] = True
+    else:
+        session_key = request.session.session_key
+        
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     packages = Dependency.objects.order_by('-download_count')
     bundles = BundleTemplate.objects.order_by('-download_count')
@@ -58,7 +64,7 @@ def emacs(request):
         print "Bundle: %s" % selected_bundle_list
 
         if selected_code_list or selected_package_list or selected_bundle_list:
-            init_file = make_init()
+            init_file = make_init(session_key)
 
             if selected_code_list:
                 for code in selected_code_list:
@@ -70,7 +76,7 @@ def emacs(request):
             if selected_package_list:
                 for package in selected_package_list:
                     package = Dependency.objects.get(name=package)
-                    write_package_config(package, init_file)
+                    write_package_config(package, init_file, session_key)
             else:
                 print "No package selected"
 
@@ -78,11 +84,11 @@ def emacs(request):
                 for bundle in selected_bundle_list:
                     bundle = BundleTemplate.objects.get(name=bundle)
                     # print bundle.name
-                    write_bundle_config(bundle, init_file)
+                    write_bundle_config(bundle, init_file, session_key)
             else:
                 print "No Bundle selected."
 
-            tar_data = make_tarball(init_file)
+            tar_data = make_tarball(init_file, session_key)
             return HttpResponse(tar_data, mimetype="application/x-gzip")
         else:
             print "Nothing selected."
@@ -97,11 +103,11 @@ def emacs(request):
     return render_to_response('emacshaqiba/emacs.html', context_dict, context)
 
 
-def write_package_config(package, init_file):
+def write_package_config(package, init_file, session_key):
     dep_path = "media/%s" % package.tarFile
     if os.path.exists(dep_path):
         tar = tarfile.open(dep_path)
-        tar.extractall(path="./temp/.emacs.d/")
+        tar.extractall(path="./temp/" + session_key + "/.emacs.d/")
         tar.close()
         init_file.write(";; " + package.name + "\n")
         if package.loadpath:
@@ -133,42 +139,45 @@ def write_code_config(code, init_file):
     increment_download_count(code)
 
 
-def write_bundle_config(bundle, init_file):
+def write_bundle_config(bundle, init_file, session_key):
     init_file.write(";;; " + bundle.name + "\n")
     for p in bundle.dep.all():
-        write_package_config(p, init_file)
+        write_package_config(p, init_file, session_key)
     # Write bundle related config code.
     init_file.write(bundle.config + "\n\n")
     increment_download_count(bundle)
 
 
-def make_init():
-    make_temp_dir()
-    init_file = open("init.el", "w")
+def make_init(session_key):
+    make_temp_dir(session_key)
+    init_file = open("./temp/" + session_key + "/.emacs.d/init.el", "w")
     init_file.write(instruction)
     return init_file
 
 
-def make_tarball(init_file):
+def make_tarball(init_file, session_key):
     init_file.close()
-    shutil.move('./init.el', './temp/.emacs.d/')
+    # shutil.move('./init.el', './temp/' + session_key + '/.emacs.d/')
     tar = tarfile.open("emacs.d.tar", "w")
-    dep_path = "./temp/.emacs.d/"
+    dep_path = "./temp/" + session_key + "/.emacs.d/"
     tar.add(dep_path, arcname=os.path.basename(".emacs.d"))
     tar.close()
 
+    # move tarball
+    # shutil.move("emacs.d.tar", './temp/' + session_key + '/')
+    
     # Delete temp-space
-    shutil.rmtree('./temp/.emacs.d/')
+    shutil.rmtree('./temp/' + session_key)
     # server tarball
     return open("emacs.d.tar", "rb")
 
 
-def make_temp_dir():
-    if not os.path.exists('./temp/.emacs.d/'):
-        os.makedirs('./temp/.emacs.d/')
+def make_temp_dir(session_key):
+    if not os.path.exists('./temp/' + session_key + '/.emacs.d/'):
+        os.makedirs('./temp/' + session_key + '/.emacs.d/')
     else:
-        shutil.rmtree('./temp/.emacs.d/')
-        os.makedirs('./temp/.emacs.d/')
+        shutil.rmtree('./temp/' + session_key)
+        os.makedirs('./temp/' + session_key + '/.emacs.d/')
 
 
 def increment_download_count(instance):
@@ -471,14 +480,20 @@ def delete_bundle(request, id):
 
 def display_code(request, id):
     context = RequestContext(request)
+
+    if request.session.session_key == None:
+        request.session['has_session'] = True
+    else:
+        session_key = request.session.session_key
+        
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     packages = Dependency.objects.order_by('-download_count')
     bundles = BundleTemplate.objects.order_by('-download_count')
 
     if request.POST:
-        init_file = make_init()
+        init_file = make_init(session_key)
         write_code_config(codetemplate.get(pk=id), init_file)
-        tar_data = make_tarball(init_file)
+        tar_data = make_tarball(init_file, session_key)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
 
     context_dict = {'codetemplate': codetemplate,
@@ -549,14 +564,20 @@ def suggest(request):
 
 def display_package(request, id):
     context = RequestContext(request)
+
+    if request.session.session_key == None:
+        request.session['has_session'] = True
+    else:
+        session_key = request.session.session_key
+        
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     packages = Dependency.objects.order_by('-download_count')
     bundles = BundleTemplate.objects.order_by('-download_count')
 
     if request.POST:
-        init_file = make_init()
-        write_package_config(packages.get(pk=id), init_file)
-        tar_data = make_tarball(init_file)
+        init_file = make_init(session_key)
+        write_package_config(packages.get(pk=id), init_file, session_key)
+        tar_data = make_tarball(init_file, session_key)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
 
     context_dict = {'codetemplate': codetemplate,
@@ -571,14 +592,20 @@ def display_package(request, id):
 
 def display_bundle(request, id):
     context = RequestContext(request)
+
+    if request.session.session_key == None:
+        request.session['has_session'] = True
+    else:
+        session_key = request.session.session_key
+        
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     packages = Dependency.objects.order_by('-download_count')
     bundles = BundleTemplate.objects.order_by('-download_count')
 
     if request.POST:
-        init_file = make_init()
-        write_bundle_config(bundles.get(pk=id), init_file)
-        tar_data = make_tarball(init_file)
+        init_file = make_init(session_key)
+        write_bundle_config(bundles.get(pk=id), init_file, session_key)
+        tar_data = make_tarball(init_file, session_key)
         return HttpResponse(tar_data, mimetype="application/x-gzip")
 
     context_dict = {'codetemplate': codetemplate,
