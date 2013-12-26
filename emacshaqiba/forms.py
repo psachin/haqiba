@@ -66,13 +66,28 @@ class CodeTemplateForm(forms.ModelForm):
             pass
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(help_text="Please enter a username.",
-    error_messages={'required':'Username is required.'})
-    email = forms.CharField(help_text="Please enter your email.",
-    error_messages={'required':'Valid Email address is required.'})
+    username = forms.CharField(
+        label = '',
+        widget=forms.TextInput(
+            attrs={'class':'form-control',
+                   'placeholder': 'Username.'}),
+        required=True,
+        error_messages={'required':'Username is required.'})
+    
+    email = forms.EmailField(
+        label = '',
+        widget=forms.TextInput(
+            attrs={'class':'form-control',
+                   'placeholder': 'Valid Email address.'}),
+        required=True,
+        error_messages={'required':'Valid Email address is required.'})
+    
     password = forms.CharField(
-        widget=forms.PasswordInput(), 
-        help_text="Please enter a password.",
+        label = '',
+        widget=forms.PasswordInput(
+            attrs={'class':'form-control',
+                   'placeholder': 'Password.'}),
+        required=True,
         error_messages={'required':'Password is missing.'})
 
     class Meta:
@@ -80,10 +95,16 @@ class UserForm(forms.ModelForm):
         fields = ['username', 'email', 'password']
 
 class UserProfileForm(forms.ModelForm):
-    website = forms.URLField(help_text="Please enter your website.", 
-                             required=False)
+    website = forms.URLField(
+        label = '',
+        widget=forms.TextInput(
+            attrs={'class':'form-control',
+                   'placeholder': 'Website address(Optional).'}),
+        required=False)
+    
     picture = forms.ImageField(
-        help_text="Select a profile image to upload.", 
+        label = 'Profile photo',
+        help_text="Select a profile photo to upload.", 
         required=False)
 
     class Meta:

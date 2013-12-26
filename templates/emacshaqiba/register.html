@@ -8,12 +8,12 @@
 {% block body_block %}
 
 <h1 align="center">Register with Haqiba</h1>
-<div class="container" align="">
+<div class="container" align="center">
   {% if registered %}
   <strong>Thank you for registering!</strong>
   <p><a href="/emacshaqiba/login/">Login here.</a></p>
   {% else %}
-  <div class="well" align="center">
+  <div class="col-lg-6 col-lg-offset-3 well">
     <form class="form-horizontal" role="form" id="user_form" method="post" action="/emacshaqiba/register/"
           enctype="multipart/form-data">
       {% csrf_token %}
@@ -21,13 +21,6 @@
 	   width=30
 	   heigth=30/>
       <h4 class="form-signin-heading">Sign up Here</h4>
-      <!-- Display each form. The as.p method wraps each element in a paragraph
-           (<p>) element. This ensures each element appears on a new line,
-           making everything look neater. -->
-      
-      <!-- basic -->
-      <!-- {{ user_form.as_p }} -->
-      <!-- {{ profile_form.as_p }} -->
 
       <!-- Success/Error messages -->
       {% if messages %}
@@ -50,35 +43,16 @@
       <!-- {% endif %} -->
       <!-- {% endfor %} -->
 
+
+      {{ user_form.as_p }}
+      {{ profile_form.as_p }}
       
-      <div class="form-group" style="width:50%;">
-	<!-- <label for="username">Username</label> -->
-	{{ user_form.username.errors }}
-	<input type="text" name="username" class="form-control" id="id_username" placeholder="Your Username.">
-      </div> <!-- form-group username-->
+      <!-- <div class="form-group" style="width:50%;"> -->
+      <!-- 	<\!-- <label for="username">Username</label> -\-> -->
+      <!-- 	{{ user_form.username.errors }} -->
+      <!-- 	<input type="text" name="username" class="form-control" id="id_username" placeholder="Your Username."> -->
+      <!-- </div> <\!-- form-group username-\-> -->
       
-      <div class="form-group" style="width:50%;">
-	<!-- <label for="email">Email</label> -->
-	{{ user_form.email.errors }}
-	<input type="text" name="email" class="form-control" id="id_email" placeholder="Your Email ID.">
-      </div> <!-- form-group email-->
-
-      <div class="form-group" style="width:50%;">
-	<!-- <label for="password">Password</label> -->
-	{{ user_form.password.errors }}
-	<input type="password" name="password" class="form-control" id="id_password" placeholder="Your password.">
-      </div> <!-- form-group password1-->
-
-      <div class="form-group" style="width:50%;">
-	<!-- <label for="website">Website</label> -->
-	<input type="text" name="website" class="form-control" id="id_website" placeholder="Your website address(Optional).">
-      </div> <!-- form-group email-->
-
-      <div class="form-group">
-	<input type="file" name="picture" id="id_picture">
-	<p class="help-block">Upload your Profile photo(Optional).</p>
-      </div>	    
-
       <!-- Provide a button to click to submit the form. -->
       <input class="btn btn-success" type="submit" name="submit" value="Register" />
     </form>
