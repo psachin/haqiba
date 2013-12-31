@@ -30,7 +30,8 @@ def populate_codes():
         name="Show-paren",
         code="(show-paren-mode t)",
         description="Show matching parenthesis.",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=68,
     )
 
     add_code_template(
@@ -38,7 +39,8 @@ def populate_codes():
         name="Battery",
         code="(display-battery-mode t)",
         description="Show battery status in mode line.",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=45,
     )
 
     add_code_template(
@@ -56,7 +58,8 @@ buffer is not visiting a file."
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 (global-set-key (kbd "C-x C-r") 'sudo-edit)""",
         description="Edit currently visited file as root. Key binding: C-x C-r",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=51,        
     )
 
     add_code_template(
@@ -73,7 +76,8 @@ buffer is not visiting a file."
 			  (read-string "Search Google: "))))))
 (global-set-key (kbd "C-x g") 'google)""",
         description="Search Google using 'M-x google'. Keyboard shortcut C-x g. By Bozhidar Batsov. http://emacsredux.com/blog/2013/03/28/google/",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=78,        
     )
 
     add_code_template(
@@ -90,7 +94,8 @@ buffer is not visiting a file."
                          (read-string "Search YouTube: "))))))
 (global-set-key (kbd "C-x y") 'youtube)""",
         description="Search Youtube using 'M-x youtube'. Keyboard shortcut C-x y. By Bozhidar Batsov. http://emacsredux.com/blog/2013/08/26/search-youtube/",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=48,
     )
 
     add_code_template(
@@ -99,7 +104,8 @@ buffer is not visiting a file."
         code="""(menu-bar-mode 0)
 (tool-bar-mode 0)""",
         description="Hide tool-bar and menubar.",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=53,        
     )
 
     add_code_template(
@@ -109,7 +115,8 @@ buffer is not visiting a file."
 (unless (server-running-p)
   (server-start))""",
         description="Run emacs server so that emacs client can connect using 'emacsclient -nw' command.",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=47,        
     )
 
     add_code_template(
@@ -125,7 +132,8 @@ buffer is not visiting a file."
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)""",
         description="Add Marmalade and Melpa repos. Packages can be installed using 'M-x package-list-packages'.",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=60,        
     )
 
     add_code_template(
@@ -153,7 +161,8 @@ buffer is not visiting a file."
 				(clojure . t)
 				(C . t)))""",
         description="Provide language specific syntax highlighting when converting org to PDF.",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=58,        
     )
 
     add_code_template(
@@ -161,7 +170,8 @@ buffer is not visiting a file."
         name="Inhibit-startup",
         code="""(setq-default inhibit-startup-screen t)""",
         description="Inhibit startup-screen",
-        screenshot='screenshot/banner.png'
+        screenshot='screenshot/banner.png',
+        download_count=47,        
     )
 
     add_code_template(
@@ -170,7 +180,8 @@ buffer is not visiting a file."
         code=""";; turn on word wrap
 (auto-fill-mode t)""",
         description="Turn on word wrap.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=52,        
     )
 
     add_code_template(
@@ -186,7 +197,8 @@ buffer is not visiting a file."
 	    (dired-omit-mode 1)
 	    ))""",
         description="Do not show dot(hidden) files in dired-mode.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=38,        
     )
     
     add_code_template(
@@ -195,7 +207,8 @@ buffer is not visiting a file."
         code=""";; Show buffer size in mode-line.
 (size-indication-mode t)""",
         description="Show buffer size in mode-line.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=50,        
     )
 
     add_code_template(
@@ -204,7 +217,8 @@ buffer is not visiting a file."
         code=""";; Show column number in mode-line.
 (column-number-mode t)""",
         description="Show column number in mode-line.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=53,        
     )
 
     add_code_template(
@@ -215,7 +229,8 @@ buffer is not visiting a file."
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)""",
         description="Show elisp function documentation in result bar.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=51,        
     )
 
     add_code_template(
@@ -246,7 +261,8 @@ buffer is not visiting a file."
 		 (pluralize "word" count))))))
 (global-set-key (kbd "C-x c") 'count-words-buffer)""",
         description="Count total number of words in current buffer. Key binding: C-x c.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=52,        
     )
 
     add_code_template(
@@ -264,7 +280,8 @@ buffer is not visiting a file."
     (switch-to-buffer-other-window "*ansi-term*")))
 (global-set-key (kbd "C-c t") 'visit-term-buffer)""",
         description="Visit terminal buffer. Key binding: C-c t. From http://emacsredux.com/blog/page/2/",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=63,        
     )    
 
     add_code_template(
@@ -276,7 +293,8 @@ buffer is not visiting a file."
 (goto-char (/ (* (point-max) pct) 100)))
 (global-set-key (kbd "C-x p") 'goto-percent)""",
         description="Go to place in a buffer expressed in percentage. Key binding: C-x p.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=49,        
     )
 
     add_code_template(
@@ -285,7 +303,8 @@ buffer is not visiting a file."
         code="""(setq org-todo-keywords
     '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))""",
         description="Add workflow state in org-mode.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=50,        
     )
 
     add_code_template(
@@ -333,7 +352,8 @@ programming."
           1 font-lock-warning-face t))))
 (add-hook 'prog-mode-hook 'font-lock-comment-annotations)""",
         description="Highlight comment annotations.",
-        screenshot="/screenshot/banner.png"
+        screenshot="/screenshot/banner.png",
+        download_count=48,        
     )
 
     add_code_template(
@@ -342,7 +362,8 @@ programming."
         code="""(define-key global-map (kbd "RET") 'newline-and-indent)
 (setq-default indent-tabs-mode t)""",
         description="http://doxdrum.wordpress.com/",
-        screenshot="/screenshot/global-indentation.png"
+        screenshot="/screenshot/global-indentation.png",
+        download_count=12,        
     )
 
     add_code_template(
@@ -360,7 +381,8 @@ programming."
 (global-set-key (kbd "C-c v") 'viooz)""",
         description="Search movie on Viooz.co from Emacs. Based on Bozhidar Batsov's \
         'Google'. Key binding 'C-c v' ",
-        screenshot="/screenshot/viooz.png"
+        screenshot="/screenshot/viooz.png",
+        download_count=8,        
     )
 
     add_code_template(
@@ -381,7 +403,7 @@ programming."
 (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)""",
         description="http://whattheemacsd.com/",
         screenshot="/screenshot/delete_buffer-file.png",
-        download_count=10,
+        download_count=13,
     )
 
     add_code_template(
