@@ -413,6 +413,25 @@ programming."
         description="Handles symbols with mixed UPPER case & lower case letters. Useful while editing Camel-Case words in Python.",
         screenshot="/screenshot/subword.png"
     )
+
+
+    add_code_template(
+        user_id=store.user1['USERNAME'].id,
+        name="Surround",
+        code="""(defun surround(tag)
+        "Surround content within html TAG.
+        TAG can be <>," ",' ',[ ], etc."
+          (interactive "sWord should be inside: ")
+          (backward-word)
+          (mark-word)
+          (when (region-active-p)
+            (kill-region (region-beginning) (region-end)))
+          (insert tag)
+          (backward-char)
+          (yank))""",
+        description="Surround content within html TAG. TAG can be <>," ",' ',[ ], etc.",
+        screenshot="/screenshot/surround.png"
+    )
     
     print "---------- Codes ------------"
     for c in CodeTemplate.objects.all():
