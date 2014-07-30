@@ -89,7 +89,9 @@ def emacs(request):
                 print "No Bundle selected."
 
             tar_data = make_tarball(init_file, session_key)
-            return HttpResponse(tar_data, mimetype="application/x-gzip")
+            response = HttpResponse(tar_data, mimetype="application/x-gzip")
+            response['Content-Disposition'] = 'attachment; filename="emacs.d.tar"'
+            return response
         else:
             print "Nothing selected."
     else:
@@ -169,7 +171,7 @@ def make_tarball(init_file, session_key):
     # Delete temp-space
     shutil.rmtree('./temp/' + session_key)
     # server tarball
-    return open("emacs.d.tar", "rb")
+    return open("emacs.d.tar", "r")
 
 
 def make_temp_dir(session_key):
@@ -485,7 +487,7 @@ def display_code(request, id):
         request.session['has_session'] = True
     else:
         session_key = request.session.session_key
-        
+
     codetemplate = CodeTemplate.objects.order_by('-download_count')
     packages = Dependency.objects.order_by('-download_count')
     bundles = BundleTemplate.objects.order_by('-download_count')
@@ -494,7 +496,9 @@ def display_code(request, id):
         init_file = make_init(session_key)
         write_code_config(codetemplate.get(pk=id), init_file)
         tar_data = make_tarball(init_file, session_key)
-        return HttpResponse(tar_data, mimetype="application/x-gzip")
+        response = HttpResponse(tar_data, mimetype="application/x-gzip")
+        response['Content-Disposition'] = 'attachment; filename="emacs.d.tar"'
+        return response
 
     context_dict = {'codetemplate': codetemplate,
                     'packages': packages,
