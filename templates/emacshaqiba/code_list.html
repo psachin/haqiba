@@ -20,49 +20,49 @@
   <p>Nothing to display.</p>
   {% endif %}
 
-  <h3>Package{{packages|length|pluralize}}</h3>
-  {% if packages %}
-  <table id="package">
-  {% for i in packages %}
-  <tr>
-    <td>{{ forloop.counter }}. <a href="/emacshaqiba/package/{{i.id}}">{{i.name}}</a>
-    {% if i.download_count %}
-    <span class="badge">{{i.download_count}}</span>
-    {% endif %}
-  </td>
-    </tr>
-  {% endfor %}
-  </table>
-  <ul class="pagination" id="unordered-package-list"></ul>
-  {% else %}
-  <p>Nothing to display.</p>
-  {% endif %}
+  <!-- <h3>Package{{packages|length|pluralize}}</h3> -->
+  <!-- {% if packages %} -->
+  <!-- <table id="package"> -->
+  <!-- {% for i in packages %} -->
+  <!-- <tr> -->
+  <!--   <td>{{ forloop.counter }}. <a href="/emacshaqiba/package/{{i.id}}">{{i.name}}</a> -->
+  <!--   {% if i.download_count %} -->
+  <!--   <span class="badge">{{i.download_count}}</span> -->
+  <!--   {% endif %} -->
+  <!-- </td> -->
+  <!--   </tr> -->
+  <!-- {% endfor %} -->
+  <!-- </table> -->
+  <!-- <ul class="pagination" id="unordered-package-list"></ul> -->
+  <!-- {% else %} -->
+  <!-- <p>Nothing to display.</p> -->
+  <!-- {% endif %} -->
 
-  <h3>Bundle{{bundles|length|pluralize}}</h3>
-  {% if bundles %}
-  <table id="bundle">
-  {% for i in bundles %}
-  <tr>
-    <td>{{ forloop.counter }}. <a href="/emacshaqiba/bundle/{{i.id}}">{{i.name}}</a>
-    {% if i.download_count %}
-    <span class="badge">{{i.download_count}}</span>
-    {% endif %}
-  </td>
-    </tr>
-  {% endfor %}
-  </table>
-  <ul class="pagination" id="unordered-bundle-list"></ul>
-  {% else %}
-  <p>Nothing to display.</p>
-  {% endif %}
+  <!-- <h3>Bundle{{bundles|length|pluralize}}</h3> -->
+  <!-- {% if bundles %} -->
+  <!-- <table id="bundle"> -->
+  <!-- {% for i in bundles %} -->
+  <!-- <tr> -->
+  <!--   <td>{{ forloop.counter }}. <a href="/emacshaqiba/bundle/{{i.id}}">{{i.name}}</a> -->
+  <!--   {% if i.download_count %} -->
+  <!--   <span class="badge">{{i.download_count}}</span> -->
+  <!--   {% endif %} -->
+  <!-- </td> -->
+  <!--   </tr> -->
+  <!-- {% endfor %} -->
+  <!-- </table> -->
+  <!-- <ul class="pagination" id="unordered-bundle-list"></ul> -->
+  <!-- {% else %} -->
+  <!-- <p>Nothing to display.</p> -->
+  <!-- {% endif %} -->
 </div>
 
 <!-- pagination code starts here-->
 <script src="{% static 'js/paging.js' %}"></script>
 <script type="text/javascript">
-  var pager = new Pager('code', 5, 'unordered-code-list'); 
-  var Packages = new Packages('package', 5, 'unordered-package-list'); 
-  var Bundles = new Bundles('bundle', 5, 'unordered-bundle-list'); 
+  var pager = new Pager('code', 15, 'unordered-code-list'); 
+  <!-- var Packages = new Packages('package', 5, 'unordered-package-list');  -->
+  <!-- var Bundles = new Bundles('bundle', 5, 'unordered-bundle-list');  -->
 </script>
 <!-- pagination code ends here-->
 
