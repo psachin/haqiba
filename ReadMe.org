@@ -19,7 +19,7 @@
        #+END_SRC sh
 
 ** Usage
-   
+
    - Install dependency using =virtualenv=. To know more about
      virtualenv visit [[http://www.virtualenv.org/en/latest/][this]] link.
      #+BEGIN_SRC sh
@@ -74,7 +74,7 @@
        #+END_SRC sh
 
 ** Contribute
-   Please create a separate branch(with appropriate name) and send
+   Please create a separate branch(with suitable name) and send
    pull request.
 
 ** License

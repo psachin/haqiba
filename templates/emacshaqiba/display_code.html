@@ -49,7 +49,7 @@
 	<h1>{{codetemplate_id.name}} </h1>
         <p class="text-muted">(Code snippet)</p>
 	{% if codetemplate_id.description %}
-	<p class="text-success">{{codetemplate_id.description}}</p>
+	<p class="text-success">{{codetemplate_id.description|safe|linebreaks}}</p>
 	{% else %}
 	<p class="text-success">No description available.</p>
 	{% endif %}

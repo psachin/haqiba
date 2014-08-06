@@ -49,7 +49,7 @@
 	  <h1>{{package_id.name}} </h1>
 	  <p class="text-muted">(Package)</p>
 	  {% if package_id.description %}
-	  <p class="text-success">{{package_id.description}}</p>
+	  <p class="text-success">{{package_id.description|safe|linebreaks}}</p>
 	  {% else %}
 	  <p class="text-success">No description available.</p>
 	  {% endif %}

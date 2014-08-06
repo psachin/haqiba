@@ -47,7 +47,7 @@
 	<h1>{{bundle_id.name}}</h1>
 	<p class="text-muted">(Bundle)</p>
 	{% if bundle_id.description %}
-	<p class="text-success">{{bundle_id.description}}</p>
+	<p class="text-success">{{bundle_id.description|safe|linebreaks}}</p>
 	{% else %}
 	<p class="text-success">No description available.</p>
 	{% endif %}
