@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class CodeTemplate(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=128, unique=True)
-    gist_url = models.URLField(max_length=50, blank=True, null=True)
+    gist_url = models.URLField(max_length=70, blank=True, null=True)
     code = models.TextField()
     description = models.TextField()
     screenshot = models.ImageField(upload_to='screenshot', blank=True)
