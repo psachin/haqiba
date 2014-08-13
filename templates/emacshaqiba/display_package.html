@@ -67,7 +67,7 @@
 	    {% csrf_token %}
 	    <button class="btn btn-primary btn-mini">
 	      <i class="glyphicon glyphicon-download"></i>
-	      {{package_id.download_count}} download{{package_id.download_count|pluralize}}
+	      {{package_id.human_readable_download_count}} download{{package_id.download_count|pluralize}}
 	    </button>
 	    <!-- <span class="badge">{{package_id.download_count}} download{{package_id.download_count|pluralize}}</span> -->
 	    {% if package_id.user == user %}

@@ -9,7 +9,7 @@
     <tr>
       <td>{{ forloop.counter }}. <a href="/emacshaqiba/code/{{code.id}}">{{ code.name }}</a>
 	{% if code.download_count %}
-	<span class="badge">{{code.download_count}}</span>
+	<span class="badge">{{code.human_readable_download_count}}</span>
 	{% endif %}</td>
     </tr>
     {% endfor %}
@@ -27,7 +27,7 @@
   <!-- <tr> -->
   <!--   <td>{{ forloop.counter }}. <a href="/emacshaqiba/package/{{i.id}}">{{i.name}}</a> -->
   <!--   {% if i.download_count %} -->
-  <!--   <span class="badge">{{i.download_count}}</span> -->
+  <!--   <span class="badge">{{i.human_readable_download_count}}</span> -->
   <!--   {% endif %} -->
   <!-- </td> -->
   <!--   </tr> -->
@@ -45,7 +45,7 @@
   <!-- <tr> -->
   <!--   <td>{{ forloop.counter }}. <a href="/emacshaqiba/bundle/{{i.id}}">{{i.name}}</a> -->
   <!--   {% if i.download_count %} -->
-  <!--   <span class="badge">{{i.download_count}}</span> -->
+  <!--   <span class="badge">{{i.human_readable_download_count}}</span> -->
   <!--   {% endif %} -->
   <!-- </td> -->
   <!--   </tr> -->
