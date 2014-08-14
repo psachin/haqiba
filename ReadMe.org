@@ -74,9 +74,9 @@
 
 ** Deploying
 
-   - Please refer this [[https://github.com/psachin/webportal#deploy-on-server][link]] for deploying in server. The link refers
-     to deploy 'webportal', make relevant changes with respect to
-     haqiba(Use your commonsense).
+   - Please refer this [[https://github.com/psachin/webportal#deploy-on-server][link]] for deploying on the server. The link
+     refers to deployment of 'webportal' django app, make relevant changes with respect
+     to haqiba(Use your commonsense).
 
 ** Contributing
    - Never edit the master branch.
