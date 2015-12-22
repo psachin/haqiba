@@ -1,3 +1,13 @@
+'''Load code snippet from https://gist.github.com
+
+Usage:
+load_gist(URL)
+
+Example:
+load_gist("https://gist.github.com/psachin/6386902")
+
+'''
+
 import urllib2
 import json
 import re
@@ -12,10 +22,10 @@ def load_gist(gist_url):
 
 def extract_gist_id(gist):
     """Extract gist Id from GitHub gist url.
-    
+
     This function is copied from
     https://gist.github.com/spencerogden/4702275
-    
+
     Arguments:
     - `gist`: GitHub gist url.
 
@@ -28,7 +38,4 @@ def extract_gist_id(gist):
     m = re.match(r'^http(s?)://raw.github.com/gist/([0-9a-f]*)', gist)
     if m:
         return m.group(2)
-
-# Usage:
-# print load_gist("https://gist.github.com/psachin/6386902")
 
